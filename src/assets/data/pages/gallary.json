@@ -1,0 +1,29 @@
+[
+  {
+    "alt": "Alternative text",
+    "docPath": "assets/images/group-1.jpg",
+    "srcset": "800w, 1600w",
+    "sizes": "(max-width: 1600px) 800px, 1600px",
+    "title": "",
+    "subtitle": "",
+    "priority": true
+  },
+  {
+    "alt": "Alternative text",
+    "docPath": "assets/images/group-2.jpeg",
+    "srcset": "800w, 1600w",
+    "sizes": "(max-width: 1600px) 800px, 1600px",
+    "title": "",
+    "subtitle": "",
+    "priority": true
+  },
+  {
+    "alt": "Alternative text",
+    "docPath": "assets/images/counter.jpg",
+    "srcset": "800w, 1600w",
+    "sizes": "(max-width: 1600px) 800px, 1600px",
+    "title": "",
+    "subtitle": "",
+    "priority": true
+  }
+]

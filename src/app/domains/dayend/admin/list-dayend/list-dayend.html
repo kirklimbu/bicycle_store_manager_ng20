@@ -1,0 +1,70 @@
+<section>
+    <div>
+        <div class="table-operations">
+            <!-- <nz-input-group [nzSuffix]="suffixIconSearch">
+                <input [(ngModel)]="searchValue" type="text" nz-input placeholder="Search staff... " />
+            </nz-input-group>
+            <ng-template #suffixIconSearch>
+                <span nz-icon nzType="search"></span>
+            </ng-template> -->
+            <!-- <button nz-button nzType="default" (click)="onSearch()">
+        <span nz-icon nzType="search"></span>
+        Search
+      </button> -->
+            <!-- @if (setList$ | async; as set) {
+        } -->
+            <!-- <button
+        class="action-button"
+        nzDanger
+        nz-button
+        nzType="primary"
+        routerLinkActive
+        (click)="onAdd()"
+      >
+        Add
+      </button> -->
+
+        </div>
+    </div>
+    @if (data$ | async; as table) {
+    <nz-table #borderedTable nzBordered nzTitle="Dayend List" [nzData]="table" [nzFrontPagination]="false"
+        [nzScroll]="{ x: '900px' }">
+        <thead>
+            <tr>
+                <th nzWidth="5%">Sn.</th>
+                <th>Save Date</th>
+                <th>Has Dayend</th>
+
+                <th nzWidth="10%">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (
+            data of borderedTable.data;
+            track data.dayEndId;
+            let i = $index
+            ) {
+            <tr>
+                <td>{{ i + 1 }}</td>
+                <td>
+                    {{ data.saveDate | nepaliDateFormatter }}
+                </td>
+                <td>
+                    <nz-tag [nzColor]="(data.hasDayEnd) ? 'green' : 'red'">
+                        {{ data.hasDayEnd? 'YES' : 'NO' }}
+                    </nz-tag>
+                </td>
+                <td>
+                    <div class="action-buttons">
+                        <button title="Save Dayend" nz-button (click)="onSave(data.dayEndId)">
+                            <span nz-icon nzType="save"></span>
+                        </button>
+
+                    </div>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </nz-table>
+    }
+</section>

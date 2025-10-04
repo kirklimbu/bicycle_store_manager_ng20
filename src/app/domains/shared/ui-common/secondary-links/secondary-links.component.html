@@ -1,0 +1,19 @@
+<div class="pb-5 secondary-link-container">
+
+    <button [title]='secondaryLinkTitle' *ngIf="showSecondaryLink" type="button"
+        class="btn btn-light-primary fw-bolder px-8 py-4 my-3 font-size-lg" (click)="onSecondaryLinkClick($event)">
+        <span class="svg-icon svg-icon-md">
+            <!-- <img src="./assets/media/svg/social-icons/google.svg" /> -->
+        </span>
+        {{secondaryLinkLabel}}
+
+    </button>
+    <button [title]='primaryLinkTitle' *ngIf="showPrimaryLink" type="button"
+        class="btn btn-light-primary fw-bolder px-8 py-4 my-3 font-size-lg" (click)="onPrimaryLinkClick($event)">
+        <span class="svg-icon svg-icon-md">
+            <!-- <img src="./assets/media/svg/social-icons/google.svg" /> -->
+        </span>
+        {{primaryLinkLabel}}
+    </button>
+
+</div>

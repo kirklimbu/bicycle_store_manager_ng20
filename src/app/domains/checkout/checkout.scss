@@ -1,0 +1,70 @@
+@import '../../../assets/scss/_variables.scss';
+
+.cart-summary {
+    margin: 1rem;
+
+    .summary-card {
+        border-radius: 1rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        padding: 1.2rem;
+    }
+
+    .summary-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+
+    .summary-grid {
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1rem;
+            padding: 0.4rem 0;
+            border-bottom: 1px dashed #f0f0f0;
+
+            &:last-child {
+                border-bottom: none;
+            }
+
+            .label {
+                font-weight: 500;
+                color: #666;
+            }
+
+            .value {
+                font-weight: 600;
+                color: #111;
+
+                // &.net {
+                //     color: #1890ff; // NG-Zorro primary color
+                // }
+
+                &.saving {
+                    color: $green;
+                }
+
+                &.negative {
+                    color: #cf1322; // red if saving is negative
+                }
+            }
+        }
+    }
+
+    .checkout-btn {
+        margin-top: 1rem;
+        font-size: 1.1rem;
+        font-weight: 500;
+        height: 44px;
+        border-radius: 8px;
+    }
+}
+
+nz-select {
+    width: 256px;
+
+    @media (max-width: 576px) {
+        width: 164px;
+    }
+}

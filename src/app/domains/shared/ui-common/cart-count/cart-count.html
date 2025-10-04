@@ -1,0 +1,4 @@
+<div class="header-action" (click)="onViewCart()">
+    <span nz-icon nzType="shopping-cart" class="action-icon"></span>
+    <nz-badge [nzCount]="cartService.cartCount()" [nzOverflowCount]="100000"></nz-badge>
+</div>

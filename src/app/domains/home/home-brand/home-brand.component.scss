@@ -1,0 +1,298 @@
+@import "../../../../assets/scss/_variables.scss";
+
+// Mobile-first responsive design for category carousel
+.brand-section {
+  padding: 4rem 1rem 0 1rem;
+}
+
+.ant-page-header {
+  padding: 0;
+}
+
+.category-container {
+  margin: 0.5rem 0;
+  background: lighten($color: $blue, $amount: 30%);
+  padding: 0.5rem 0;
+}
+
+.category-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.category-grid {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 12px;
+  padding: 0.5rem 1rem;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  // Tablet and larger
+  @media (min-width: 481px) {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    overflow-x: visible;
+    gap: 16px;
+    padding: 0.75rem;
+  }
+
+  @media (min-width: 769px) {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    padding: 1rem;
+  }
+
+  @media (min-width: 993px) {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  @media (min-width: 1201px) {
+    grid-template-columns: repeat(8, 1fr);
+  }
+}
+
+.category-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex: 0 0 auto;
+  width: 80px; // Larger for better touch targets on mobile
+  min-height: 90px;
+
+  @media (min-width: 481px) {
+    width: auto;
+    min-height: auto;
+  }
+
+  .circle {
+    width: 64px; // Larger for mobile touch
+    height: 64px;
+    background-color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+
+    @media (min-width: 481px) {
+      width: 56px;
+      height: 56px;
+    }
+
+    img {
+      width: 55px;
+      height: 55px;
+      object-fit: contain;
+      transition: transform 0.3s ease;
+    }
+
+    &:hover {
+      background-color: #e6f7ff;
+      // border-color: $primary-color;
+      transform: translateY(-2px);
+
+      img {
+        transform: scale(1.15);
+      }
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+
+  p {
+    font-size: 11px;
+    color: #333;
+    margin-top: 0.5rem;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    font-weight: 600;
+    line-height: 1.2;
+
+    @media (min-width: 481px) {
+      font-size: 10px;
+      margin-top: 0.25rem;
+    }
+  }
+}
+
+nz-carousel {
+  position: relative;
+  height: 140px; // Increased for mobile
+
+  @media (min-width: 481px) {
+    height: 120px;
+  }
+
+  .slick-slide {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+}
+
+.carousel-arrows {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  padding: 0 0.5rem;
+  z-index: 10;
+  pointer-events: none;
+
+  // Hide arrows on mobile by default (touch scrolling preferred)
+  display: none;
+
+  @media (min-width: 769px) {
+    display: flex;
+    padding: 0 1rem;
+  }
+
+  button {
+    pointer-events: all;
+    width: 36px;
+    height: 36px;
+    background-color: rgba(255, 255, 255, 0.95);
+    border: 1px solid $border-color;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $primary-color;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(4px);
+
+    &:hover {
+      background-color: $primary-color;
+      color: #fff;
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+
+    &.left {
+      left: 0;
+    }
+
+    &.right {
+      right: 0;
+    }
+
+    i {
+      font-size: 16px;
+    }
+  }
+}
+
+// Mobile-specific enhancements
+@media (max-width: 480px) {
+  .category-container {
+    margin: 0.25rem 0;
+    padding: 0.25rem 0;
+  }
+
+  .category-grid {
+    padding: 0.5rem 1rem;
+    gap: 16px; // Slightly larger gap for mobile
+  }
+
+  .category-item {
+    width: 72px;
+
+    .circle {
+      width: 60px;
+      height: 60px;
+    }
+  }
+
+  // Touch-friendly scroll indicators
+  .category-grid {
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 20px;
+      background: linear-gradient(90deg, transparent, #e6f7ff);
+      pointer-events: none;
+    }
+  }
+}
+
+// Accessibility improvements
+.category-item {
+  &:focus {
+    outline: 2px solid $primary-color;
+    outline-offset: 2px;
+    border-radius: 8px;
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  .category-grid {
+    scroll-behavior: auto;
+  }
+
+  .circle,
+  .carousel-arrows button {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+
+    img {
+      transition: none;
+    }
+  }
+}
+
+// Dark mode support (optional)
+@media (prefers-color-scheme: dark) {
+  .category-container {
+    background: #1a3c5a;
+  }
+
+  .category-item {
+    p {
+      color: #fff;
+    }
+
+    .circle {
+      background-color: #2d2d2d;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+  }
+}

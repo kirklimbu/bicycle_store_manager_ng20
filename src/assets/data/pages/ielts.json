@@ -1,0 +1,52 @@
+{
+  "banners": [
+    {
+      "alt": "Alternative text",
+      "docPath": "assets/images/testPreparation/ielts.png",
+      "srcset": "800w, 1600w",
+      "sizes": "(max-width: 1600px) 800px, 1600px",
+      "title": "",
+      "subtitle": "",
+      "priority": true
+    }
+  ],
+  "why": "IELTS stands for English Language test for study, migration, and work. Bypassing the IELTS exams with a good band, you can study at top-ranking Colleges and Universities in Canada, Australia, New Zealand, The United Kingdom, and The United States of America.",
+
+  "requirements": [
+    "The candidate must be at least 16 years of age ",
+    "Valid Passport"
+  ],
+  "types": [
+    "IELTS Academic to enroll in a Country where most communication is in English",
+    "IELTS General training for those going for work- or work-related migration and movement in English-speaking countries."
+  ],
+  "examCenters": [
+    {
+      "name": "Paper-based Test",
+      "centers": "Kathmandu, Pokhara, Chitwan, Butwal, Birtamod, and Biratnagar"
+    },
+    {
+      "name": "Computer-based Test",
+      "centers": "Kathmandu"
+    }
+  ],
+  "examFees": [
+    {
+      "name": "IELTS on paper",
+      "price": "Rs. 25300"
+    },
+    {
+      "name": "IELTS on Computer in center",
+      "price": "Rs. 23650"
+    },
+    {
+      "name": "IELTS for UK Visa and immigration",
+      "price": "Rs. 28000"
+    },
+    {
+      "name": "IELTS life skills A1 and B1",
+      "price": "Rs. 19600"
+    }
+  ],
+  "time": [" 9:00 AM - 12:00 P.M.", "1:00PM - 4:00 P.M."]
+}

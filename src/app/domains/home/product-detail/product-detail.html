@@ -1,0 +1,35 @@
+<section class="product-detail">
+    <!-- Left: Image Carousel -->
+    <div class="product-images">
+        <nz-carousel nzDotPosition="bottom" nzAutoPlay>
+            @for (img of product().images; track $index) {
+            <div class="carousel-item">
+                <img [src]="img" [alt]="product().name" />
+            </div>
+            }
+        </nz-carousel>
+    </div>
+
+    <!-- Right: Product Info -->
+    <div class="product-info">
+        <h1 class="product-title">{{ product().name }}</h1>
+        <p class="product-price">${{ product().price }}</p>
+        <p class="product-description">{{ product().description }}</p>
+        <p class="product-stock" [class.in-stock]="product().stock" [class.out-stock]="!product().stock">
+            {{ product().stock ? 'In Stock' : 'Out of Stock' }}
+        </p>
+
+        <!-- Quantity Selector -->
+        <div class="quantity-section">
+            <label for="quantity">Quantity:</label>
+            <nz-input-number [ngModel]="quantity()" (ngModelChange)="quantity.set($event)" [nzMin]="1" [nzStep]="1"
+                [nzMax]="10" (ngModelChange)="updateQuantity($event)"></nz-input-number>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button nz-button nzType="primary" class="add-cart-btn">🛒 Add to Cart</button>
+            <button nz-button nzType="default" class="buy-now-btn">⚡ Buy Now</button>
+        </div>
+    </div>
+</section>

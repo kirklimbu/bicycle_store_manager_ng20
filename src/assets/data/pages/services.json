@@ -1,0 +1,90 @@
+[
+  {
+    "name": "EPS TOPIK",
+    "country": "South Korea",
+    "alt": "EPS",
+    "docPath": "assets/images/studyDestinations/eps.jpeg",
+    "srcset": "800w, 800w",
+    "sizes": "(max-width: 800px) 800px, 800px",
+    "title": "",
+    "subtitle": "",
+    "priority": true
+  },
+  {
+    "name": "Study in Japan",
+    "country": "Japan",
+    "alt": "IELTS",
+    "docPath": "assets/images/studyDestinations/japan_study.png",
+    "srcset": "800w, 800w",
+    "sizes": "(max-width: 800px) 800px, 800px",
+    "title": "",
+    "subtitle": "",
+    "priority": true
+  },
+  {
+    "name": "IELTS Class",
+    "country": "Japan",
+    "alt": "IELTS",
+    "docPath": "assets/images/studyDestinations/ielts.jpeg",
+    "srcset": "800w, 800w",
+    "sizes": "(max-width: 800px) 800px, 800px",
+    "title": "",
+    "subtitle": "",
+    "priority": true
+  },
+  {
+    "name": "ITELS Class",
+    "country": "New Zealand",
+    "alt": "Alternative text",
+    "docPath": "assets/images/studyDestinations/ielts2.jpeg",
+    "srcset": "800w, 800w",
+    "sizes": "(max-width: 800px) 800px, 800px",
+    "title": "",
+    "subtitle": "",
+    "priority": true
+  },
+  {
+    "name": "Korean Langauage",
+    "country": "New Zealand",
+    "alt": "Alternative text",
+    "docPath": "assets/images/studyDestinations/korean.jpeg",
+    "srcset": "800w, 800w",
+    "sizes": "(max-width: 800px) 800px, 800px",
+    "title": "",
+    "subtitle": "",
+    "priority": true
+  },
+  {
+    "name": "Korean Langauage",
+    "country": "New Zealand",
+    "alt": "Alternative text",
+    "docPath": "assets/images/studyDestinations/koreanClass.jpeg",
+    "srcset": "800w, 800w",
+    "sizes": "(max-width: 800px) 800px, 800px",
+    "title": "",
+    "subtitle": "",
+    "priority": true
+  },
+  {
+    "name": "CBT Class",
+    "country": "New Zealand",
+    "alt": "Alternative text",
+    "docPath": "assets/images/studyDestinations/specialClass.jpeg",
+    "srcset": "800w, 800w",
+    "sizes": "(max-width: 800px) 800px, 800px",
+    "title": "",
+    "subtitle": "",
+    "priority": true
+  },
+  {
+    "name": "Janapese Language",
+    "country": "New Zealand",
+    "alt": "Alternative text",
+    "docPath": "assets/images/studyDestinations/studyJapan.jpeg",
+    "srcset": "800w, 800w",
+    "sizes": "(max-width: 800px) 800px, 800px",
+    "title": "",
+    "subtitle": "",
+    "priority": true
+  }
+]

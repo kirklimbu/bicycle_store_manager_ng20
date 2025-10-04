@@ -1,0 +1,30 @@
+<!-- We add templates for the arrows and bind them to the carousel -->
+<ng-template #prevArrow>
+  <div class="slick-arrow slick-prev">
+    <span nz-icon nzType="left" nzTheme="outline"></span>
+  </div>
+</ng-template>
+<ng-template #nextArrow>
+  <div class="slick-arrow slick-next">
+    <span nz-icon nzType="right" nzTheme="outline"></span>
+  </div>
+</ng-template>
+
+
+<div class="slider ">
+  <nz-carousel nzAutoPlay="true" nzEffect="fade" [nzLoop]="true">
+    @for (index of data() ; track index.bannerId) {
+    <div nz-carousel-content>
+      <div class="banner-slide">
+        <img class="hero-bg" [ngSrc]="index.path" height="250" width="450" alt="Banner image" loading="lazy" />
+
+        <!-- <div class="banner-overlay-glass">
+          <h3 class="hero-title">{{ index.title |titlecase}}</h3>
+          <p class="hero-subtext" *ngIf="index.subtitle">{{ index.subtitle }}</p>
+          <button *ngIf="index.cta" class="cta-btn">{{ index.cta }}</button>
+        </div> -->
+      </div>
+    </div>
+    }
+  </nz-carousel>
+</div>

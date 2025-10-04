@@ -1,0 +1,27 @@
+@import 'src/assets/scss/_variables.scss';
+
+.table-operations {
+    padding: 1rem 0;
+
+    .label {
+        font-weight: 600;
+        color: black;
+    }
+
+    .search {
+        margin-top: 1.3rem;
+    }
+}
+
+.search-button {
+    margin-top: 2rem;
+
+    button {
+        width: 160px;
+        // border-radius: 0;
+    }
+
+}
+nz-form-label {
+    font-weight: bold;
+}

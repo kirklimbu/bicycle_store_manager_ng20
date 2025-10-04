@@ -1,0 +1,82 @@
+@import '../../../assets/scss/variables.scss';
+
+nz-header {
+    background: lighten($color: $gray, $amount: 60%);
+    padding: 8px 12px; // mobile padding
+    display: flex;
+    flex-direction: column; // stack on mobile
+    align-items: flex-start;
+    gap: 6px;
+    height: auto;
+    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+
+
+    .trigger {
+        font-size: 20px;
+        cursor: pointer;
+        margin: 0; // reset spacing for mobile
+    }
+
+    .current-dayend,
+    .current-dayend-message {
+        font-size: 14px;
+        line-height: 1.4;
+        word-break: break-word; // ensure text wraps if long
+    }
+
+    // Desktop view (>=768px)
+    @media (min-width: 768px) {
+        flex-direction: row; // inline layout
+        align-items: center;
+        justify-content: flex-start;
+        gap: 16px;
+        padding: 16px;
+
+        nz-content {
+            margin: 16px;
+
+        }
+
+        .current-dayend,
+        .current-dayend-message {
+            font-size: 15px;
+            white-space: nowrap; // keep inline on desktop
+        }
+
+
+    }
+
+}
+
+@media (max-width: 767px) {
+
+
+    nz-content {
+        margin: 16px;
+    }
+
+}
+
+
+
+
+.inner-content {
+    padding: 12px;
+    background: #fff;
+    min-height: 98vh;
+}
+
+nz-footer {
+    text-align: center;
+}
+
+.current-dayend {
+    font-weight: 600;
+}
+
+.current-dayend-message {
+    // font-size: 12px;
+    color: coral;
+    font-style: italic;
+    font-weight: 500;
+}

@@ -1,0 +1,10 @@
+<div class="search-container">
+    <!-- Search options dropdown (if options provided) -->
+    <nz-input-group [nzSuffix]="suffixIconSearch">
+        <input type="text" nz-input placeholder="Search ..." [(ngModel)]="term" (ngModelChange)="onTermChange($event)"
+            (keyup)="onSearch(true)" />
+    </nz-input-group>
+    <ng-template #suffixIconSearch>
+        <nz-icon nzType="search" />
+    </ng-template>
+</div>

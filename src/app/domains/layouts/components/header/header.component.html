@@ -1,0 +1,66 @@
+<!-- header.component.html -->
+<header class="app-header">
+    <div class="header-left">
+        <a routerLink="/" class="logo">
+            <span nz-icon nzType="shop" nzTheme="outline" class="logo-icon"></span>
+            <span class="logo-text">ABS Traders</span>
+        </a>
+    </div>
+
+    <div class="header-center">
+        <lib-search-page (search)="onGlobalSearch($event)" class="global-search" />
+
+    </div>
+
+    <div class="header-right">
+        <!-- Cart Icon -->
+        @if(authstate.isAuthenticated()) {
+        <app-cart-count />
+        }
+
+        <!-- Profile Section -->
+        <div class="profile-container">
+            <a nz-dropdown nzTrigger="click" [nzDropdownMenu]="profileMenu" nzPlacement="bottomRight">
+                <div class="profile-section" nz-dropdown>
+                    <div class="profile-info">
+                        <nz-avatar nzIcon="user" class="avatar">
+                        </nz-avatar>
+                        <span class="username">
+                            {{ authstate?.user()?.name || 'Guest' }}
+                        </span>
+                        <span nz-icon nzType="down" class="dropdown-arrow"></span>
+                    </div>
+                </div>
+            </a>
+
+            <nz-dropdown-menu #profileMenu="nzDropdownMenu">
+                <ul nz-menu class="profile-dropdown-menu">
+                    @if (authstate.token()) {
+                    <li nz-menu-divider></li>
+                    <li nz-menu-item routerLink="/auth/add-customer">
+                        <span nz-icon nzType="user-add"></span>
+                        <span>Add Customer</span>
+                    </li>
+                    <li nz-menu-item (click)="onViewProfile()">
+                        <span nz-icon nzType="user"></span>
+                        <span>Profile</span>
+                    </li>
+
+                    <li nz-menu-divider></li>
+                    <li nz-menu-item class="logout-item" (click)="onLogout()">
+                        <span nz-icon nzType="logout"></span>
+                        <span>Logout</span>
+                    </li>
+
+                    } @else {
+                    <li nz-menu-item routerLink="/auth/login">
+                        <span nz-icon nzType="login"></span>
+                        <span>Login</span>
+                    </li>
+
+                    }
+                </ul>
+            </nz-dropdown-menu>
+        </div>
+    </div>
+</header>

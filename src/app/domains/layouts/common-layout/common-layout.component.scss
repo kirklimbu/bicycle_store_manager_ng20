@@ -1,0 +1,192 @@
+// variables.scss - Create this for consistency
+$primary-color: #1890ff;
+$success-color: #52c41a;
+$warning-color: #faad14;
+$error-color: #f5222d;
+$text-color: #333;
+$text-secondary: #666;
+$border-color: #d9d9d9;
+$background-light: #f5f5f5;
+$shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+$border-radius: 8px;
+
+// layout.component.scss
+// @import '../../../../src/assets/scss/variables';
+
+
+
+.layout-container {
+    min-height: 100vh;
+    background: $background-light;
+    display: flex;
+}
+
+.app-sider {
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+
+    .sider-logo {
+        padding: 20px 16px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        cursor: pointer;
+        transition: all 0.3s;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .logo-full {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            background: $primary-color;
+        }
+
+        .store-name {
+            color: white;
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+        }
+    }
+
+    .navigation-menu {
+        border-right: none;
+    }
+}
+
+.layout-collapsed {
+    margin-left: 80px;
+}
+
+.content {
+    padding: 0;
+    margin: 0;
+    min-height: calc(100vh - 120px);
+    transition: all 0.3s;
+}
+
+.inner-content {
+    padding: 24px;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+
+    .breadcrumb {
+        margin-bottom: 16px;
+        padding: 8px 0;
+
+        nz-breadcrumb-item {
+            font-size: 14px;
+
+            &:last-child {
+                color: $primary-color;
+                font-weight: 500;
+            }
+        }
+    }
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+        padding: 16px 0;
+
+        .page-title {
+            margin: 0;
+            color: $text-color;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .page-actions {
+            display: flex;
+            gap: 12px;
+
+            button {
+                border-radius: $border-radius;
+            }
+        }
+    }
+
+    .main-content-card {
+        background: white;
+        border-radius: $border-radius;
+        box-shadow: $shadow;
+        padding: 24px;
+        min-height: 400px;
+
+        @media (max-width: 768px) {
+            padding: 16px;
+            margin: 0 -16px;
+            border-radius: 0;
+        }
+    }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+    .inner-content {
+        padding: 16px;
+    }
+
+    .layout-collapsed {
+        margin-left: 0;
+    }
+
+    .app-sider {
+        position: fixed;
+        height: 100vh;
+        z-index: 1001;
+        left: 0;
+    }
+
+    .page-header {
+        flex-direction: column;
+        gap: 16px;
+        align-items: flex-start !important;
+
+        .page-actions {
+            width: 100%;
+            justify-content: flex-end;
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .inner-content {
+        padding: 12px;
+    }
+
+    .main-content-card {
+        padding: 16px !important;
+    }
+
+    .page-title {
+        font-size: 20px !important;
+    }
+}
+
+// Utility classes for consistent spacing
+.mb-16 {
+    margin-bottom: 16px;
+}
+
+.mb-24 {
+    margin-bottom: 24px;
+}
+
+.mt-16 {
+    margin-top: 16px;
+}
+
+.p-16 {
+    padding: 16px;
+}
+
+.p-24 {
+    padding: 24px;
+}

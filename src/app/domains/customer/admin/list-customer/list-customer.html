@@ -1,0 +1,88 @@
+<section>
+    <div>
+        <div class="table-operations">
+            <!-- <nz-input-group [nzSuffix]="suffixIconSearch">
+                <input [(ngModel)]="searchValue" type="text" nz-input placeholder="Search staff... " />
+            </nz-input-group>
+            <ng-template #suffixIconSearch>
+                <span nz-icon nzType="search"></span>
+            </ng-template> -->
+            <!-- <button nz-button nzType="default" (click)="onSearch()">
+        <span nz-icon nzType="search"></span>
+        Search
+      </button> -->
+            <!-- @if (setList$ | async; as set) {
+        } -->
+            <!-- <button
+        class="action-button"
+        nzDanger
+        nz-button
+        nzType="primary"
+        routerLinkActive
+        (click)="onAdd()"
+      >
+        Add
+      </button> -->
+            <button class="action-button" nz-button nzType="primary" (click)="onAdd()">
+                Add
+            </button>
+        </div>
+    </div>
+    @if (data$ | async; as table) {
+    <nz-table #borderedTable nzBordered nzTitle="Customer List" [nzData]="table" [nzFrontPagination]="false"
+        [nzScroll]="{ x: '1100px' }">
+        <thead>
+            <tr>
+                <th nzWidth="5%">Sn.</th>
+                <th nzWidth="15%">Name</th>
+                <th nzWidth="15%">Business Name</th>
+                <th nzWidth="10%">Balance (Rs.)</th>
+                <th>Email</th>
+                <th>Contact No.</th>
+                <th nzWidth="10%">Location</th>
+                <th nzWidth="10%">PAN</th>
+                <th nzWidth="10%">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (
+            data of borderedTable.data | search: searchValue;
+            track data.regId;
+            let i = $index
+            ) {
+            <tr>
+                <td>{{ i + 1 }}</td>
+                <td>
+                    {{ data.name | titlecase }}
+                </td>
+
+                <td>
+                    {{ data.businessName | titlecase }}
+                </td>
+                <td [ngClass]="{
+      'positive': data.balance > 0,
+      'negative': data.balance < 0,
+      'neutral': data.balance === 0
+    }">{{ data.balance |number}}</td>
+                <td>{{ data.email }}</td>
+                <td>
+                    <p>{{ data.mobile1 }}</p>
+                    <p>{{ data.mobile2 }}</p>
+                </td>
+                <td>{{ data.location }}</td>
+                <td>{{ data.pan }}</td>
+
+                <td>
+                    <div class="action-buttons">
+                        <button nzTooltipTitle="Edit" nz-tooltip nz-button (click)="onEdit(data.customerId)">
+                            <span nz-icon nzType="form"></span>
+                        </button>
+
+                    </div>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </nz-table>
+    }
+</section>

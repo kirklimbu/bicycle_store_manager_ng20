@@ -1,0 +1,57 @@
+
+
+{
+  "name": "Valley Multi Educational Network Consultancy Pvt. Ltd",
+  "head_office": "Kathmandu 7, Chabahil, Nepal",
+  "head_office_mobile": "9767223789",
+  "head_office_mail": " valleymultienc@gmail.com",
+  "branch_address": "Mechinagar 1, Bahundangi, Jhapa, Nepal",
+  "branch_mobile": "9867992137",
+  "branch_email": " valleymultienc@gmail.com",
+  "header_top": {
+    "address1": "Kathmandu",
+    "mobile1": "9767223789",
+    "address2": "Mechinagar",
+    "mobile2": "9867992137",
+    "mail": "valleymultienc@gmail.com",
+    "facebook": "https://www.facebook.com/valleymultienc",
+    "instagram": "https://www.instagram.com/valleymultienc"
+  },
+  "footer": {
+    "bio": "At Valley Multi Education Network Consultancy, we understand that every student is unique, which is why we provide personalized guidance and support throughout every step of the educational journey. From selecting the right institution and course to assisting with admissions and visa applications, our team of experienced consultants ensures a seamless experience.",
+    "address1": "CHABAHIL, KATHMANDU",
+    "mobile1": "9767223789",
+    "address2": "MECHINAGAR, BAHUNDANGI",
+    "mobile2": "9867992137",
+    "mail": "valleymultienc@gmail.com",
+    "logo": "assets/images/logo/logo.png",
+    "studyDestinations": [
+      {
+        "name": "South Korea",
+        "country": "South Korea"
+      },
+      {
+        "name": "Japan",
+        "country": "Japan"
+      }
+    ],
+    "testPreparations": [
+      {
+        "name": "EPS TOPIK",
+        "country": "South Korea"
+      },
+      {
+        "name": "TOPIK Test",
+        "country": "South Korea"
+      },
+      {
+        "name": "Japanese Language",
+        "country": "Japan"
+      },
+      {
+        "name": "IELTS",
+        "country": ""
+      }
+    ]
+  }
+}

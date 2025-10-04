@@ -1,0 +1,87 @@
+<section class="cart-section">
+    <h2 class="section-title">My Cart</h2>
+
+    <div class="cart-items">
+        @if((data$|async)?.stockList; as cart){
+        <app-home-product [title]="'Cart Items'" [data]="cart" [enableDelete]="false" [enableDeleteAll]="false"
+            [showActionButtons]="false" />
+
+
+
+        <!-- <button nz-button nzType="primary" class="checkout-btn" (click)="onCheckout()">
+            Save
+        </button> -->
+
+
+        }
+        @if((data$|async)?.summary; as summary){
+        <div nz-row [nzGutter]="[16, 16]" class="summary-grid">
+            <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="12">
+                <section class="cart-summary">
+                    <nz-card nzBordered class="summary-card">
+                        <h3 class="summary-title">Cart Summary</h3>
+
+
+                        <div nz-row [nzGutter]="[16, 16]" class="summary-grid">
+                            <!-- Total MRP -->
+                            <div nz-col [nzXs]="24" [nzSm]="24" class="summary-item">
+                                <span class="label">Total MRP</span>
+                                <span class="value">Rs. {{ summary.totalMrpAmt }}</span>
+                            </div>
+                        </div>
+                        <div nz-row [nzGutter]="[16, 16]" class="summary-grid">
+                            <div nz-col [nzXs]="24" class="summary-item saving">
+                                <span class="label">You Saved</span>
+                                <span class="value saving" [ngClass]="{ 'negative': summary.totalSaving < 0 }">
+                                    Rs. {{ summary.totalSaving }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Net Amount -->
+                        <div nz-row [nzGutter]="[16, 16]" class="summary-grid">
+
+                            <div nz-col [nzXs]="24" [nzSm]="24" class="summary-item">
+                                <span class="label">Net Amount</span>
+                                <span class="value net">Rs. {{ summary.totalNetAmt }}</span>
+                            </div>
+
+                            <!-- Saving -->
+
+                        </div>
+
+                        <!-- Customer Select -->
+                        <div nz-row [nzGutter]="[16, 16]" class="summary-grid">
+
+                            <div nz-col [nzXs]="24" class="summary-item">
+                                <span class="label">Customer</span>
+                                <nz-form-item>
+                                    <nz-form-control nzErrorTip="Please select customer">
+                                        <nz-select [(ngModel)]="selectedCustomerId" nzPlaceHolder="Select Customer">
+                                            <nz-option [nzValue]="0" nzLabel="No Office"></nz-option>
+                                            @for(job of (data$|async)?.customerList; track job.customerId) {
+                                            <nz-option [nzValue]="job.customerId" [nzLabel]="job.name"></nz-option>
+                                            }
+                                        </nz-select>
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                        </div>
+
+                        <button nz-button nzType="primary" nzBlock class="checkout-btn" (click)="onSave()">
+                            Save
+                        </button>
+                    </nz-card>
+                </section>
+            </div>
+        </div>
+
+        }
+
+
+
+    </div>
+
+
+
+</section>

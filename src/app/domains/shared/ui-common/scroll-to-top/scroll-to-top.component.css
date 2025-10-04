@@ -1,0 +1,18 @@
+:host ::ng-deep .ant-back-top {
+  bottom: 150px;
+}
+
+:host ::ng-deep .ant-back-top-inner {
+  border-radius: 50%;
+  background-color: #e9c910d4;
+  color: #fff;
+  text-align: center;
+  font-size: 9px;
+}
+nz-icon {
+  margin-right: 6px;
+  font-size: 24px;
+}
+.anticon svg {
+  font-size: 16px;
+}

@@ -1,0 +1,38 @@
+<!-- <nz-button-group> -->
+<nz-space>
+    @if (showEditButton()) {
+
+    <button nz-tooltip [nzTooltipTitle]="button1Label()" nzTooltipPlacement="bottomLeft" *nzSpaceItem nz-button
+        (click)="edit.emit($event)">
+        <nz-icon [nzType]="button1Icon()" />
+    </button>
+    }
+    @if (showDeleteButton()) {
+    <button nz-tooltip [nzTooltipTitle]="button2Label()" *nzSpaceItem nz-button nzType="default" nzDanger nz-popconfirm
+        nzPopconfirmTitle="Are you sure you want to delete?" [nzCancelText]="'Cancel'" [nzOkText]="'Yes'"
+        (nzOnConfirm)="confirm($event)" (nzOnCancel)="cancel()">
+        <nz-icon [nzType]="button2Icon()" />
+
+    </button>
+    }
+
+    @if (showButton4()) {
+    <button nz-tooltip [nzTooltipTitle]="button4Label()" *nzSpaceItem nz-button nzType="default"
+        (click)="onButton4Click($event)">
+        <nz-icon [nzType]="button4Icon()" />
+    </button>
+    }
+    @if (showViewMoreButton()) {
+    <button nz-tooltip [nzTooltipTitle]="button3Label()" *nzSpaceItem nz-button nzType="default"
+        (click)="onViewMore($event)">
+        <nz-icon [nzType]="button3Icon()" />
+    </button>
+    }
+    @if (showButton5()) {
+    <button nz-tooltip [nzTooltipTitle]="button5Label()" *nzSpaceItem nz-button nzType="default"
+        (click)="onButton5Click($event)">
+        <nz-icon [nzType]="button5Icon()" />
+    </button>
+    }
+</nz-space>
+<!-- </nz-button-group> -->

@@ -1,0 +1,41 @@
+{
+  "banners": [
+    {
+      "alt": "Alternative text",
+      "docPath": "assets/images/testPreparation/epsTopik.png",
+      "srcset": "800w, 1600w",
+      "sizes": "(max-width: 1600px) 800px, 1600px",
+      "title": "",
+      "subtitle": "",
+      "priority": true
+    }
+  ],
+  "why": "Promotion adaption of Korean life by leading entrance of foreign workers who has basic understanding of Korean and evaluation of the level of Korean language skills of foreign job seekers and Korean Society, It can be used as objective selection criteria for the list of foreign job seekers.",
+
+  "testHour": ["50 minutes(listening 25 minutes, reading 25 minutes)"],
+  "testStructure": [
+    {
+      "headers": [
+        "Section, Evalutation field, Number for item of questions",
+        "Marking",
+        "Time"
+      ],
+      "evaluationField": []
+    }
+  ],
+  "evaluationContent": [
+    "Basic communication skills needed in everyday life in Korea",
+    "Korean language skills needed in industry",
+    "Understanding of Korean business culture"
+  ],
+  "requirements": [
+    "Male or Female from 18 to 39 years old",
+    "No criminal record",
+    "No deportation from Republic of Korea",
+    "No restriction on immigration (reason for disqualification)"
+  ],
+  "evalutationMethod": [
+    "Evaluation method: Relative evaluation",
+    "Criteria to determine a successful candidate: Scores above the lowest score per industry. Successful candidate determined in the order of merit within selecting (anticipating) number of people."
+  ]
+}

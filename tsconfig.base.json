@@ -1,0 +1,18 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "moduleResolution": "bundler",
+    "emitDecoratorMetadata": false,
+    "target": "es2022",
+    "module": "preserve",
+    "lib": ["es2020", "dom"],
+    "baseUrl": ".",
+    "paths": {
+      "@kirana-store/auth": ["/libs/auth/src/index.ts"],
+      "@kirana-store/inventory": ["libs/inventory/src/index.ts"],
+      "@kirana-store/true": ["auth/src/index.ts"],
+      "@logger/*": ["src/app/domains/shared/util-logger/*"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

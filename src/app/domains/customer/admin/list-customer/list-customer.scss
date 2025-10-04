@@ -1,0 +1,55 @@
+@import '../../../../../assets/scss/_variables.scss';
+
+:host ::ng-deep .ant-input-affix-wrapper {
+    background-color: none;
+}
+
+.table-operations {
+    display: flex;
+    gap: 4px;
+    padding: 12px 0px;
+
+    .action-button {
+        margin-left: auto;
+        width: 160px;
+        font-weight: bold;
+        font-size: medium;
+    }
+
+    nz-input-group {
+        width: 25%;
+        background-color: white;
+    }
+}
+
+button {
+    border-radius: 0;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 4px;
+}
+
+img {
+    height: 150px;
+    width: 150px;
+    object-fit: cover;
+}
+
+td.positive {
+    color: green;
+    font-weight: 600;
+}
+
+td.negative {
+    color: red;
+    font-weight: 600;
+    text-transform: capitalize;
+
+}
+
+td.neutral {
+    color: gray;
+    font-weight: 500;
+}

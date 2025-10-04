@@ -1,0 +1,58 @@
+<!-- <nz-breadcrumb [nzAutoGenerate]="true"></nz-breadcrumb> -->
+<div class="table-container">
+    <div class="site-page-header-ghost-wrapper">
+        <nz-page-header [nzGhost]="false">
+            <nz-page-header-extra>
+                <app-table-operations key="sakes-filter" [fields]="[
+    { name: 'fromDate', label: 'From Date (B.S)', type: 'date', required: true },
+    { name: 'toDate', label: 'To Date (B.S)', type: 'date', required: true },
+    
+  ]" (filterChange)="onFilterChange($event)" />
+            </nz-page-header-extra>
+
+        </nz-page-header>
+    </div>
+
+    @if(data$|async;as data ){
+    <nz-table [nzFrontPagination]="false" #nzTable [nzBordered]="true" [nzData]="data" [nzScroll]="{ x: '900px' }">
+        <thead>
+            <tr>
+                <th nzAlign="center" nzWidth="5%"># </th>
+                <th nzAlign="center">Customer Name </th>
+                <th nzAlign="center">Save Date </th>
+                <th nzAlign="center">Net Amount </th>
+                <th nzAlign="center">Qty. </th>
+                <th nzAlign="center">Stock Name </th>
+                <th nzAlign="center">Transaction Type </th>
+                <th nzAlign="center">Unit </th>
+                <!-- <th nzAlign="center">Action</th> -->
+
+            </tr>
+        </thead>
+        <tbody>
+            @for (purchase of nzTable.data; track $index) {
+
+            <tr>
+                <td nzAlign="center">{{$index+1}}.</td>
+                <td nzAlign="center">{{ purchase.customerName |titlecase }}</td>
+                <td nzAlign="center">{{purchase.saveDate |nepaliDateFormatter}}</td>
+                <td nzAlign="center">{{ purchase.netAmt |number }}</td>
+
+                <td nzAlign="center">{{purchase.qty|number}}</td>
+                <td nzAlign="center">{{purchase.stockName|titlecase}}</td>
+                <td nzAlign="center">{{purchase.transType}}</td>
+                <td nzAlign="center">{{purchase.unit}}</td>
+                <!-- <td nzAlign="center">
+                    <lib-table-action-buttons [showEditButton]="true" [showDeleteButton]="false" [showButton4]="true"
+                        [showViewMoreButton]="true" [button3Label]="'Lab'" [button4Label]="'Transaction'"
+                        [button3Icon]="'experiment'" [button4Icon]="'dollar'" (delete)="onDelete(purchase.purchaseId)"
+                        (edit)="onEdit(purchase.purchaseId)" (viewMore)="onViewMore(purchase.purchaseId)"
+                        (buttonAction4)="showTransaction(purchase.purchaseId)" />
+                </td> -->
+            </tr>
+            }
+        </tbody>
+    </nz-table>
+    }
+
+</div>

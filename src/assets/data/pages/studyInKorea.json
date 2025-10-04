@@ -1,0 +1,58 @@
+{
+  "banners": [
+    {
+      "alt": "Alternative text",
+      "docPath": "assets/images/studyDestinations/banners/studyInKorea.png",
+      "srcset": "800w, 1600w",
+      "sizes": "(max-width: 1600px) 800px, 1600px",
+      "title": "",
+      "subtitle": "",
+      "priority": true
+    }
+  ],
+  "why": "The three-tiered higher education levels ( Bachelor, Master and Doctoral) under Korean Education System are one of the finest education with respect to the standard of Alberta, Canada. The foundation courses like Certificates, Diplomas and short cycle associate courses also have a good hold in their quality of education and making paths for degree level programs in Korean Universities.",
+  "keyFeatures": [
+    "English/Korean mode of education",
+    "Affordable education programs.",
+    "Korean Universities(few) are among the top ranking Universities of the world.",
+    "Semester based education system with American credit system standards.",
+    "Short summer courses of 10-60 weeks semester programs at Korean Universities."
+  ],
+  "requirements": [
+    "TOEFL 71 and IELTS 5.5 for undergraduate and Master's levels,TOEFL 79 and IELTS 6 for PhD level",
+    "Korean language minimum score level 3 in Test Proficiency in Korean (TOPIK).",
+    "Copies of academic transcript and character certificate",
+    "Application fees (20-200 USD)",
+    "Essay covering purpose of study",
+    "Passport size photos",
+    "Recommendation letter ",
+    "Health Certificates",
+    "Personal statement",
+    "No objection letter",
+    "Property evaluation",
+    "Bank balance statement",
+    "Valid passport "
+  ],
+  "sponsor": [
+    "Sponsor letter",
+    "Birth Certificate with photo",
+    "Birth Certificate with photo",
+    "Annual income certificate",
+    "Verification of business and income letter",
+    "Recommendation letter",
+    "Property valuation document documents required for issuing from 2-3 weeks of application date.",
+    "Other certificate document"
+  ],
+  "intakes": [
+    {
+      "name": "Spring Admission",
+      "month": "April",
+      "description": "Apply from September to November of previous calendar"
+    },
+    {
+      "name": "Fall Addmission",
+      "month": "October",
+      "description": "Apply from May to June of same calendar"
+    }
+  ]
+}

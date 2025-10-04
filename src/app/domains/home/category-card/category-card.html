@@ -1,0 +1,72 @@
+<div class="categories-section">
+    <!-- Title Section -->
+    <div class="section-header">
+        <div class="header-content">
+            <h2 class="section-title"> Categories</h2>
+            <p class="section-subtitle">
+                {{ loading() ? 'Loading categories...' : (data().length + ' categories available') }}
+            </p>
+        </div>
+
+
+        <!-- Content Section -->
+        @if (loading()) {
+        <!-- Loading state -->
+        <div class="loading-grid">
+            @for (item of [1,2,3,4,5,6]; track $index) {
+            <nz-card class="category-card loading" nzHoverable>
+                <div class="card-content">
+                    <nz-skeleton-element nzType="image" class="category-image" />
+                    <nz-skeleton-element class="category-name" />
+                    @if (showCount()) {
+                    <nz-skeleton-element class="product-count" />
+                    }
+                </div>
+            </nz-card>
+            }
+        </div>
+        } @else if (data().length === 0) {
+        <!-- Empty state -->
+        <div class="empty-state">
+            <i nz-icon nzType="inbox"></i>
+            <h3>No Categories Found</h3>
+            <p>Get started by adding your first product category</p>
+            <!-- <button nz-button nzType="primary" class="mt-4" (click)="onAdd()">
+                <i nz-icon nzType="plus"></i>
+                Create Category
+            </button> -->
+        </div>
+        } @else {
+        <!-- Categories grid -->
+        <div class="categories-grid">
+            @for (category of data(); track category.categoryId) {
+            <nz-card class="category-card" nzHoverable [class.inactive]="!category.hasActive"
+                (click)="onCategorySelect(category.categoryId)">
+                <div class="card-content">
+                    <div class="image-container">
+                        <img [nzDisablePreview]="true" nz-image [nzSrc]="category.path" [alt]="category.name"
+                            class="category-image" (error)="onImageError($event)" [nzFallback]="fallback" />
+                        @if (!category.hasActive) {
+                        <div class="inactive-overlay">
+                            <nz-icon nzType="pause-circle" class="inactive-icon"></nz-icon>
+                        </div>
+                        }
+                    </div>
+
+                    <div class="text-content">
+                        <h3 class="category-name" [title]="category.name">
+                            {{ category.name }}
+                        </h3>
+
+                        <!-- @if (showCount() && category.productCount !== undefined) {
+                        <p class="product-count">
+                            {{ category.productCount }} products
+                        </p>
+                        } -->
+                    </div>
+                </div>
+            </nz-card>
+            }
+        </div>
+        }
+    </div>

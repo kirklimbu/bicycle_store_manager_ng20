@@ -1,0 +1,108 @@
+:host {
+    display: block;
+    padding: 16px;
+    box-sizing: border-box;
+}
+
+/* card */
+.card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
+
+/* header */
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.header-text {
+    flex: 1;
+    min-width: 0;
+
+    .name {
+        margin: 0;
+        font-size: 1.05rem;
+        font-weight: 700;
+        line-height: 1.2;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .role {
+        margin: 0;
+        color: #8c8c8c;
+        font-size: 0.9rem;
+    }
+}
+
+.actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* form grid: mobile-first (single column) */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+/* split into two columns on tablet+ */
+@media (min-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr 320px;
+        /* left flexible, right fixed-ish */
+        gap: 24px;
+    }
+
+    .right-col {
+        /* visually separate on wider screens */
+        border-left: 1px solid #f0f0f0;
+        padding-left: 16px;
+    }
+}
+
+/* tweak for inputs when readonly vs edit */
+input[readonly],
+textarea[readonly] {
+    background-color: transparent;
+    border: none;
+    padding-left: 0;
+    color: rgba(0, 0, 0, 0.85);
+}
+
+/* small responsive adjustments */
+@media (max-width: 375px) {
+    :host {
+        padding: 12px;
+    }
+
+    .card {
+        padding: 10px;
+    }
+
+    .name {
+        font-size: 1rem;
+    }
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; // adjust spacing as needed
+}
+
+.label {
+    font-weight: 600;
+}
+
+.value {
+    color: #555; // optional styling
+}

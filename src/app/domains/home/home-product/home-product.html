@@ -1,0 +1,125 @@
+<section class="product-section">
+    <div class="cart-header">
+        <h2 class="section-title">{{ title() }}</h2>
+        @if(enableDeleteAll()){
+
+        <button nz-button nzType="default" nzDanger class="remove-btn" (click)="onEmptyCart()">
+            Empty Cart<nz-icon nzType="delete" />
+        </button>
+        }
+    </div>
+
+
+    <div class="product-list" nz-row [nzGutter]="[16, 16]">
+        @for (product of productState.filteredProducts(); track product.stockMasterId) {
+        <div nz-col [nzXs]="24" [nzMd]="12">
+            <div class="product-card" nz-row [nzGutter]="[8,8]">
+
+                <!-- IMAGE -->
+                <div nz-col [nzXs]="10" [nzSm]="8" class="product-image">
+                    <img nz-image [nzSrc]="product.path" [alt]="product.name" [nzFallback]="fallback" />
+                </div>
+
+                <!-- DETAILS -->
+                <div nz-col [nzXs]="14" [nzSm]="16" class="product-details">
+                    <h3 class="product-title">{{ product.name }}</h3>
+                    <p class="product-price">Rs. {{ product.mrp }}</p>
+
+                    @if(product.pricePerUnit2 > 0) {
+                    <p class="product-meta">
+                        <span nz-typography>
+                            Rate:
+                            @if(product.hasEnableMargin2) {
+                            {{ product.pricePerUnit2 }} |
+                            <span class="margin">Margin: {{ product.marginPercent2 }}%</span>
+                            } @else {
+                            <del>
+                                {{ product.pricePerUnit2 }} |
+                                <span class="margin">Margin: {{ product.marginPercent2 }}%</span>
+                            </del>
+                            }
+                        </span>
+                    </p>
+                    }
+
+                    <p class="product-meta">
+                        <span nz-typography>
+                            Rate:
+                            @if(product.hasEnableMargin) {
+                            Rs. {{ product.pricePerUnit }} |
+                            <span class="margin">Margin: {{ product.marginPercent }}%</span>
+                            } @else {
+                            <del>
+                                {{ product.pricePerUnit }} |
+                                <span class="margin">Margin: {{ product.marginPercent }}%</span>
+                            </del>
+                            }
+                        </span>
+                    </p>
+
+                    
+
+                    <!-- Quantity Selector -->
+                    @if(authenticated()){
+                    @if(showActionButtons()){
+
+                    <div class="actions">
+                        <div class="qty-selector">
+                            <button nz-button nzType="default" class="qty-btn"
+                                (click)="decreaseQty(product.stockMasterId)">
+                                <nz-icon nzType="minus"></nz-icon>
+                            </button>
+
+                            <nz-input-number [ngModel]="getQty(product.stockMasterId, product.qty)"
+                                (ngModelChange)="updateQuantity(product.stockMasterId, $event)" [nzMin]="0" [nzStep]="1"
+                                class="qty-input"></nz-input-number>
+
+                            <button nz-button nzType="default" class="qty-btn"
+                                (click)="increaseQty(product.stockMasterId)">
+                                <nz-icon nzType="plus"></nz-icon>
+                            </button>
+                            @if(enableDelete()){
+
+                            <button nz-button nzType="link" nzDanger class="remove-btn"
+                                (click)="removeItem(product.stockMasterId)">
+                                <nz-icon nzType="delete" />
+                            </button>
+                            }
+                        </div>
+                    </div>
+                    }@else {
+                    <span class="qty">Qty: {{ product.qty }}</span>
+                    }
+                    }
+
+                    <!-- Savings / Net Price -->
+                    <div class="saving">
+                        <p class="product-meta">
+                            Saving: <span>Rs. {{ product.saving }}</span>
+                        </p>
+                        <p class="product-meta">
+                            Net Price: <span>Rs. {{ product.netAmt }}</span>
+                        </p>
+                    </div>
+
+                    <!-- Remarks -->
+
+
+                </div>
+                @if(product.marginRemarks) {
+                <div nz-row [nzGutter]="[16, 16]">
+                    <div nz-col [nzSpan]="24">
+                        <div class="remarks">
+                            <nz-icon nzType="sketch" nzTheme="outline" /> {{product.marginRemarks}}
+                        </div>
+                    </div>
+                </div>
+                <nz-divider></nz-divider>
+
+                }
+
+            </div>
+        </div>
+        }
+    </div>
+</section>

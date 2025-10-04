@@ -1,0 +1,58 @@
+{
+  "banners": [
+    {
+      "alt": "Alternative text",
+      "docPath": "assets/images/studyDestinations/banners/studyInJapan.png",
+      "srcset": "800w, 1600w",
+      "sizes": "(max-width: 1600px) 800px, 1600px",
+      "title": "",
+      "subtitle": "",
+      "priority": true
+    }
+  ],
+  "why": "There are different higher education Colleges and Universities in Japan for national and international students. There are 86 national Universities, 95 local public Universities, vocational schools, technology Colleges, and special training institutes in Japan for specially abled students. For many international students, Japan provides cultural immersion. Students have academic and professional connections while they are studying the academic programs. The unique teaching blends traditional, innovative and societal expectations, continental models and reforms, and the aging population applies their experiences, knowledge and findings into the teaching pedagogy which is a refined way of understanding. Interaction between students and professors in Japan is respectful.",
+  "keyFeatures": [
+    "Modern and innovative education system .Higher education in Japan is offered by QS and other popular Universities to students in Japan for Bachelor, Master, Doctoral and professional degrees. Japan is best to study courses in Science and Technology, Data Science, Humanities, Japanese Language, Liberal Arts.",
+    "Affordable education programs:Many of the Japanese Universities offer low tuition fees. Some of those have affordable tuition fees, however private international academic degrees can be expensive in Japan. There are scholarships for international students in Japan which provide a monthly stipend for post graduate studies and research work. There are part time job options for international students also. Along with education Japan have an affordable yet high standard of living.",
+    "Good employment opportunities:There are full time and part time jobs available in Japan based on students skills and academic knowledge. There are popular part time jobs in warehouses, factories, restaurants, hotels, and cleaning services. Full time jobs for qualified professionals like English teaching jobs, Assistant of business development team, Tesla high class uber driver, Executive Assistant, Quality Management, teaching assistant, senior sales executive, customer service representative, travel designer etc.",
+    "Safe and clean study environment for students:Japan is currently the safest country in the world with violent crime rates of only 03 per 1000.With the country's culture and modern infrastructures Japan is one of the cleanest countries."
+  ],
+  "requirements": [
+    "minimum +2/intermediate",
+    "Age +2 passed until 24 years, Bachelor passed until 28 years, Master passed until 32 years",
+    "Copies of academic transcript and character certificate",
+    "Photocopy of original passport size certificate",
+    "Essay covering purpose of study in Japan",
+    "Recommendation letter from the Campus or workplace",
+    "GAP certificate",
+    "Original citizenship copy translated in English",
+    "Other document"
+  ],
+  "sponsor": [
+    "Sponsor letter",
+    "Birth Certificate with photo",
+    "Birth Certificate with photo",
+    "Annual income certificate",
+    "Verification of business and income letter",
+    "Recommendation letter",
+    "Property valuation document documents required for issuing from 2-3 weeks of application date.",
+    "Other certificate document"
+  ],
+  "intakes": [
+    {
+      "name": "Spring Admission",
+      "month": "April-March",
+      "description": "Apply from October till November"
+    },
+    {
+      "name": "Summer Time",
+      "month": "July-September",
+      "description": "Apply from Februrary till April"
+    },
+    {
+      "name": "Fall Intake",
+      "month": "September-March",
+      "description": "Apply from April till July"
+    }
+  ]
+}

@@ -1,0 +1,114 @@
+<section class="order-approval">
+    <!-- Customer Information -->
+    @if(data$|async;as order){
+
+    <nz-card nzTitle="Ordered By/Customer Information" class="customer-card">
+        <div nz-row [nzGutter]="16" class="customer-info">
+            <div nz-col [nzXs]="24" [nzSm]="12">
+                <p><strong>Name:</strong> {{ order?.customer?.name |titlecase}}</p>
+                <p><strong>Email:</strong> {{ order?.customer?.email }}</p>
+            </div>
+            <div nz-col [nzXs]="24" [nzSm]="12">
+                <p><strong>Mobile 1:</strong> {{ order?.customer?.mobile1 || '-' }}</p>
+                <p><strong>Mobile 2:</strong> {{ order?.customer?.mobile2 || '-' }}</p>
+            </div>
+        </div>
+        <nz-divider></nz-divider>
+        <p>
+            <strong>Balance:</strong>
+            <span [ngClass]="{
+               'positive': order?.customer?.balance > 0,
+               'negative': order?.customer?.balance < 0,
+               'neutral': order?.customer?.balance === 0
+             }">
+                {{ order?.customer?.balance | number }}
+            </span>
+        </p>
+        <p>
+            <strong>Status:</strong>
+            <nz-tag [nzColor]="order?.customer?.hasActive ? 'green' : 'red'">
+                {{ order?.customer?.hasActive ? 'Active' : 'Inactive' }}
+            </nz-tag>
+        </p>
+    </nz-card>
+
+
+    <!-- Ordered Items -->
+    <nz-card nzTitle="Ordered Items" class="order-card">
+        <nz-table #orderTable [nzBordered]="true" [nzSize]="'middle'" [nzData]="order?.form?.orderList"
+            [nzScroll]="{ x: '600px' }">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Qty</th>
+                    <th>Mrp</th>
+                    <th>Price/Unit</th>
+                    <th>Total</th>
+                    <th>Ordered By</th>
+                    <th>Status</th>
+                    <!-- <th>Action</th> -->
+                </tr>
+            </thead>
+            <tbody>
+                @for (item of order?.form?.orderList; track item.orderMasterId) {
+                <tr>
+                    <td>{{ item.stockName }}</td>
+                    <td>{{ item.qty }}</td>
+                    <td>{{ item.mrp }}</td>
+                    <td>Rs. {{ item.pricePerUnit }}</td>
+                    <td>Rs. {{ item.qty * item.pricePerUnit }}</td>
+                    <td>{{ item.orderByName }}</td>
+                    <td>
+                        <nz-tag [nzColor]="isApproved(item.status) ? 'blue' : 'orange'">
+                            {{ item.status }}
+                        </nz-tag>
+                    </td>
+                    <!-- <td>
+                        <button nz-button nzType="primary" [disabled]="isApproved(item.status)"
+                            (click)="approveOrder(item.orderMasterId, order.form)">
+                            <nz-icon nzType="check"></nz-icon>
+                            Approve
+                        </button>
+                    </td> -->
+                </tr>
+                }
+            </tbody>
+        </nz-table>
+        <!-- Approval Extra Details -->
+        <div class="approval-extra">
+            <form nz-form [formGroup]="form" nzLayout="vertical">
+                <!-- Transaction Type -->
+                <nz-form-item>
+                    <nz-form-label nzRequired>Transaction Type</nz-form-label>
+                    <nz-form-control nzErrorTip="Please select transaction type">
+                        <nz-select formControlName="transType" nzPlaceHolder="Select Transaction Type">
+                            @for(type of order?.transTypeList; track $index) {
+                            <nz-option [nzValue]="type" [nzLabel]="type"></nz-option>
+                            }
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+
+                <!-- Remarks -->
+                <nz-form-item>
+                    <nz-form-label>Remarks</nz-form-label>
+                    <nz-form-control>
+                        <textarea rows="4" nz-input formControlName="remarks"
+                            placeholder="Enter remarks (optional)"></textarea>
+                    </nz-form-control>
+                </nz-form-item>
+
+                <!-- Save Button -->
+                <div class="form-actions">
+                    <button nz-button nzType="primary" [disabled]="form.invalid" (click)="approveOrder()">
+                        <nz-icon nzType="save"></nz-icon>
+                        Save Order
+                    </button>
+                </div>
+            </form>
+        </div>
+
+
+    </nz-card>
+    }
+</section>

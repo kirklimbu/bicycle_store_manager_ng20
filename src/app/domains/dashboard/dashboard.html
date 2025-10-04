@@ -1,0 +1,61 @@
+<div class="dashboard">
+
+    <!-- KPI Section -->
+    <div nz-row [nzGutter]="16" class="kpi-row">
+        <div nz-col [nzXs]="24" [nzSm]="12" [nzMd]="6" *ngFor="let stat of [
+      {label: 'Total Sales', value: stats.totalSales | number},
+      {label: 'Orders', value: stats.totalOrders},
+      {label: 'Revenue', value: stats.revenue | currency},
+      {label: 'Profit', value: stats.profit | currency}
+    ]">
+            <nz-card class="kpi-card">
+                <nz-statistic [nzTitle]="stat.label" [nzValue]="stat.value"></nz-statistic>
+            </nz-card>
+        </div>
+    </div>
+
+    <!-- Sales Chart -->
+    <nz-card class="dashboard-card" nzTitle="Sales Report">
+        <div class="filter-row">
+            <!-- <nz-select [(ngModel)]="selectedRange" style="width: 200px;">
+                <nz-option *ngFor="let option of rangeOptions" [nzValue]="option" [nzLabel]="option"></nz-option>
+            </nz-select> -->
+        </div>
+
+        <!-- <recharts-line-chart [width]="600" [height]="300" [data]="salesData">
+            <recharts-cartesian-grid strokeDasharray="3 3" />
+            <recharts-x-axis dataKey="name" />
+            <recharts-y-axis />
+            <recharts-tooltip />
+            <recharts-legend />
+            <recharts-line type="monotone" dataKey="value" stroke="#1890ff" />
+        </recharts-line-chart> -->
+    </nz-card>
+
+    <!-- Top Items + Salesman Performance -->
+    <div nz-row [nzGutter]="16" class="secondary-row">
+        <!-- Top 10 Items -->
+        <div nz-col [nzXs]="24" [nzMd]="12">
+            <nz-card nzTitle="Top 10 Sold Items">
+                <!-- <recharts-bar-chart [width]="500" [height]="300" [data]="topItems">
+                    <recharts-cartesian-grid strokeDasharray="3 3" />
+                    <recharts-x-axis dataKey="name" />
+                    <recharts-y-axis />
+                    <recharts-tooltip />
+                    <recharts-bar dataKey="qty" fill="#52c41a" />
+                </recharts-bar-chart> -->
+            </nz-card>
+        </div>
+
+        <!-- Best Salesman -->
+        <div nz-col [nzXs]="24" [nzMd]="12">
+            <nz-card nzTitle="Best Salesman">
+                <h3>{{ bestSalesman.name }}</h3>
+                <p>Target: {{ bestSalesman.target }} | Achieved: {{ bestSalesman.achieved }}</p>
+                <nz-progress [nzPercent]="getAchievedPercent()" [nzStrokeColor]="'#1890ff'" [nzStatus]="'active'">
+                </nz-progress>
+            </nz-card>
+        </div>
+    </div>
+
+</div>

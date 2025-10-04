@@ -1,0 +1,144 @@
+@import '../../../../assets/scss/_variables.scss';
+
+// --- MOBILE FIRST BASE (phones) ---
+.slider,
+nz-carousel,
+nz-carousel-content,
+.banner-slide {
+  width: 100%;
+  height: 14vh; // ✅ Mobile default height
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px 8px 0 0;
+  margin: .25rem 0;
+}
+
+.hero-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: fit-content; // Mobile-friendly
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+  filter: brightness(0.85);
+}
+
+// Hide arrows by default on mobile
+.slick-arrow {
+  display: none;
+}
+
+.banner-overlay-glass {
+  opacity: 1;
+  top: auto;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  max-width: 100%;
+  border-radius: 24px 24px 0 0;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(15px);
+
+  .hero-title,
+  .hero-subtext,
+  .cta-btn {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.hero-title {
+  font-size: 1.4rem;
+  display: none; // Hidden on small screens
+}
+
+.hero-subtext {
+  font-size: 1rem;
+  color: #444;
+  margin-bottom: 1.5rem;
+}
+
+.cta-btn {
+  width: 100%;
+  padding: 1rem;
+}
+
+// --- TABLETS (≥577px) ---
+@media (min-width: 577px) {
+
+  .slider,
+  nz-carousel,
+  nz-carousel-content,
+  .banner-slide {
+    height: 20vh; // Taller for tablets
+  }
+
+  .hero-title {
+    display: block;
+    font-size: 1.6rem;
+  }
+}
+
+// --- DESKTOPS (≥769px) ---
+@media (min-width: 769px) {
+
+  .slider,
+  nz-carousel,
+  nz-carousel-content,
+  .banner-slide {
+    height: 48vh; // Desktop default
+  }
+
+  .hero-bg {
+    height: 100%;
+  }
+
+  // Show arrows back on desktop
+  .slick-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 5;
+    background: rgba(255, 255, 255, 0.7);
+    color: #333;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+  }
+
+  .slider:hover .slick-arrow {
+    opacity: 1;
+  }
+
+  .slick-prev {
+    left: 25px;
+  }
+
+  .slick-next {
+    right: 25px;
+  }
+
+  // Hover animation only for desktop
+  .banner-slide:hover .banner-overlay-glass {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+
+    .hero-title,
+    .hero-subtext,
+    .cta-btn {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}

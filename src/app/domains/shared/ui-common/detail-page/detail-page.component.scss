@@ -1,0 +1,19 @@
+/* Mobile First Approach */
+$mobile: 320px; // Adjust this value according to your design
+$tablet: 768px;
+$smallDesktop: 1024px;
+$desktop: 1440px;
+
+@media (min-width: $tablet) {
+  .study-in-japan-container {
+    .image-section {
+      .img-container {
+        width: 100%;
+        height: 500px;
+        img {
+          object-fit: cover;
+        }
+      }
+    }
+  }
+}

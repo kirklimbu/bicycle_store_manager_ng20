@@ -1,0 +1,29 @@
+<section class="brand-section">
+  <nz-page-header [nzTitle]="title" nzSubtitle="">
+    <nz-page-header-extra>
+      <a nz-button nzType="link" [routerLink]="['/all-cdategories']">View all</a>
+    </nz-page-header-extra>
+  </nz-page-header>
+  <div class="category-container">
+    <nz-carousel #carousel [nzEffect]="'scrollx'" [nzDots]="true">
+      @for (chunk of chunkedCategories; track chunk) {
+      <div nz-carousel-content>
+        <div class="category-slide">
+          <div class="category-grid">
+            @for (category of chunk; track category.companyId) {
+            <div class="category-item">
+              <div class="circle">
+                <img nz-image width="52" height="52" [nzSrc]="category.logo" [nzFallback]="fallback"
+                  [alt]="category.name" alt="ehatiya categories" />
+              </div>
+              <p>{{ category.name | titlecase }}</p>
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+      }
+    </nz-carousel>
+
+  </div>
+</section>

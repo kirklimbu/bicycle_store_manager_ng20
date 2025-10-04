@@ -1,0 +1,54 @@
+{
+  "banners": [
+    {
+      "alt": "Alternative text",
+      "docPath": "assets/images/testPreparation/japaneseLanguage.png",
+      "srcset": "800w, 1600w",
+      "sizes": "(max-width: 1600px) 800px, 1600px",
+      "title": "",
+      "subtitle": "",
+      "priority": true
+    }
+  ],
+  "why": "Our primary focus is to assist students in developing proficiency in the Japanese language, laying the foundation for academic pursuits at various institutions in Japan.",
+
+  "requirements": [
+    "The candidate must be at least 16 years of age ",
+    "Valid Passport"
+  ],
+  "resources": ["Meaning books", "Course books"],
+  "highlights": [
+    "2 hours classes",
+    "Weekly exam",
+    "Experienced Teachers(5+ years)"
+  ],
+  "examCenters": [
+    {
+      "name": "Paper-based Test",
+      "centers": "Kathmandu, Pokhara, Chitwan, Butwal, Birtamod, and Biratnagar"
+    },
+    {
+      "name": "Computer-based Test",
+      "centers": "Kathmandu"
+    }
+  ],
+  "examFees": [
+    {
+      "name": "IELTS on paper",
+      "price": "Rs. 25300"
+    },
+    {
+      "name": "IELTS on Computer in center",
+      "price": "Rs. 23650"
+    },
+    {
+      "name": "IELTS for UK Visa and immigration",
+      "price": "Rs. 28000"
+    },
+    {
+      "name": "IELTS life skills A1 and B1",
+      "price": "Rs. 19600"
+    }
+  ],
+  "time": [" 9:00 AM - 12:00 P.M.", "1:00PM - 4:00 P.M."]
+}

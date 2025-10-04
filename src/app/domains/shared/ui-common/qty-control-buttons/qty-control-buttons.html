@@ -1,0 +1,22 @@
+<!-- @if(product){
+
+<div class="qty-selector">
+    <button nz-button nzType="default" class="qty-btn" (click)="decreaseQty(product.stockMasterId)">
+        <nz-icon nzType="minus"></nz-icon>
+    </button>
+
+    <nz-input-number [ngModel]="getQty(product.stockMasterId, product.qty)"
+        (ngModelChange)="updateQuantity(product.stockMasterId, $event)" [nzMin]="0" [nzStep]="1"
+        class="qty-input"></nz-input-number>
+
+    <button nz-button nzType="default" class="qty-btn" (click)="increaseQty(product.stockMasterId)">
+        <nz-icon nzType="plus"></nz-icon>
+    </button>
+    @if(enableDelete()){
+
+    <button nz-button nzType="link" nzDanger class="remove-btn" (click)="removeItem(product.stockMasterId)">
+        <nz-icon nzType="delete" />
+    </button>
+    }
+</div>
+} -->

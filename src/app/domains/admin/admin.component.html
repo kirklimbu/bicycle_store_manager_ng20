@@ -1,0 +1,155 @@
+<nz-layout>
+  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
+    <div class="logo"></div>
+    <ul nz-menu nzTheme="dark" nzMode="inline">
+      <li nz-menu-item>
+        <span nz-icon nzTitle="Home" nzType="home"></span>
+        <span nz-tooltip nzTooltipTitle="Home">
+          Home
+          <a [routerLink]="['/home']"> </a>
+        </span>
+      </li>
+      <li nz-menu-item>
+        <span nz-icon nzTitle="Profile" nzType="user"></span>
+        <span nz-tooltip nzTooltipTitle="Home">
+          Profile
+          <a [routerLink]="['/auth/user-profile']"> </a>
+        </span>
+      </li>
+      <li nz-submenu nzTitle="Customer" nzIcon="contacts">
+        <ul>
+          <li nz-menu-item [routerLink]="['/auth/list-customer']">
+            Customer list
+          </li>
+
+        </ul>
+      </li>
+
+      @if(authstate.isAdmin()){
+
+      <li nz-submenu nzTitle=" Brand" nzIcon="book">
+        <ul>
+          <li nz-menu-item [routerLink]="['/auth/list-company']">
+            Brand list
+          </li>
+        </ul>
+      </li>
+
+
+      <li nz-submenu nzTitle="Category" nzIcon="usergroup-delete">
+        <ul>
+          <li nz-menu-item [routerLink]="['/auth/list-category']">Category list</li>
+        </ul>
+      </li>
+      <li nz-submenu nzTitle="Stock" nzIcon="usergroup-delete">
+        <ul>
+          <li nz-menu-item [routerLink]="['/auth/list-stock']">Stock list</li>
+        </ul>
+      </li>
+      <li nz-submenu nzTitle="Order" nzIcon="usergroup-delete">
+        <ul>
+          <li nz-menu-item [routerLink]="['/auth/list-order']">Order list</li>
+        </ul>
+      </li>
+      <li nz-submenu nzTitle="Report" nzIcon="cluster">
+        <ul>
+          <li nz-menu-item [routerLink]="['/auth/sales']">
+            Sales list
+          </li>
+        </ul>
+      </li>
+      <li nz-submenu nzTitle="Account" nzIcon="cluster">
+        <ul>
+          <li nz-menu-item [routerLink]="['/auth/list-dayend']">
+            Dayend
+            list
+          </li>
+        </ul>
+      </li>
+      }
+
+      <!-- <li nz-submenu nzTitle="Career" nzIcon="copyright-circle">
+        <ul>
+          <li nz-menu-item [routerLink]="['/auth/list-career']">Career list</li>
+        </ul>
+      </li>
+      <li nz-submenu nzTitle="Feedback" nzIcon="question-circle">
+        <ul>
+          <li nz-menu-item [routerLink]="['/auth/inquiry']">Feedback list</li>
+        </ul>
+      </li>
+      <li nz-submenu nzTitle="Banner" nzIcon="area-chart">
+        <ul>
+          <li nz-menu-item [routerLink]="['/auth/list-hero-banner']">Banner list</li>
+        </ul>
+      </li>
+      <li nz-submenu nzTitle="Notice" nzIcon="bell">
+        <ul>
+          <li nz-menu-item [routerLink]="['/auth/list-notice']">Notice list</li>
+        </ul>
+      </li> -->
+      <!-- <li nz-submenu nzTitle="Team" nzIcon="usergroup-delete">
+        <ul>
+          <li nz-menu-item [routerLink]="['/auth/branch']">branch list</li>
+        </ul>
+      </li> -->
+
+      <!-- @if (userDetails) {
+        <li nz-menu-item>
+          <span nz-icon nzTitle="Attendence" nzType="account-book"></span>
+          <span nz-tooltip nzTooltipTitle="Attendence">
+            Attendence
+            <a [routerLink]="['/auth/attendence']"></a>
+          </span>
+        </li>
+      } -->
+      <li nz-submenu nzTitle="Setting" nzIcon="setting">
+        <ul>
+          <li nz-menu-item routerLink="/auth/user-profile">Organization Setup
+          <li nz-menu-item routerLink="/auth/forget-password">Change Password
+            <!-- <span nz-icon nzType="user-add" nzTheme="outline"></span>  -->
+          </li>
+          <li nz-menu-item (click)="onLogout()">Logout</li>
+
+        </ul>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header>
+      <nz-icon class="trigger" [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+        (click)="isCollapsed = !isCollapsed">
+      </nz-icon>
+
+      @if(authstate.isAdmin()) {
+      <span class="current-dayend">
+        Current Dayend: {{ currentDayend?.saveDate | nepaliDateFormatter }}
+      </span>
+
+      @if(currentDayend?.message) {
+        <span class="current-dayend-message">
+        |
+        {{ currentDayend?.message }}
+      </span>
+      }
+      }
+    </nz-header>
+
+    <nz-content>
+      <!-- <nz-breadcrumb>
+                <nz-breadcrumb-item>User</nz-breadcrumb-item>
+                <nz-breadcrumb-item>Bill</nz-breadcrumb-item>
+            </nz-breadcrumb> -->
+      <div class="inner-content">
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
+    <nz-footer>
+
+      <p class="copyright-text">
+        &copy; {{currentDate}}
+        <!-- <a href="http://www.kalpaantatech.com.np" target="_blank" class="copyright-link">Kalpaanta Tech Solutions</a> -->
+        All Rights Reserved.
+    </nz-footer>
+  </nz-layout>
+</nz-layout>

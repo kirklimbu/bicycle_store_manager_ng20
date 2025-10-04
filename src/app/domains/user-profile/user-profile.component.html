@@ -1,0 +1,39 @@
+<div class="profile-page">
+    <!-- <nz-spin [nzSpinning]="loading()"> -->
+    <div class="card" *ngIf="(user$|async) as u">
+        <div class="card-header">
+            <nz-avatar nzSize="large" nzIcon="user"></nz-avatar>
+            <div class="header-text">
+                <h2 class="name">{{ u.name }}</h2>
+                <p class="role">{{ u.role }}</p>
+            </div>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-item">
+                <span class="label">Mobile:</span>
+                <span class="value">{{ u.mobile }}</span>
+            </div>
+
+            @if(u.email){
+
+
+            <div class="info-item">
+                <span class="label">Email:</span>
+                <span class="value">{{ u.email }}</span>
+            </div>
+            }
+            @if(u.address){
+
+            <div class="info-item">
+                <span class="label">Address:</span>
+                <span class="value">{{ u.address }}</span>
+            </div>
+
+            }
+
+
+        </div>
+    </div>
+    <!-- </nz-spin> -->
+</div>

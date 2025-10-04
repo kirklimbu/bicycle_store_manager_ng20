@@ -1,0 +1,224 @@
+@import "../../../../assets/scss/variables";
+
+// Title Section
+.categories-section {
+    width: 100%;
+    padding: 1rem;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: lighten($gray, 60%);
+    border-bottom: 1px solid $border-color;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    @media (min-width: 1024px) {
+        border-bottom: none;
+    }
+}
+
+.header-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: $text-color;
+    margin: 0 0 0.25rem 0;
+
+    @media (min-width: 375px) {
+        font-size: 1.375rem;
+    }
+
+    @media (min-width: 768px) {
+        font-size: 1.5rem;
+    }
+
+    @media (min-width: 1024px) {
+        font-size: 1.75rem;
+    }
+}
+
+.section-subtitle {
+    font-size: 0.875rem;
+    color: $text-secondary;
+
+    @media (min-width: 768px) {
+        font-size: 1rem;
+    }
+}
+
+// 🔹 Mobile-first responsive grid with square cards
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    width: 100%;
+
+    .category-card {
+        aspect-ratio: 1 / 1; // ✅ Square cards
+        width: 100%;
+        border-radius: 6px;
+        overflow: hidden;
+        border: 1px solid $border-color;
+        display: flex;
+        flex-direction: column;
+        transition: all 0.3s ease;
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .card-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 0.5rem;
+            text-align: center;
+        }
+    }
+
+    @media (min-width: 375px) {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    @media (min-width: 600px) {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+    }
+
+    @media (min-width: 768px) {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    @media (min-width: 1024px) {
+        grid-template-columns: repeat(5, 1fr);
+    }
+
+    @media (min-width: 1440px) {
+        grid-template-columns: repeat(6, 1fr);
+    }
+
+    @media (min-width: 1920px) {
+        grid-template-columns: repeat(7, 1fr);
+    }
+}
+
+// 🔹 Fallback for browsers without aspect-ratio
+@supports not (aspect-ratio: 1 / 1) {
+    .category-card {
+        position: relative;
+        width: 100%;
+        padding-bottom: 100%; // maintain square
+
+        .card-content {
+            position: absolute;
+            inset: 0;
+        }
+    }
+}
+
+// Image container inside card
+.image-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+
+    .category-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; // ✅ fills square nicely
+        border-radius: 6px;
+        transition: transform 0.3s ease;
+
+        .category-card:hover & {
+            transform: scale(1.05);
+        }
+    }
+}
+
+// Text section
+.text-content {
+    flex-shrink: 0;
+
+    .category-name {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: $text-color;
+        margin: 0;
+        line-height: 1.3;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        @media (min-width: 768px) {
+            font-size: 0.875rem;
+        }
+
+        @media (min-width: 1024px) {
+            font-size: 0.9375rem;
+        }
+    }
+
+    .product-count {
+        font-size: 0.6875rem;
+        color: $text-secondary;
+        margin-top: 0.25rem;
+    }
+}
+
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 1rem;
+    background: $white;
+}
+
+.category-card {
+    aspect-ratio: 1 / 1; // 👈 ensures perfect square
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    // background: #fafafa;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+        background: #f0f5ff;
+        border-color: #91d5ff;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .category-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+
+        .category-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .category-count {
+            font-size: 0.85rem;
+            color: #888;
+        }
+    }
+}

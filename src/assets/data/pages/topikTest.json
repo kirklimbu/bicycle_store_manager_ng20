@@ -1,0 +1,71 @@
+{
+  "banners": [
+    {
+      "alt": "Alternative text",
+      "docPath": "assets/images/testPreparation/topikTest.png",
+      "srcset": "800w, 1600w",
+      "sizes": "(max-width: 1600px) 800px, 1600px",
+      "title": "",
+      "subtitle": "",
+      "priority": true
+    }
+  ],
+  "why": "The TOPIK, Test of Proficiency in Korean, is a written test designed to measure the ability of non-native speakers for expression and comprehension in the Korean language.TOPIK test measures proficiency in reading, writing, and listening comprehension in the Korean language.",
+  "purpose": [
+    "To propagate and set direction for learning Korean for non-native Korean speakers and overseas Koreans",
+    "To measure and evaluate their Korean language skills and utilize the results for admission to Korean colleges and job-seeking"
+  ],
+  "qualification": [
+    "Aim to learn the language and enter a Korean university for higher studies",
+    "Seek jobs in companies and public institutions in Korea and overseas",
+    "Reside overseas or are attending/graduated from a foreign school"
+  ],
+  "registration": [
+    "In Korea: If you are in Korea, you can register for the test online on www.topik.go.kr. The registration fee is KRW 35,000 for TOPIK I (level 1-2) and KRW 40,000 for TOPIK II (level 3-6), which can be paid through debit/credit card, online banking or direct bank transfer.",
+    "Overseas: In most countries, the Korean Embassies and Korean Culture Centres (한국문화원) administer the TOPIK tests. Some affiliate institutes also accept the applications. You can get the list of the affiliate institutions in your country on Updates page. For registration, you have to visit the embassy or affiliate institution with 2 passport size photographs and the registration fee (which varies from country to country)."
+  ],
+  "intake": [
+    {
+      "name": "In Korea",
+      "time": "January, May and November"
+    },
+    {
+      "name": "Korea and Overseas",
+      "time": "April, July, and October"
+    }
+  ],
+
+  "duration": "3 hours",
+  "levels": [
+    {
+      "name": "TOPIK-I (Beginner Level) ",
+      "level": "Level 1,2"
+    },
+    {
+      "name": "TOPIK-II (Intermediate-Advanced Level) ",
+      "level": "Level 3,4,5 & 6"
+    }
+  ],
+  "testStructure": [
+    {
+      "name": "Vocab & Grammar",
+      "point": 100
+    },
+    {
+      "name": "Reading",
+      "point": 100
+    },
+    {
+      "name": "Writing",
+      "point": 100
+    },
+    {
+      "name": "Listening",
+      "point": 100
+    }
+  ],
+
+  "requirements": ["No age limit"],
+  "note": "Passing the TOPIK doesnot guarantee scholarships/admisssion",
+  "link": ["https://www.topik.go.kr/"]
+}

@@ -1,0 +1,115 @@
+<section>
+    <div>
+        <div class="table-operations">
+            <!-- <nz-input-group [nzSuffix]="suffixIconSearch">
+                <input [(ngModel)]="searchValue" type="text" nz-input placeholder="Search staff... " />
+            </nz-input-group>
+            <ng-template #suffixIconSearch>
+                <span nz-icon nzType="search"></span>
+            </ng-template> -->
+            <!-- <button nz-button nzType="default" (click)="onSearch()">
+        <span nz-icon nzType="search"></span>
+        Search
+      </button> -->
+            <!-- @if (setList$ | async; as set) {
+        } -->
+            <!-- <button
+        class="action-button"
+        nzDanger
+        nz-button
+        nzType="primary"
+        routerLinkActive
+        (click)="onAdd()"
+      >
+        Add
+      </button> -->
+            <button class="action-button" nz-button nzType="primary" (click)="onAdd()">
+                Add
+            </button>
+        </div>
+    </div>
+    @if (data$ | async; as table) {
+    <nz-table #borderedTable nzBordered nzTitle="Stock List" [nzData]="table" [nzFrontPagination]="false"
+        [nzScroll]="{ x: '1100px' }">
+        <thead>
+            <tr>
+                <th nzWidth="5%">Sn.</th>
+                <th>Photo</th>
+                <th>Name</th>
+                <th>Unit</th>
+                <th>MRP</th>
+                <th>Price/Unit (Rs.)</th>
+                <th>Margin%</th>
+                <th>Price/Unit2 (Rs.)</th>
+                <th>Margin%2</th>
+                <th>Margin Qty2</th>
+                <th> Stock</th>
+                <th>Alert</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (
+            data of borderedTable.data ;
+            track data.stockMasterId;
+            let i = $index
+            ) {
+            <tr>
+                <td>{{ i + 1 }}</td>
+                <td><img nz-image [nzSrc]="data.path" height="50" width="50" alt="Profile pic"></td>
+                <td>
+                    {{ data.name | titlecase }}
+                </td>
+                <td>
+                    {{ data.unit }}
+                </td>
+                <td>
+                    {{ data.mrp }}
+                </td>
+
+                <td>
+                    {{ data.pricePerUnit }}
+                </td>
+                <td>
+                    {{ data.marginPercent }}
+                </td>
+                <td>
+                    {{ data.pricePerUnit2 }}
+                </td>
+                <td>
+                    {{ data.marginPercent2 }}
+                </td>
+                <td>
+                    {{ data.marginQty2 |number}}
+                </td>
+                <td>
+                    {{ data.remaining|number }}
+                </td>
+                <td>
+                    {{ data.minNotification|number }}
+                </td>
+
+                <td>
+                    <nz-tag [nzColor]="(data.hasActive) ? 'green' : 'red'">
+                        {{ data.hasActive? 'Active' : 'Inactive' }}
+                    </nz-tag>
+                </td>
+
+                <td>
+                    <div class="action-buttons">
+                        <button title="Edit" nz-button (click)="onEdit(data.stockMasterId)">
+                            <span nz-icon nzType="form"></span>
+                        </button>
+                        <button title="View Detail" nz-button (click)="onViewDetail(data.stockMasterId)">
+                            <span nz-icon nzType="eye"></span>
+                        </button>
+
+                    </div>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </nz-table>
+    }
+</section>

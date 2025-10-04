@@ -1,0 +1,60 @@
+<!-- Desktop Sidebar -->
+@if (!isMobile()) {
+<nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null" [nzWidth]="240" [nzCollapsedWidth]="80"
+    class="app-sider">
+
+    <div class="logo" (click)="navigateTo('/home')">
+        @if (isCollapsed()) {
+        <nz-icon nzType="bank" class="logo-icon"></nz-icon>
+        } @else {
+        <h2>Kirana Manger</h2>
+        }
+    </div>
+
+    <ul nz-menu nzTheme="dark" nzMode="inline" class="app-menu">
+        <!-- Main Menu Items -->
+        @for (item of mainMenuItems(); track item.id) {
+        <li nz-menu-item (click)="handleMenuItemClick(item)">
+            <nz-icon [nzType]="item.icon"></nz-icon>
+            <span>{{ item.label }}</span>
+        </li>
+        }
+
+        <!-- Admin Section -->
+        @if (shouldShowAdminSection()) {
+        @for (item of adminMenuItems(); track item.id) {
+        @if (item.children && item.children.length > 0) {
+        <li nz-submenu [nzTitle]="item.label" [nzIcon]="item.icon">
+            <ul>
+                @for (child of item.children; track child.id) {
+                <li nz-menu-item (click)="handleMenuItemClick(child)">
+                    {{ child.label }}
+                </li>
+                }
+            </ul>
+        </li>
+        } @else {
+        <li nz-menu-item (click)="handleMenuItemClick(item)">
+            <nz-icon [nzType]="item.icon"></nz-icon>
+            <span>{{ item.label }}</span>
+        </li>
+        }
+        }
+        }
+
+        <!-- Settings Section -->
+        <li nz-submenu nzTitle="Settings" nzIcon="setting">
+            <ul>
+                @for (item of settingsMenuItems(); track item.id) {
+                <li nz-menu-item (click)="handleMenuItemClick(item)">
+                    @if (item.icon) {
+                    <nz-icon [nzType]="item.icon"></nz-icon>
+                    }
+                    <span>{{ item.label }}</span>
+                </li>
+                }
+            </ul>
+        </li>
+    </ul>
+</nz-sider>
+}

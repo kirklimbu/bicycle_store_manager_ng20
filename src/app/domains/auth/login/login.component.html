@@ -1,0 +1,53 @@
+<div class="login-container ">
+  <div class="card">
+    <div class="img-section">
+      <!-- <img nz-image [nzSrc]="logo" alt="logo" [nzFallback]="fallback"> -->
+      <img nz-image width="200px" height="200px" nzSrc="logo" [nzFallback]="fallback" alt="" />
+    </div>
+    <div class="form-section">
+      <form nz-form [formGroup]="form" class="login-form" (ngSubmit)="onLogin()">
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Username is missing">
+            <nz-input-group nzPrefixIcon="user">
+              <input type="text" nz-input formControlName="username" placeholder="Username" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Password is missing">
+
+            <nz-input-group nzPrefixIcon="lock" [nzSuffix]="suffixTemplate">
+              <input [type]="showPassword ? 'text' : 'password'" nz-input placeholder=" Password"
+                formControlName="password" />
+            </nz-input-group>
+            <ng-template #suffixTemplate>
+              <nz-icon class="ant-input-password-icon" [nzType]="showPassword ? 'eye-invisible' : 'eye'"
+                (click)="showPassword = !showPassword" />
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+        <!-- <div nz-row class="login-form-margin">
+          <div nz-col [nzSpan]="12">
+            <label nz-checkbox>
+              <span>Remember me</span>
+            </label>
+          </div>
+          <div nz-col [nzSpan]="12">
+            <a class="login-form-forgot">Forgot password</a>
+          </div>
+        </div> -->
+        <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'" [disabled]="!form.valid">
+          Log in
+        </button>
+        <!-- <a class="register" [routerLink]="['/home']" routerLinkActive="router-link-active">Cancel</a> -->
+
+        <!-- <ng-container *ngIf="!showLinks()">
+          <app-secondary-links [primaryLinkTitle]="'Register as new user'" [secondaryLinkTitle]="'Cancel'"
+            [showSecondaryLink]="false" [secondaryLinkLabel]="'Cancel'" [primaryLinkLabel]="'Register'"
+            (primaryAction)="onRegister()" />
+
+        </ng-container> -->
+      </form>
+    </div>
+  </div>
+</div>
