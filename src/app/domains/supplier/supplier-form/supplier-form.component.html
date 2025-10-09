@@ -1,0 +1,150 @@
+<!-- <nz-card nzHoverable style="max-width: 1200px; margin: 0 auto;"> -->
+<nz-page-header nzTitle="Supplier Form" nzSubtitle="Create new entry">
+    <nz-breadcrumb nz-page-header-breadcrumb [nzAutoGenerate]="true"></nz-breadcrumb>
+</nz-page-header>
+
+<nz-divider nzType="horizontal" nzOrientation="left"></nz-divider>
+<nz-row [nzGutter]="[24, { xs: 8, sm: 16, md: 24 }]">
+    <nz-col [nzSpan]="24">
+
+        <form nz-form nzLayout="vertical" [formGroup]="form">
+            <nz-row [nzGutter]="[24, { xs: 8, sm: 16, md: 24 }]">
+                <!-- AMOUNT -->
+                <nz-col [nzSpan]="24" [nzMd]="6">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzFor="Name">
+                            <span nz-icon nzType="user" nzTheme="outline"></span>
+                            Name
+                        </nz-form-label>
+                        <nz-form-control nzErrorTip="Required">
+                            <input type="string" nz-input placeholder="Name" formControlName="name" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </nz-col>
+
+                <!-- DATE -->
+                <nz-col [nzSpan]="24" [nzMd]="6">
+                    <nz-form-item>
+                        <nz-form-label nzRequired>
+                            <span nz-icon nzType="environment" nzTheme="outline"></span>
+                            Address
+                        </nz-form-label>
+                        <nz-form-control>
+                            <input nz-input placeholder="Address" formControlName="address" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </nz-col>
+
+                <!-- REMARKS -->
+                <!-- <nz-col [nzSpan]="24" [nzMd]="6">
+                    <nz-form-item>
+                        <nz-form-label>
+                            <span nz-icon nzType="file-text" nzTheme="outline"></span>
+                            Remarks
+                        </nz-form-label>
+                        <nz-form-control>
+                            <textarea nz-input formControlName="remarks" rows="3" placeholder="Optional notes">
+                    </textarea>
+                        </nz-form-control>
+                    </nz-form-item>
+                </nz-col> -->
+
+                <!-- PARTICULARS -->
+                <nz-col [nzSpan]="24" [nzMd]="6">
+                    <nz-form-item>
+                        <nz-form-label>
+                            <span nz-icon nzType="audit" nzTheme="outline"></span>
+                            Mobile
+                        </nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="mobile" placeholder="Mobile ">
+
+                        </nz-form-control>
+                    </nz-form-item>
+                </nz-col>
+                <nz-col [nzSpan]="24" [nzMd]="6">
+                    <nz-form-item>
+                        <nz-form-label>
+                            <span nz-icon nzType="audit" nzTheme="outline"></span>
+                            Phone No.
+                        </nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="phone" placeholder="Phone number ">
+
+                        </nz-form-control>
+                    </nz-form-item>
+                </nz-col>
+            </nz-row>
+
+            <nz-row [nzGutter]="[24, { xs: 8, sm: 16, md: 24 }]">
+
+                <nz-col [nzSpan]="24" [nzMd]="6">
+                    <nz-form-item>
+                        <nz-form-label>
+                            <span nz-icon nzType="file-protect" nzTheme="outline"></span>
+                            Vat Type
+                        </nz-form-label>
+                        <nz-form-control>
+                            <nz-select nz-input [nzShowSearch]="true" placeholder="Select VAT Type"
+                                formControlName="vatType">
+                                > @for (item of vatTypeListSignal(); track $index) {
+                                <nz-option [nzValue]="item" [nzLabel]="item"></nz-option>
+                                }
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+
+                </nz-col>
+                <!-- vat no -->
+                <nz-col [nzSpan]="24" [nzMd]="6">
+                    <nz-form-item>
+                        <nz-form-label>
+                            <span nz-icon nzType="calendar" nzTheme="outline"></span>
+                            <Var></Var>Vat No.
+                        </nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="vatNo" placeholder="Vat No">
+                        </nz-form-control>
+                    </nz-form-item>
+
+                </nz-col>
+            </nz-row>
+            <nz-row [nzGutter]="[24, { xs: 8, sm: 16, md: 24 }]">
+                <!-- AMOUNT -->
+                <nz-col [nzSpan]="24" [nzMd]="6">
+                    <nz-form-item>
+                        <nz-form-label>
+                            <span nz-icon nzType="" nzTheme="outline"></span>
+                            <Var></Var>Email
+                        </nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="email" placeholder="Email">
+                        </nz-form-control>
+                    </nz-form-item>
+
+                </nz-col>
+
+            </nz-row>
+            <nz-divider></nz-divider>
+
+            <div nz-row nzType="flex" nzJustify="end" nzAlign="middle">
+                <nz-space nzSize="middle">
+                    <button *nzSpaceItem nz-button nzType="default" (click)="onCancel()">
+                        Cancel
+                    </button>
+                    <button *nzSpaceItem nz-button nzType="primary" (click)="onSave()">
+                        <span nz-icon nzType="save" nzTheme="outline"></span>
+                        Save
+                    </button>
+                </nz-space>
+            </div>
+        </form>
+    </nz-col>
+</nz-row>
+
+<!-- </nz-card> -->
+
+<ng-template #extraTemplate>
+    <!-- <nz-badge nzStatus="processing"></nz-badge> -->
+    <!-- <span style="margin-left: 8px">Draft</span> -->
+</ng-template>

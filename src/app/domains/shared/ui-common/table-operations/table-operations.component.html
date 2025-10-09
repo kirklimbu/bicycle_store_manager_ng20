@@ -1,0 +1,90 @@
+<nz-page-header [nzGhost]="false" class="table-header">
+    <nz-page-header-extra>
+        <form nz-form [formGroup]="form" nzLayout="vertical">
+            <nz-row [nzGutter]="[12, 12]" nzAlign="middle" class="header-row">
+
+                <!-- 🔍 Search -->
+                @if (showSearch()) {
+                <nz-col [nzXs]="24" [nzSm]="12" [nzMd]="6" [nzLg]="6">
+                    <nz-input-group nzPrefixIcon="search">
+                        <input nz-input formControlName="search" [placeholder]="placeholder()" />
+                    </nz-input-group>
+                </nz-col>
+                }
+
+                <!-- 🧾 Selector -->
+                @if (showSelector1()) {
+                <nz-col [nzXs]="24" [nzSm]="12" [nzMd]="4" [nzLg]="4">
+                    <nz-select formControlName="selector" placeholder="Select category" nzAllowClear nzShowSearch>
+                        @for (option of selector1Options(); track option.categoryId) {
+                        <nz-option [nzValue]="option" [nzLabel]="option.name"></nz-option>
+                        }
+                    </nz-select>
+                </nz-col>
+                }
+
+                <!-- 📅 From Date -->
+                @if (showFromDate()) {
+                <nz-col [nzXs]="24" [nzSm]="12" [nzMd]="4" [nzLg]="4">
+                    <nz-form-item>
+                        <nz-form-label>From (B.S)</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="fromDate" placeholder="2082/01/01" appBsDateInput />
+                        </nz-form-control>
+                    </nz-form-item>
+                </nz-col>
+                }
+
+                <!-- 📅 To Date -->
+                @if (showToDate()) {
+                <nz-col [nzXs]="24" [nzSm]="12" [nzMd]="4" [nzLg]="4">
+                    <nz-form-item>
+                        <nz-form-label>To (B.S)</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="toDate" placeholder="2082/01/01" appBsDateInput />
+                        </nz-form-control>
+                    </nz-form-item>
+                </nz-col>
+                }
+
+                <!-- 🧭 Search + Export + Secondary Buttons (Group 1) -->
+                <nz-col [nzXs]="24" [nzSm]="12" [nzMd]="12" [nzLg]="8" class="action-col">
+                    <nz-space>
+                        @if (showButtons()) {
+                        <button *nzSpaceItem nz-button nzType="primary" (click)="emitFilters()">
+                            <span nz-icon nzType="search"></span> Search
+                        </button>
+                        <!-- <button *nzSpaceItem nz-button nzType="default" (click)="resetFilters()">
+                            <span nz-icon nzType="reload"></span>
+                        </button> -->
+                        }
+
+                        @if (showExportButton()) {
+                        <button *nzSpaceItem nz-button nzType="default" (click)="export.emit($event)">
+                            <span nz-icon nzType="file-excel"></span> Export
+                        </button>
+                        }
+
+                        @if (showSecondaryButton()) {
+                        <button *nzSpaceItem nz-button nzType="default" (click)="secondaryButtonClick.emit($event)">
+                            <span nz-icon [nzType]="secondaryButtonIcon()" nzTheme="outline"></span>
+                            {{ secondaryButtonLabel() }}
+                        </button>
+                        }
+                    </nz-space>
+                </nz-col>
+
+                <!-- ➕ Add Button (Group 2 — Always on far right) -->
+                @if (showAddButton()) {
+                <nz-col [nzXs]="24" [nzSm]="24" [nzMd]="8" [nzLg]="8" class="add-col">
+                    <button nz-button nzType="primary" (click)="add.emit(0)">
+                        <span nz-icon [nzType]="primaryButtonIcon()" nzTheme="outline"></span>
+                        {{ primaryButtonLabel() }}
+                    </button>
+                </nz-col>
+                }
+
+            </nz-row>
+        </form>
+    </nz-page-header-extra>
+</nz-page-header>

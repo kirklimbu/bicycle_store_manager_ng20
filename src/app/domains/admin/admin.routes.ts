@@ -67,10 +67,25 @@ export const FEATURE_ADMIN_ROUTES: Routes = [
     path: '',
     canActivate: [AuthGuard],
     loadChildren: () => import('../order').then((m) => m.FEATURE_ORDER_ROUTES),
-  },{
+  },
+  {
     path: '',
     canActivate: [AuthGuard],
-    loadChildren: () => import('../dayend').then((m) => m.FEATURE_DAYEND_ROUTES),
+    loadChildren: () =>
+      import('../purchase').then((m) => m.FEATURE_PURCHASE_ROUTES),
+  },
+
+  {
+    path: '',
+    canActivate: [AuthGuard],
+    loadChildren: () =>
+      import('../dayend').then((m) => m.FEATURE_DAYEND_ROUTES),
+  },
+  {
+    path: '',
+    canActivate: [AuthGuard],
+    loadChildren: () =>
+      import('../supplier').then((m) => m.FEATURE_SUPPLIER_ROUTES),
   },
 
   {

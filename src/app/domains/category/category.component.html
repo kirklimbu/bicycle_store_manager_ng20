@@ -1,0 +1,47 @@
+<nz-breadcrumb [nzAutoGenerate]="true"></nz-breadcrumb>
+<div class="table-container">
+
+
+    <div class="site-page-header-ghost-wrapper">
+        <nz-page-header nzTitle="Category List" [nzGhost]="false">
+            <nz-page-header-extra>
+                <lib-table-operations [showSelector1]="false" [showAddButton]="true" [isLocalSearch]="false"
+                    (add)="onAdd()" />
+
+            </nz-page-header-extra>
+
+        </nz-page-header>
+    </div>
+
+    @if(data$|async;as data ){
+
+    <nz-table [nzFrontPagination]="false" #nzTable [nzBordered]="true" [nzData]="data" [nzScroll]="{ x: '900px'}">
+        <thead>
+            <tr>
+                <th nzAlign="center" nzWidth="5%">#</th>
+                <th nzAlign="center" nzWidth="25%">Name </th>
+                <th nzAlign="center" nzWidth="10%">Action</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @for (category of nzTable.data; track $index) {
+
+            <tr>
+                <td nzAlign="center">{{$index+1}}.</td>
+                <td nzAlign="center">{{ category.name |titlecase }} </td>
+
+                <td nzAlign="center">
+
+                    <lib-table-action-buttons [showDeleteButton]="true" [showEditButton]="true"
+                        [button3Label]="'View Items'" [showViewMoreButton]="true" [button3Icon]="'branches'"
+                        (delete)="onDelete(category.categoryId)" (edit)="onEdit(category.categoryId)"
+                        (viewMore)="onViewMore(category.categoryId)" />
+                </td>
+            </tr>
+            }
+        </tbody>
+    </nz-table>
+    }
+
+</div>

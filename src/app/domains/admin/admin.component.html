@@ -16,16 +16,9 @@
           <a [routerLink]="['/auth/user-profile']"> </a>
         </span>
       </li>
-      <li nz-submenu nzTitle="Customer" nzIcon="contacts">
-        <ul>
-          <li nz-menu-item [routerLink]="['/auth/list-customer']">
-            Customer list
-          </li>
-
-        </ul>
-      </li>
 
       @if(authstate.isAdmin()){
+
 
       <li nz-submenu nzTitle=" Brand" nzIcon="book">
         <ul>
@@ -46,9 +39,25 @@
           <li nz-menu-item [routerLink]="['/auth/list-stock']">Stock list</li>
         </ul>
       </li>
-      <li nz-submenu nzTitle="Order" nzIcon="usergroup-delete">
+      <li nz-submenu nzTitle="Customer" nzIcon="contacts">
         <ul>
-          <li nz-menu-item [routerLink]="['/auth/list-order']">Order list</li>
+          <li nz-menu-item [routerLink]="['/auth/list-customer']">
+            Customer list
+          </li>
+
+        </ul>
+      </li>
+      <li nz-submenu nzTitle="Supplier" nzIcon="contacts">
+        <ul>
+          <li nz-menu-item [routerLink]="['/auth/list-supplier']">
+            Supplier list
+          </li>
+
+        </ul>
+      </li>
+      <li nz-submenu nzTitle="Transaction" nzIcon="usergroup-delete">
+        <ul>
+          <li nz-menu-item [routerLink]="['/auth/add-purchase']">Purchase </li>
         </ul>
       </li>
       <li nz-submenu nzTitle="Report" nzIcon="cluster">
@@ -58,6 +67,7 @@
           </li>
         </ul>
       </li>
+
       <li nz-submenu nzTitle="Account" nzIcon="cluster">
         <ul>
           <li nz-menu-item [routerLink]="['/auth/list-dayend']">
@@ -127,7 +137,7 @@
       </span>
 
       @if(currentDayend?.message) {
-        <span class="current-dayend-message">
+      <span class="current-dayend-message">
         |
         {{ currentDayend?.message }}
       </span>

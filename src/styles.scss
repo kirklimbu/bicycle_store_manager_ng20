@@ -5,9 +5,10 @@
 /* You can add global styles to this file, and also import other style files */
 // Target only our custom disabled input
 
-.disabled-input {
+.nz-input[disabled],
+input[disabled] {
     background-color: lighten($color: $blue, $amount: 35%); // light gray
-    border: 1px $blue; // dashed border to show it's readonly
+    // border: 1px $blue; // dashed border to show it's readonly
     font-weight: 500; // slightly bold so it's readable
     cursor: not-allowed;
     transition: all 0.2s ease;
@@ -24,7 +25,9 @@
 
 // Responsive adjustments (if inside smaller screen form layout)
 @media (max-width: 768px) {
-    .disabled-input {
+
+    .nz-input[disabled],
+    input[disabled] {
         font-size: 14px;
         padding: 10px;
     }

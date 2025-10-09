@@ -28,6 +28,11 @@
             "glob": "**/*",
             "input": "node_modules/@ant-design/icons-angular/src/inline-svg/",
             "output": "/assets/"
+          },
+          {
+            "input": "./node_modules/@rishovt/angular-nepali-datepicker/assets",
+            "glob": "**/*",
+            "output": "/assets"
           }
         ],
         "styles": [

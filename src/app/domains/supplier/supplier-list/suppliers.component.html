@@ -1,0 +1,58 @@
+<nz-breadcrumb [nzAutoGenerate]="true"></nz-breadcrumb>
+<div class="table-container">
+
+
+    <div class="site-page-header-ghost-wrapper">
+        <nz-page-header nzTitle="Suppplier List" [nzGhost]="false">
+            <nz-page-header-extra>
+                <lib-table-operations [showSelector1]="false" [isLocalSearch]="false" (add)="onAdd()" />
+
+            </nz-page-header-extra>
+
+        </nz-page-header>
+    </div>
+
+    @if(data$|async;as data ){
+
+    <nz-table [nzFrontPagination]="false" #nzTable [nzBordered]="true" [nzData]="data" [nzScroll]="{ x: '900px' }">
+        <thead>
+            <tr>
+                <th nzAlign="center" nzWidth="5%">#</th>
+                <th nzWidth="25%" nzAlign="center">Name </th>
+                <th nzAlign="center">Address </th>
+                <th nzAlign="center">Mobile </th>
+                <th nzAlign="center">Outstanding </th>
+                <th nzAlign="center">Action</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @for (supplier of nzTable.data; track $index) {
+
+            <tr>
+                <td nzAlign="center">{{$index+1}}.</td>
+                <td nzAlign="center">{{ supplier.name |titlecase }}</td>
+                <td nzAlign="center">{{ supplier.address |titlecase }}</td>
+                <td nzAlign="center">
+                    <p>
+                        {{ supplier.mobile }}
+                    </p>
+                    <p>
+                        {{ supplier.phone }}
+                    </p>
+                </td>
+
+                <td nzAlign="center">{{supplier.outStanding|number}}</td>
+                <td nzAlign="center">
+                    <lib-table-action-buttons [showDeleteButton]="true" [showViewMoreButton]="true"
+                        [showButton4]="false" [button3Icon]="'dollar'" [button3Label]="'Transaction'"
+                        (delete)="onDelete(supplier.supplierId)" (edit)="onEdit(supplier.supplierId)"
+                        (viewMore)="onViewMore(supplier.supplierId)" />
+                </td>
+            </tr>
+            }
+        </tbody>
+    </nz-table>
+    }
+
+</div>
