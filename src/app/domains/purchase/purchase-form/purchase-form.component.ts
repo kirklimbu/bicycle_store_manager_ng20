@@ -88,9 +88,20 @@ export class PurchaseFormComponent {
     initialValue: this.route.snapshot.queryParamMap,
   });
 
-  masterIdSignal = computed(() => {
+  IdsSignal = computed(() => {
     const queryParamMap = this.queryParamMapSignal();
-    return queryParamMap ? Number(queryParamMap.get('masterId')) : 0;
+
+    if (!queryParamMap) {
+      return {
+        supplierId: 0,
+        purchaseMasterId: 0,
+      };
+    }
+
+    return {
+      supplierId: Number(queryParamMap.get('supplierId')) || 0,
+      purchaseMasterId: Number(queryParamMap.get('purchaseMasterId')) || 0,
+    };
   });
 
   totalAmountSignal = computed(() => {
@@ -187,7 +198,7 @@ export class PurchaseFormComponent {
   private fetchDefaultForm() {
     // START FROM HERE API CALL VIA RESOURCE() api
     this.purchaseService
-      .fetchDefaultForm(this.masterIdSignal())
+      .fetchDefaultForm(this.IdsSignal().purchaseMasterId, this.IdsSignal().supplierId)
       .pipe(takeUntilDestroyed(this.destroy$))
       .subscribe((_res: IPurchaseFormDtoWrapper) => {
         if (_res) {
@@ -199,8 +210,8 @@ export class PurchaseFormComponent {
           this.patchFormValues(_res.form);
 
           // for edit case
-          console.log('masterIdSignal', this.masterIdSignal());
-          if (this.masterIdSignal() > 0) {
+          // console.log('masterIdSignal', this.masterIdSignal());
+          if (this.IdsSignal().purchaseMasterId > 0) {
             this.mode = 'edit';
             this.selectedItemsListSignal.set(_res.form.stockList);
           }

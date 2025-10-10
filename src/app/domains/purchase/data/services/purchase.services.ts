@@ -44,10 +44,13 @@ export class PurchaseService {
     );
   }
 
-  fetchDefaultForm(id: number): Observable<IPurchaseFormDtoWrapper> {
+  fetchDefaultForm(
+    id1: number,
+    id2: number
+  ): Observable<IPurchaseFormDtoWrapper> {
     return this.http.get<IPurchaseFormDtoWrapper>(
       `${this.apiUrl}purchase/form`,
-      { params: { purchaseMasterId: id, supplierId: 1 } }
+      { params: { purchaseMasterId: id1, supplierId: id2 } }
     );
   }
 

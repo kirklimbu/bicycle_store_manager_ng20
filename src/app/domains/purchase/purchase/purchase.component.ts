@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, computed, inject, signal } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
@@ -15,6 +15,7 @@ import { SearchPipe } from '../../shared/pipes/search.pipe';
 import { TableActionButtonsComponent } from '../../shared/ui-common/table-action-buttons/table-action-buttons.component';
 import { TableOperationsComponent } from '../../shared/ui-common/table-operations/table-operations.component';
 import { IPurchaseTransaction1Dto } from '../data/models/purhase.model';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-purchase',
@@ -58,41 +59,44 @@ export class PurchaseComponent {
       name: '#',
     },
     {
-      name: 'Name',
-    },
-    {
-      name: 'Address',
-    },
-    {
-      name: 'Ref Type',
+      name: 'Item',
     },
     {
       name: 'Save Date',
     },
     {
-      name: 'PayType',
-      listOfFilter: [
-        { text: 'Bank', value: 'BANK' },
-        { text: 'Cash', value: 'CASH' },
-        { text: 'Credit', value: 'CREDIT' },
-      ],
-      filterFn: (address: string, item: any) =>
-        item.payType.indexOf(address) !== -1,
+      name: 'Rate',
     },
     {
-      name: 'Bill No.',
+      name: 'Qty.',
+    },
+
+    {
+      name: 'Taxable Amt.',
     },
     {
-      name: 'Discount Amt.',
+      name: 'Tax Amt.',
     },
     {
-      name: 'Amount',
+      name: 'Net Amt.',
+    },
+    {
+      name: 'Table Actions',
     },
   ];
 
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   private readonly purchseService = inject(PurchaseService);
 
+  queryParamMapSignal = toSignal(this.route.queryParamMap, {
+    initialValue: this.route.snapshot.queryParamMap,
+  });
+
+  supplierIdSignal = computed(() => {
+    const queryParamMap = this.queryParamMapSignal();
+    return queryParamMap ? Number(queryParamMap.get('supplierId')) : 0;
+  });
   constructor() {
     // effect(() => {
     //   const filters = this.filterSignal();
@@ -104,14 +108,20 @@ export class PurchaseComponent {
 
   ngOnInit(): void {}
 
-  onSearch(query: any) {
+  onSearch(query: FilterValues) {
     console.log('search', query);
 
     // if (!query || !this.hasValidQuery(query)) {
     //   return;
     // }
+
+    const updatedQuery: FilterValues = {
+      ...query,
+      supplierId: this.supplierIdSignal(), // only include if not null
+    };
+
     this.purchseService
-      .getPurchaseList(query)
+      .getPurchaseList(updatedQuery)
 
       .subscribe((res: any) => {
         console.log('data', res);
@@ -130,9 +140,12 @@ export class PurchaseComponent {
 
   onDelete(id: number) {}
 
-  onEdit(id: number) {
+  onEdit(data: any) {
     this.router.navigate(['auth/add-purchase'], {
-      queryParams: { masterId: id },
+      queryParams: {
+        supplierId: data.supplierId,
+        purchaseMasterId: data.purchaseMasterId,
+      },
     });
   }
 

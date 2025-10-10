@@ -5,11 +5,12 @@
       <nz-page-header-extra>
         <lib-table-operations [showSelector1]="false" [selector1Options]="manualSelectorOptions" [showAddButton]="true"
           [isLocalSearch]="false" [showSearch]="false" [showFromDate]="true" [showToDate]="true"
-          [showExportButton]="showExportSignal()" (add)="onAdd()" (search)="onSearch($event)"
-          (export)="onExportToExcel(data)" />
+          [showExportButton]="false" (add)="onAdd()" (search)="onSearch($event)" (export)="onExportToExcel(data)" />
       </nz-page-header-extra>
     </nz-page-header>
   </div>
+
+
 
   <!-- @if(data$|async;as data ){ -->
 
@@ -35,7 +36,7 @@
         <!-- [(nzSortOrder)]="column.sortOrder"
          [nzSortFn]="column.sortFn" -->
         @for (column of listOfColumns; track column.name) {
-        <th [nzFilters]="column.listOfFilter" [nzFilterFn]="column.filterFn">
+        <th nzAlign="center" [nzFilters]="column.listOfFilter" [nzFilterFn]="column.filterFn">
           {{ column.name }}
         </th>
         }
@@ -46,23 +47,23 @@
       purchase.purchaseId;) {
 
       <tr>
-        <td nzAlign="center">{{ $index + 1 }}.</td>
-        <td nzAlign="center">{{ purchase.supplierName | titlecase }}</td>
-        <td nzAlign="center">{{ purchase.supplierAddress | titlecase }}</td>
+        <td nzWidth="1%" nzAlign="center">{{ $index + 1 }}.</td>
+        <td nzWidth="20%" nzAlign="left">{{ purchase.stockName | titlecase }}</td>
 
-        <td nzAlign="center">{{ purchase.refType }}</td>
         <td nzAlign="center">{{ purchase.saveDate | nepaliDateFormatter }}</td>
-        <td nzAlign="center">{{ purchase.payType }}</td>
-        <td nzAlign="center">{{ purchase.billNo }}</td>
-        <td nzAlign="center">{{ purchase.disAmount }}</td>
-        <td nzAlign="center">{{ purchase.amount }}</td>
-        <!-- <td nzAlign="center">
-                    <lib-table-action-buttons [showEditButton]="true" [showDeleteButton]="false" [showButton4]="true"
-                        [showViewMoreButton]="true" [button3Label]="'Lab'" [button4Label]="'Transaction'"
-                        [button3Icon]="'experiment'" [button4Icon]="'dollar'" (delete)="onDelete(purchase.purchaseId)"
-                        (edit)="onEdit(purchase.purchaseId)" (viewMore)="onViewMore(purchase.purchaseId)"
-                        (buttonAction4)="showTransaction(purchase.purchaseId)" />
-                </td> -->
+        <td nzAlign="center">{{ purchase.pricePerUnit }}</td>
+        <td nzAlign="center">{{ purchase.qty }}</td>
+        <td nzAlign="center">{{ purchase.taxableAmt }}</td>
+        <td nzAlign="center">{{ purchase.taxAmt }}</td>
+        <td nzAlign="center">{{ purchase.netAmt }}</td>
+
+        <td nzAlign="center">
+          <lib-table-action-buttons [showEditButton]="true" [showDeleteButton]="false" [showButton4]="false"
+            [showViewMoreButton]="false" [button3Label]="'Lab'" [button4Label]="'Transaction'"
+            [button3Icon]="'experiment'" [button4Icon]="'dollar'" (delete)="onDelete(purchase.purchaseId)"
+            (edit)="onEdit(purchase)" (viewMore)="onViewMore(purchase.purchaseId)"
+            (buttonAction4)="showTransaction(purchase.supplierId)" />
+        </td>
       </tr>
       }
     </tbody>

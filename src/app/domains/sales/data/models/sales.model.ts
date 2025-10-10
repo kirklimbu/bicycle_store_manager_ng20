@@ -29,6 +29,7 @@ export interface FilterValues {
   };
   fromDate?: string;
   toDate?: string;
+  supplierId?: number;
 }
 
 // export interface ISalesFormDtoWrapper {

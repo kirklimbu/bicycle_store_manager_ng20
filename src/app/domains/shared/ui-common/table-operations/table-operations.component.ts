@@ -30,19 +30,10 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 import { RtcNepaliDatePickerModule } from '@rishovt/angular-nepali-datepicker';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { BsDateInputDirective } from '../../directives/bsdate/bs-date-input.directive';
+import { FilterValues } from 'src/app/domains/sales/data/models/sales.model';
 
 // libs/utils/src/lib/pipes/nepali-date-formatter.pipe.ts
 // project
-
-export interface FilterValues {
-  search?: string;
-  selector?: {
-    categoryId: number;
-    name: string;
-  };
-  fromDate?: string;
-  toDate?: string;
-}
 
 @Component({
   selector: 'lib-table-operations',
@@ -146,6 +137,7 @@ export class TableOperationsComponent implements OnInit {
     selector: [''],
     fromDate: [''],
     toDate: [''],
+    supplierId: [''],
   });
   constructor() {
     // This effect runs whenever the signal's value changes.
