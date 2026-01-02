@@ -51,7 +51,7 @@
                 <nz-col [nzXs]="24" [nzSm]="12" [nzMd]="12" [nzLg]="8" class="action-col">
                     <nz-space>
                         @if (showButtons()) {
-                        <button *nzSpaceItem nz-button nzType="primary" (click)="emitFilters()">
+                        <button type="button" *nzSpaceItem nz-button nzType="primary" (click)="emitFilters()">
                             <span nz-icon nzType="search"></span> Search
                         </button>
                         <!-- <button *nzSpaceItem nz-button nzType="default" (click)="resetFilters()">
@@ -60,13 +60,14 @@
                         }
 
                         @if (showExportButton()) {
-                        <button *nzSpaceItem nz-button nzType="default" (click)="export.emit($event)">
+                        <button type="button" *nzSpaceItem nz-button nzType="default" (click)="export.emit($event)">
                             <span nz-icon nzType="file-excel"></span> Export
                         </button>
                         }
 
                         @if (showSecondaryButton()) {
-                        <button *nzSpaceItem nz-button nzType="default" (click)="secondaryButtonClick.emit($event)">
+                        <button type="button" *nzSpaceItem nz-button nzType="default"
+                            (click)="secondaryButtonClick.emit($event)">
                             <span nz-icon [nzType]="secondaryButtonIcon()" nzTheme="outline"></span>
                             {{ secondaryButtonLabel() }}
                         </button>
@@ -77,7 +78,7 @@
                 <!-- ➕ Add Button (Group 2 — Always on far right) -->
                 @if (showAddButton()) {
                 <nz-col [nzXs]="24" [nzSm]="24" [nzMd]="8" [nzLg]="8" class="add-col">
-                    <button nz-button nzType="primary" (click)="add.emit(0)">
+                    <button type="button" nz-button nzType="primary" (click)="add.emit(0)">
                         <span nz-icon [nzType]="primaryButtonIcon()" nzTheme="outline"></span>
                         {{ primaryButtonLabel() }}
                     </button>

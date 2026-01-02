@@ -1,5 +1,6 @@
 import { CommonModule, DatePipe, NgOptimizedImage } from '@angular/common';
 import { Component, signal } from '@angular/core';
+import { GlobalConstants } from 'src/app/domains/shared/global-constants';
 
 @Component({
   selector: 'lib-footer',
@@ -10,5 +11,5 @@ import { Component, signal } from '@angular/core';
 })
 export class FooterComponent {
   currentYear = signal(new Date().getFullYear());
-  appVersion = signal('1.0.t8');
+  appVersion = signal(GlobalConstants.APP_VERSION);
 }

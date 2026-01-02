@@ -1,5 +1,5 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 // import { SidenavComponent } from 'src/app/shell/sidevav/sidenav.component';
 import { Router, RouterModule } from '@angular/router';
 // import { BreadcrumbModule } from 'xng-breadcrumb';
@@ -14,6 +14,7 @@ import { DayendService } from '../dayend/data/services/dayend.service';
 import { IDayend2Dto } from '../dayend/data/model/dayend';
 import { NepaliDateFormatterPipe } from '../shared/pipes/nepali-date-formatter.pipe';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { GlobalConstants } from '../shared/global-constants';
 interface SideNavToggle {
   screenWidth: number;
   collapsed: boolean;
@@ -46,6 +47,7 @@ export class AdminComponent implements OnInit {
   isSideNavCollapsed = false;
   collapsed = false;
   screenWidth = 0;
+  appVersion = signal(GlobalConstants.APP_VERSION);
 
   private router = inject(Router);
   private messageService = inject(MessageService);

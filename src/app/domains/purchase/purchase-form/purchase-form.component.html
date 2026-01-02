@@ -105,9 +105,15 @@
                         <div nz-col [nzXs]="24" [nzSm]="12" [nzMd]="6" [nzLg]="6">
                             <nz-form-item>
                                 <nz-form-label>Product Name </nz-form-label>
-                                <nz-select nz-input [nzShowSearch]="true" placeholder="Select product"
+                                <!-- <nz-select nzShowSearch nz-input [nzShowSearch]="true" placeholder="Select product"
                                     formControlName="selectedItem" (ngModelChange)="patchMedicineValue(i, $event)">
                                     >
+                                    @for (item of inventoryListSignal(); track item.stockMasterId) {
+                                    <nz-option [nzValue]="item" [nzLabel]="item.name"></nz-option>
+                                    }
+                                </nz-select> -->
+                                <nz-select nzShowSearch placeholder="Select product" formControlName="selectedItem"
+                                    (ngModelChange)="onProductSelected(i, $event)">
                                     @for (item of inventoryListSignal(); track item.stockMasterId) {
                                     <nz-option [nzValue]="item" [nzLabel]="item.name"></nz-option>
                                     }

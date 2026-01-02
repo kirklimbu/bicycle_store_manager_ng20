@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
@@ -15,7 +15,8 @@ import { SearchPipe } from '../../shared/pipes/search.pipe';
 import { TableActionButtonsComponent } from '../../shared/ui-common/table-action-buttons/table-action-buttons.component';
 import { TableOperationsComponent } from '../../shared/ui-common/table-operations/table-operations.component';
 import { IPurchaseTransaction1Dto } from '../data/models/purhase.model';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-purchase',
@@ -86,6 +87,7 @@ export class PurchaseComponent {
   ];
 
   private readonly router = inject(Router);
+  private readonly destroyRef$ = inject(DestroyRef);
   private readonly route = inject(ActivatedRoute);
   private readonly purchseService = inject(PurchaseService);
 
@@ -106,7 +108,7 @@ export class PurchaseComponent {
     // });
   }
 
-  ngOnInit(): void {}
+  // ngOnInit(): void {}
 
   onSearch(query: FilterValues) {
     console.log('search', query);
@@ -122,7 +124,7 @@ export class PurchaseComponent {
 
     this.purchseService
       .getPurchaseList(updatedQuery)
-
+      .pipe(takeUntilDestroyed(this.destroyRef$))
       .subscribe((res: any) => {
         console.log('data', res);
         this.data = [...res];
@@ -134,7 +136,7 @@ export class PurchaseComponent {
 
   onAdd() {
     this.router.navigate(['auth/add-purchase'], {
-      queryParams: { supplierId: 1, purchaseMasterId: 0 },
+      queryParams: { supplierId: this.supplierIdSignal(), purchaseMasterId: 0 },
     });
   }
 

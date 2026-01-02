@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
+import { Component, DestroyRef, OnInit, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import {
   FormArray,
@@ -39,7 +39,7 @@ import { BsDateInputDirective } from '../../shared/directives/bsdate/bs-date-inp
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    FormsModule,
+    // FormsModule,
     // third-party
     NzButtonModule,
     NzSpaceModule,
@@ -60,22 +60,16 @@ import { BsDateInputDirective } from '../../shared/directives/bsdate/bs-date-inp
   templateUrl: './purchase-form.component.html',
   styleUrl: './purchase-form.component.scss',
 })
-export class PurchaseFormComponent {
+export class PurchaseFormComponent implements OnInit {
+  // props
   mode = 'add';
   form!: FormGroup;
   localDetailId = -1;
-
-  // CALCULATED FIELDS
-  // totalAmountSignal = signal<number>(0);
 
   payTypeSignal = signal<IPaytype[]>([]);
   inventoryListSignal = signal<any[]>([]);
   supplierListSignal = signal<ISupplier[]>([]);
   selectedItemsListSignal = signal<any[]>([]);
-
-  // Convert inventoryList formArray into a signal-based array
-  inventoryLists = signal([] as any[]);
-  // totalAmountSignal = signal(0); // ✅ Initialize with default value 0
 
   private destroy$ = inject(DestroyRef);
   private route = inject(ActivatedRoute);
@@ -136,42 +130,38 @@ export class PurchaseFormComponent {
     // Add the first empty row to make sure UI appears
   }
 
-  // Helper to create a new category FormGroup
   createInventory(category?: any): FormGroup {
-    console.log('createInventory', category);
+    const qty = Number(category?.qty ?? 0);
+    const rate = Number(category?.pricePerUnit ?? 0);
 
-    const rate = category?.pricePerUnit || 0;
-    const qty = category?.qty || 0;
-    // const disPercent = category?.disPercent || 0;
-    // const disAmount = category?.disAmount || 0;
+    // accept both api shapes: category.selectedItem or category (if already merged)
+    const selectedItem = category?.selectedItem ?? null;
+    const taxRate = Number(category?.taxRate ?? selectedItem?.taxRate ?? 0);
 
-    // Calculate Transaction Amount
-    const taxableAmt = rate * qty;
-    const tax = category?.taxRate || 0; // default to 0 if tax is falsy
-    const taxAmt = taxableAmt + tax;
-    const netAmt = taxableAmt + taxAmt;
-
-    console.log('taxableAmt', taxableAmt);
-    console.log('taxAmt', taxAmt);
-    console.log('netAmt', netAmt);
+    const taxableAmt = +(qty * rate).toFixed(2);
+    const taxAmt = +((taxableAmt * taxRate) / 100).toFixed(2);
+    const netAmt = +(taxableAmt + taxAmt).toFixed(2);
 
     return this.fb.group({
-      purchaseMasterId: [category ? category.purchaseMasterId : ''],
-      purchaseDetailId: [category ? category.purchaseDetailId : 0],
-      supplierId: [category ? category.supplierId : ''],
-      stockMasterId: [category ? category.selectedItem.stockMasterId : ''],
-      totalAmt: [],
-      discountAmt: [],
+      purchaseMasterId: [category?.purchaseMasterId ?? ''],
+      purchaseDetailId: [category?.purchaseDetailId ?? 0],
+      supplierId: [category?.supplierId ?? ''],
+
+      stockMasterId: [
+        selectedItem?.stockMasterId ?? category?.stockMasterId ?? '',
+      ],
+      unit: [selectedItem?.unit ?? category?.unit ?? ''],
+
+      qty: [category?.qty ?? 1],
+      pricePerUnit: [category?.pricePerUnit ?? 0],
+
+      taxRate: [taxRate],
       taxableAmt: [taxableAmt],
       taxAmt: [taxAmt],
       netAmt: [netAmt],
-      qty: [category ? category.qty : ''],
-      unit: [category ? category.unit : ''],
-      taxRate: [category ? category.taxRate : 0],
-      detailId: [category ? category.detailId : this.localDetailId--],
-      pricePerUnit: [category ? category.pricePerUnit : ''],
-      selectedItem: [category ? category.selectedItem : ''],
-      // disPercent: [disPercent],
+
+      detailId: [category?.detailId ?? this.localDetailId--],
+      selectedItem: [selectedItem],
     });
   }
 
@@ -198,7 +188,10 @@ export class PurchaseFormComponent {
   private fetchDefaultForm() {
     // START FROM HERE API CALL VIA RESOURCE() api
     this.purchaseService
-      .fetchDefaultForm(this.IdsSignal().purchaseMasterId, this.IdsSignal().supplierId)
+      .fetchDefaultForm(
+        this.IdsSignal().purchaseMasterId,
+        this.IdsSignal().supplierId
+      )
       .pipe(takeUntilDestroyed(this.destroy$))
       .subscribe((_res: IPurchaseFormDtoWrapper) => {
         if (_res) {
@@ -225,106 +218,31 @@ export class PurchaseFormComponent {
     });
   }
 
-  // Update inventory signal whenever a change occurs
-  updateInventorySignal(): void {
-    this.inventoryLists.set(this.inventoryList.value);
+  onValueChange(index: number): void {
+    this.recalcRow(index);
   }
 
-  onValueChange(index: number, editedField?: 'taxPercent' | 'disAmount'): void {
-    const control = this.inventoryList.at(index);
-    let { pricePerUnit, qty, taxRate, taxableAmt } = control.value;
-    // let { pricePerUnit, qty, disPercent, disAmount } = control.value;
-
-    console.log('On Value Change', control.value);
-
-    pricePerUnit = Number(pricePerUnit) || 0;
-    qty = Number(qty) || 0;
-    taxRate = Number(taxRate) || 0;
-    taxableAmt = Number(taxableAmt) || 0;
-    // disPercent = Number(disPercent) || 0;
-    // disAmount = Number(disAmount) || 0;
-
-    const baseAmount = pricePerUnit * qty;
-
-    // Store the last edited field
-    control.patchValue({ lastEdited: editedField }, { emitEvent: false });
-
-    // if (editedField === 'taxPercent') {
-    //   // Recalculate disAmount
-    //   disAmount = (baseAmount * disPercent) / 100;
-    // } else if (editedField === 'disAmount') {
-    //   // Recalculate disPercent
-    //   disPercent = baseAmount > 0 ? (disAmount / baseAmount) * 100 : 0;
-    // }
-
-    // Round to 2 decimal places
-    // disAmount = parseFloat(disAmount.toFixed(2));
-    // disPercent = parseFloat(disPercent.toFixed(2));
-
-    // Transaction amount BEFORE discount (you can subtract discount later if needed)
-    const netAmt = parseFloat(baseAmount.toFixed(2));
-    control.patchValue(
-      {
-        // disAmount,
-        // disPercent,
-        netAmt,
-        taxRate,
-        taxableAmt,
-      },
-      { emitEvent: false }
-    );
-
-    this.updateInventorySignal();
-    this.calculateTotalAmount();
-  }
-
-  // ✅ Function to Calculate Total Amount
-  calculateTotalAmount(): void {
-    const total = this.inventoryList.controls.reduce((sum, control) => {
-      return sum + (control.value.transAmount || 0);
-    }, 0);
-
-    // Patch total amount into form
-    this.form.patchValue({
-      purchaseMaster: { totalAmt: total },
-    });
-  }
-
-  // **BUG FIX**: Add New Item on Enter Key Press
   onEnterKeyPress(index: number): void {
-    // **1. Get the last entered row values**
-    const lastItem = this.inventoryList.at(index)?.value;
+    // ensure latest math is patched
+    this.recalcRow(index);
 
-    // **3. Update Signal with User-Entered Values**
-    // this.selectedItemsListSignal.update(items => [...items, lastItem]);
+    const row = this.inventoryList.at(index)?.value;
+    if (!row?.selectedItem) return;
+
+    const normalized = {
+      ...row,
+      stockMasterId: row.selectedItem?.stockMasterId ?? row.stockMasterId,
+      unit: row.selectedItem?.unit ?? row.unit,
+      taxRate: row.selectedItem?.taxRate ?? row.taxRate,
+    };
 
     this.selectedItemsListSignal.update((items) => {
-      console.log('lastItem', lastItem);
-
-      const exists = items.some((item) => item.detailId === lastItem?.detailId);
-
-      const patchedItem = {
-        ...lastItem,
-        inventoryId: lastItem.medicine?.inventoryId ?? lastItem.inventoryId,
-        // unitId: lastItem.medicine?.unitId ?? lastItem.unitId,
-        unit: lastItem.medicine?.unit ?? lastItem.unit,
-        medicineId: lastItem.medicine?.medicineId ?? lastItem.medicineId,
-        name: lastItem.medicine?.name ?? lastItem.name,
-        stockMasterId:
-          lastItem.medicine?.stockMasterId ?? lastItem.stockMasterId,
-      };
-
-      if (exists) {
-        // Update existing item
-        return items.map((item) =>
-          item.detailId === lastItem?.detailId
-            ? { ...item, ...patchedItem }
-            : item
-        );
-      } else {
-        // Add a new item with transformed values
-        return [...items, patchedItem];
-      }
+      const exists = items.some((x) => x.detailId === normalized.detailId);
+      return exists
+        ? items.map((x) =>
+            x.detailId === normalized.detailId ? normalized : x
+          )
+        : [...items, normalized];
     });
 
     this.resetInventoryList();
@@ -370,26 +288,24 @@ export class PurchaseFormComponent {
 
   updateInventory(index: number, updatedData: any): void {
     this.inventoryList.at(index).patchValue(updatedData);
-    this.patchMedicineValue(index, updatedData);
+    // this.patchMedicineValue(index, updatedData);
+    this.onProductSelected(index, updatedData);
   }
 
-  patchMedicineValue(index: number, selectedItem: any) {
-    const inventoryList = this.form.get('selectedStockList') as FormArray;
-    if (!inventoryList || !inventoryList.at(index)) return;
+  onProductSelected(index: number, item: any): void {
+    const row = this.inventoryList.at(index) as FormGroup;
+    if (!row) return;
 
-    // Find the exact reference from inventoryListSignal()
-    const matchedItem =
-      this.inventoryListSignal().find(
-        (item) => item.inventoryId === selectedItem.inventoryId
-      ) || selectedItem;
+    row.patchValue(
+      {
+        stockMasterId: item.stockMasterId,
+        unit: item.unit,
+        taxRate: item.taxRate ?? 0,
+      },
+      { emitEvent: false } // 🔥 prevents recursion
+    );
 
-    // Get the current value from the form
-    const currentValue = inventoryList.at(index).get('medicine')?.value;
-
-    // ✅ Prevent unnecessary patching to avoid infinite loop
-    if (currentValue !== matchedItem) {
-      inventoryList.at(index).patchValue({ medicine: matchedItem });
-    }
+    this.recalcRow(index);
   }
 
   onDelete(id: number) {
@@ -408,5 +324,33 @@ export class PurchaseFormComponent {
     this.form.reset();
     this.resetInventoryList();
     this.selectedItemsListSignal.set([]);
+  }
+
+  private recalcRow(index: number): void {
+    const row = this.inventoryList.at(index) as FormGroup;
+    if (!row) return;
+
+    const qty = Number(row.get('qty')?.value ?? 0);
+    const rate = Number(row.get('pricePerUnit')?.value ?? 0);
+
+    // taxRate can come from the selected item, or the row
+    const selectedItem = row.get('selectedItem')?.value as any;
+    const taxRate = Number(
+      selectedItem?.taxRate ?? row.get('taxRate')?.value ?? 0
+    );
+
+    const taxableAmt = +(qty * rate).toFixed(2);
+    const taxAmt = +((taxableAmt * taxRate) / 100).toFixed(2);
+    const netAmt = +(taxableAmt + taxAmt).toFixed(2);
+
+    row.patchValue(
+      {
+        taxRate,
+        taxableAmt,
+        taxAmt,
+        netAmt,
+      },
+      { emitEvent: false }
+    );
   }
 }

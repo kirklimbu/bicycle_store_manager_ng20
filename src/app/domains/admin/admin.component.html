@@ -39,6 +39,11 @@
           <li nz-menu-item [routerLink]="['/auth/list-stock']">Stock list</li>
         </ul>
       </li>
+      <li nz-submenu nzTitle="Order" nzIcon="usergroup-delete">
+        <ul>
+          <li nz-menu-item [routerLink]="['/auth/list-order']">Order list</li>
+        </ul>
+      </li>
       <li nz-submenu nzTitle="Customer" nzIcon="contacts">
         <ul>
           <li nz-menu-item [routerLink]="['/auth/list-customer']">
@@ -160,6 +165,8 @@
         &copy; {{currentDate}}
         <!-- <a href="http://www.kalpaantatech.com.np" target="_blank" class="copyright-link">Kalpaanta Tech Solutions</a> -->
         All Rights Reserved.
+        <span class="version">v{{ appVersion() }}</span>
+
     </nz-footer>
   </nz-layout>
 </nz-layout>
