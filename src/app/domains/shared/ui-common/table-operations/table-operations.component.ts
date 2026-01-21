@@ -85,6 +85,10 @@ export class TableOperationsComponent implements OnInit {
   secondaryButtonLabel = input<string>('Transfer');
   secondaryButtonClick = output<any>(); //make search api call
 
+  tertiaryButtonIcon = input<string>('file-excel');
+  tertiaryButtonLabel = input<string>('');
+  showTertiaryButton = input<boolean>(false);
+
   fetchSelector1Data = input<boolean>(false); // Observable for
 
   // selector1 data
@@ -119,6 +123,7 @@ export class TableOperationsComponent implements OnInit {
   exportButtonIcon = input<string>('file-excel');
   exportButtonLabel = input<string>('Export Excel');
   export = output<any>();
+  tertiaryButtonClick = output<any>();
 
   readonly showButtons = computed(
     () =>

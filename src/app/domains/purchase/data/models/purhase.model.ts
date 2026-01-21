@@ -94,3 +94,8 @@ export interface IPaytype {
   name: string;
   type: string;
 }
+export interface PurchaseFormParams {
+  purchaseMasterId: number;
+  supplierId: number;
+  purRetMasterId?: number;
+}

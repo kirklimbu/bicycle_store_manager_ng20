@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, WritableSignal, inject, signal } from '@angular/core';
 
 import { Observable } from 'rxjs';
@@ -6,6 +6,7 @@ import { environment } from '../../../../../../src/environments/environment';
 import {
   IPurchaseFormDtoWrapper,
   IPurchaseTransaction1Dto,
+  PurchaseFormParams,
 } from '../models/purhase.model';
 import {
   IPurchaseTransactionFormDto,
@@ -94,5 +95,56 @@ export class PurchaseService {
       `${this.apiUrl}purchase/return/save`,
       data
     );
+  }
+
+  // PURCHASE MASTER
+
+  getPurchaseMasterList(query: any): Observable<IPurchaseTransaction1Dto[]> {
+    return this.http.get<IPurchaseTransaction1Dto[]>(
+      `${this.apiUrl}purchase/master/list`,
+      { params: query }
+    );
+  }
+
+  fetchDefaultPurchaseReturnForm(
+    id1: number,
+    id2: number
+  ): Observable<IPurchaseFormDtoWrapper> {
+    return this.http.get<IPurchaseFormDtoWrapper>(
+      `${this.apiUrl}purchase/form`,
+      { params: { purchaseMasterId: id1, supplierId: id2 } }
+    );
+  }
+  fetchPurchaseReturnForm(
+    purchaseMasterId: number,
+    supplierId: number,
+    purRetMasterId?: number
+  ): Observable<IPurchaseFormDtoWrapper> {
+    const params: Record<string, string> = {
+      purchaseMasterId: String(purchaseMasterId),
+      supplierId: String(supplierId),
+    };
+
+    if (purRetMasterId !== undefined) {
+      params['purRetMasterId'] = String(purRetMasterId);
+    }
+    return this.http.get<IPurchaseFormDtoWrapper>(
+      `${this.apiUrl}purchase/return/form`,
+      {
+        params,
+      }
+    );
+  }
+  private buildHttpParams(params: { [key: string]: unknown }): HttpParams {
+    let httpParams = new HttpParams();
+
+    Object.keys(params).forEach((key) => {
+      const value = params[key];
+      if (value !== undefined && value !== null) {
+        httpParams = httpParams.set(key, String(value));
+      }
+    });
+
+    return httpParams;
   }
 }

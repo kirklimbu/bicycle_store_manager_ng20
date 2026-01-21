@@ -1,0 +1,80 @@
+<!-- <nz-breadcrumb [nzAutoGenerate]="true"></nz-breadcrumb> -->
+<div class="table-container">
+    <div class="site-page-header-ghost-wrapper">
+        <nz-page-header nzTitle="Purchase Master List" [nzGhost]="false">
+            <nz-page-header-extra>
+                <lib-table-operations [showSelector1]="false" [selector1Options]="manualSelectorOptions"
+                    [showAddButton]="false" [isLocalSearch]="false" [showSearch]="false" [showFromDate]="true"
+                    [showToDate]="true" [showExportButton]="false" [showAddButton]="true" (search)="onSearch($event)"
+                    (add)="onAdd()" />
+            </nz-page-header-extra>
+        </nz-page-header>
+
+    </div>
+
+
+
+    <!-- @if(data$|async;as data ){ -->
+
+    <nz-table [nzFrontPagination]="false" #nzTable [nzBordered]="true" [nzData]="data" [nzScroll]="{ x: '900px' }">
+        <thead>
+            <!-- <tr>
+        <th nzAlign="center" nzWidth="5%">#</th>
+        <th nzAlign="center">Name</th>
+        <th nzAlign="center">Address</th>
+        <th nzAlign="center">refType</th>
+        <th nzAlign="center">Save Date</th>
+        <th
+          nzAlign="center"
+         
+        >
+          Pay Type
+        </th>
+        <th nzAlign="center">Bill No</th>
+        <th nzAlign="center" nzWidth="10%">Discount Amount</th>
+        <th nzAlign="center" nzWidth="10%">Amount</th>
+      </tr> -->
+            <tr>
+                <!-- [(nzSortOrder)]="column.sortOrder"
+         [nzSortFn]="column.sortFn" -->
+                @for (column of listOfColumns; track column.name) {
+                <th nzAlign="center" [nzFilters]="column.listOfFilter" [nzFilterFn]="column.filterFn">
+                    {{ column.name }}
+                </th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @for (purchase of nzTable.data|search:filterCriteria; track
+            purchase.purchaseId;) {
+
+            <tr>
+                <td nzWidth="1%" nzAlign="center">{{ $index + 1 }}.</td>
+                <td nzWidth="20%" nzAlign="left">{{ purchase.billNo }}</td>
+
+                <td nzAlign="center">{{ purchase.saveDate | nepaliDateFormatter }}</td>
+                <td nzWidth="20%" nzAlign="left">{{ purchase.supplierBillNo }}</td>
+                <td nzAlign="center">{{ purchase.supplierSaveDate | nepaliDateFormatter }}</td>
+                <!-- <td nzAlign="center">{{ purchase.pricePerUnit }}</td> -->
+                <!-- <td nzAlign="center">{{ purchase.qty }}</td> -->
+                <td nzAlign="center">{{ purchase.taxableAmt }}</td>
+                <td nzAlign="center">{{ purchase.taxAmt }}</td>
+                <td nzAlign="center">{{ purchase.netAmt }}</td>
+                <td nzAlign="center">{{ purchase.discountAmt }}</td>
+                <td nzAlign="center">{{ purchase.totalAmt }}</td>
+                <td nzAlign="center">{{ purchase.payType }}</td>
+
+                <td nzAlign="center">
+                    <lib-table-action-buttons [showEditButton]="true" [showDeleteButton]="false" [showButton4]="true"
+                        [showViewMoreButton]="false" [button4Label]="'Purchase Return'" [button3Icon]="'experiment'"
+                        [button4Icon]="'dollar'" (delete)="onDelete(purchase.purchaseId)" (edit)="onEdit(purchase)"
+                        (buttonAction4)="onPurchaseReturn(purchase)" />
+                </td>
+                <!-- (viewMore)=" onViewMore(purchase.purchaseId)"
+                        (buttonAction4)="showTransaction(purchase.supplierId)" -->
+            </tr>
+            }
+        </tbody>
+    </nz-table>
+    <!-- } -->
+</div>

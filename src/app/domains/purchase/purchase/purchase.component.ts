@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { PurchaseService } from '../data/services/purchase.services';
 
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { saveAs } from 'file-saver';
 import * as XLSX from 'xlsx';
 import { FilterValues } from '../../sales/data/models/sales.model';
@@ -15,13 +16,12 @@ import { SearchPipe } from '../../shared/pipes/search.pipe';
 import { TableActionButtonsComponent } from '../../shared/ui-common/table-action-buttons/table-action-buttons.component';
 import { TableOperationsComponent } from '../../shared/ui-common/table-operations/table-operations.component';
 import { IPurchaseTransaction1Dto } from '../data/models/purhase.model';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-purchase',
   imports: [
     CommonModule,
+    RouterModule,
     NzPageHeaderModule,
     NzTableModule,
     NzSpaceModule,
@@ -210,5 +210,22 @@ export class PurchaseComponent {
       type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     });
     saveAs(blob, 'purchase_report.xlsx');
+  }
+
+  onPurchase() {
+    console.log('purchae click');
+
+    this.router.navigate(['auth/purchase-master'], {
+      queryParams: { supplierId: this.supplierIdSignal() },
+    });
+  }
+
+  onPurchaseReturn() {
+    this.router.navigate(['auth/purchase-return'], {
+      queryParams: {
+        supplierId: this.supplierIdSignal(),
+        purchaseReturnMasterId: 0,
+      },
+    });
   }
 }

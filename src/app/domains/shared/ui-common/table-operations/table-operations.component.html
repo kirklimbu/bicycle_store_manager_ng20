@@ -65,25 +65,45 @@
                         </button>
                         }
 
-                        @if (showSecondaryButton()) {
+                        <!-- @if (showSecondaryButton()) {
                         <button type="button" *nzSpaceItem nz-button nzType="default"
                             (click)="secondaryButtonClick.emit($event)">
                             <span nz-icon [nzType]="secondaryButtonIcon()" nzTheme="outline"></span>
                             {{ secondaryButtonLabel() }}
                         </button>
-                        }
+                        } -->
                     </nz-space>
                 </nz-col>
 
                 <!-- ➕ Add Button (Group 2 — Always on far right) -->
-                @if (showAddButton()) {
+                <!-- @if (showAddButton()) {
                 <nz-col [nzXs]="24" [nzSm]="24" [nzMd]="8" [nzLg]="8" class="add-col">
                     <button type="button" nz-button nzType="primary" (click)="add.emit(0)">
                         <span nz-icon [nzType]="primaryButtonIcon()" nzTheme="outline"></span>
                         {{ primaryButtonLabel() }}
                     </button>
                 </nz-col>
-                }
+                } -->
+                <nz-col [nzXs]="24" [nzSm]="12" [nzMd]="12" [nzLg]="8" class="action-col">
+                    <nz-space>
+
+
+                        @if (showSecondaryButton()) {
+                        <button type="button" *nzSpaceItem nz-button nzType="default"
+                            (click)="secondaryButtonClick.emit($event)">
+                            <span nz-icon [nzType]="secondaryButtonIcon()"></span> {{secondaryButtonLabel()}}
+                        </button>
+                        }
+
+                        @if (showTertiaryButton()) {
+                        <button type="button" *nzSpaceItem nz-button nzType="default"
+                            (click)="tertiaryButtonClick.emit($event)">
+                            <span nz-icon [nzType]="tertiaryButtonIcon()" nzTheme="outline"></span>
+                            {{ tertiaryButtonLabel() }}
+                        </button>
+                        }
+                    </nz-space>
+                </nz-col>
 
             </nz-row>
         </form>
