@@ -455,15 +455,15 @@ const taxRate = Number(item?.taxRate ?? 0);
     // 🔁 AUTO-SYNC + 🔒 DISABLE
     if (this.lastEditedField() === 'disPercent') {
       discountAmt = +((totalAmt * disPercent) / 100).toFixed(2);
-      disAmountCtrl?.disable({ emitEvent: false });
-      disPercentCtrl?.enable({ emitEvent: false });
+      // disAmountCtrl?.disable({ emitEvent: false });
+      // disPercentCtrl?.enable({ emitEvent: false });
     }
   
     if (this.lastEditedField() === 'discountAmt') {
       disPercent =
         totalAmt > 0 ? +((discountAmt / totalAmt) * 100).toFixed(2) : 0;
-      disPercentCtrl?.disable({ emitEvent: false });
-      disAmountCtrl?.enable({ emitEvent: false });
+      // disPercentCtrl?.disable({ emitEvent: false });
+      // disAmountCtrl?.enable({ emitEvent: false });
     }
   
     // 🛡 Safety

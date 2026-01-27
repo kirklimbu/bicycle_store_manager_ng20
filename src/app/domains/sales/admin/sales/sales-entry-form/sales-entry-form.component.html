@@ -195,9 +195,9 @@
                         <!-- TAX -->
                         <div nz-col nzXs="12" nzMd="4" nzLg="2">
                             <nz-form-item>
-                                <nz-form-label>Tax %</nz-form-label>
+                                <nz-form-label>Tax Amt</nz-form-label>
                                 <nz-form-control>
-                                    <input  readonly nz-input formControlName="taxRate" />
+                                    <input  readonly nz-input formControlName="taxAmt" />
                                 </nz-form-control>
                             </nz-form-item>
                         </div>
@@ -234,7 +234,6 @@
                 <th nzWidth="5%">Total</th>
                 <th nzWidth="5%">Dis. Amt</th>
                 <th nzWidth="5%">Taxable Amt</th>
-                <th nzWidth="5%">Tax%</th>
 
                 <th nzWidth="5%">Tax Amt</th>
                 <th nzWidth="10%">Net Amt</th>
@@ -251,7 +250,6 @@
                 <td>{{ row.totalAmt |number :'1.1-2'}}</td>
                 <td>{{ row.discountAmt|number :'1.2-2' }}</td>
                 <td>{{ row.taxableAmt|number :'1.2-2' }}</td>
-                <td>{{ row.taxRate }}</td>
 
                 <td>{{ row.taxAmt|number :'1.2-2' }}</td>
                 <td>{{ row.transAmount|number :'1.2-2' }}</td>
@@ -265,7 +263,6 @@
         </tbody>
         <tfoot nzSummary>
             <tr>
-                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
