@@ -55,4 +55,12 @@ export class ListCustomer implements OnInit {
   onAdd(): void {
     this.router.navigate(['/auth/add-customer']);
   }
+  onAddSales(id: number): void {
+    this.router.navigate(['/auth/add-sales'], {
+      queryParams: {
+        customerId: id,
+        salesMasterId: 0,
+      },
+    });
+  }
 }

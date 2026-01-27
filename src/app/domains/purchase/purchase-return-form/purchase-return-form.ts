@@ -97,12 +97,13 @@ export class PurchaseReturnForm {
   });
 
   totalAmountSignal = computed(() => {
-    console.log('selectedItemsListSignal', this.selectedItemsListSignal());
-
-    return this.selectedItemsListSignal().reduce(
-      (total, item) => total + (item.netAmt || 0),
+    const total = this.selectedItemsListSignal().reduce(
+      (sum, item) => sum + (Number(item.netAmt) || 0),
       0
     );
+
+    // round to 2 decimal places
+    return Math.round(total * 100) / 100;
   });
 
   ngOnInit(): void {
@@ -200,8 +201,11 @@ export class PurchaseReturnForm {
           this.supplierListSignal.set(_res.supplierList);
           this.purchaseMasterListSignal.set(_res.purchaseMasterList);
           this.patchFormValues(_res.form);
-          this.supplierNameSignal.set(_res.purchaseReturnMaster?.supplierName);
-          this.supplierNumberSignal.set(_res.purchaseReturnMaster?.mobile);
+          this.supplierNameSignal.set(
+            _res.form.purchaseReturnMaster.supplierName
+          );
+          this.supplierNumberSignal.set(_res.form.purchaseReturnMaster.mobile);
+          console.log('sdfs', this.supplierNameSignal());
 
           // for edit case
           // console.log('masterIdSignal', this.masterIdSignal());
@@ -223,38 +227,6 @@ export class PurchaseReturnForm {
     this.recalcRow(index);
   }
 
-  // onEnterKeyPress(index: number): void {
-  //   // ensure latest math is patched
-  //   this.recalcRow(index);
-
-  //   const row = this.inventoryList.at(index)?.value;
-  //   console.log('enter key', index, row);
-  //   if (!row?.selectedItem) return;
-
-  //   const normalized = {
-  //     ...row,
-  //     purchaseDetailId: row.purchaseDetailId || 0,
-  //     purchaseMasterId:
-  //       row.purchaseMasterId || this.IdsSignal().purchaseMasterId,
-  //     supplierId: row.supplierId || this.IdsSignal().supplierId,
-  //     unit: row.selectedItem?.unit ?? row.unit,
-  //     taxRate: row.selectedItem?.taxRate ?? row.taxRate,
-  //   };
-
-  //   this.selectedItemsListSignal.update((items) => {
-  //     const exists = items.some(
-  //       (x) => x.purchaseDetailId === normalized.purchaseDetailId
-  //     );
-  //     return exists
-  //       ? items.map((x) =>
-  //           x.purchaseDetailId === normalized.purchaseDetailId ? normalized : x
-  //         )
-  //       : [...items, normalized];
-  //   });
-  //   console.log('normalized', normalized);
-
-  //   this.resetInventoryList();
-  // }
   onEnterKeyPress(index: number): void {
     this.recalcRow(index);
 
@@ -331,9 +303,9 @@ export class PurchaseReturnForm {
   onEdit(id: any) {
     // edit form Array
     this.updateInventory(0, id);
-    this.selectedItemsListSignal.update((list) =>
-      list.filter((item) => item.purchaseDetailId !== id.purchaseDetailId)
-    );
+    // this.selectedItemsListSignal.update((list) =>
+    //   list.filter((item) => item.purchaseDetailId !== id.purchaseDetailId)
+    // );
   }
 
   updateInventory(index: number, row: any): void {

@@ -27,6 +27,7 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { NzTableModule } from 'ng-zorro-antd/table';
 // project
 import { SalesService } from '../../../data/services/sales.services';
+import { DiscountField } from '../../../data/models/sales.model';
 // import { ISalesFormDtoWrapper } from '../data/model/sales.model';
 
 @Component({
@@ -68,6 +69,7 @@ export class SalesEntryFormComponent {
   inventoryListSignal = signal<any[]>([]);
   supplierListSignal = signal<any[]>([]);
   selectedItemsListSignal = signal<any[]>([]);
+  lastEditedField = signal<'disPercent' | 'discountAmt' | null>(null);
 
   // Convert inventoryList formArray into a signal-based array
   inventoryLists = signal([] as any[]);
@@ -83,25 +85,28 @@ export class SalesEntryFormComponent {
   queryParamMapSignal = toSignal(this.route.queryParamMap, {
     initialValue: this.route.snapshot.queryParamMap,
   });
-
-  masterIdSignal = computed(() => {
+  IdsSignal = computed(() => {
     const queryParamMap = this.queryParamMapSignal();
-    return queryParamMap ? Number(queryParamMap.get('masterId')) : 0;
+
+    if (!queryParamMap) {
+      return {
+        customerId: 0,
+        salesMasterId: 0,
+      };
+    }
+
+    return {
+      customerId: Number(queryParamMap.get('customerId')) || 0,
+      salesMasterId: Number(queryParamMap.get('salesMasterId')) || 0,
+    };
   });
 
-  // private masterIdSignal = useQueryParamsSignal({
-  //   masterId: val => Number(val) || 0,
-  //   supplierId: val => Number(val) || 0
-  // });
-
-  totalAmountSignal = computed(() => {
-    console.log('selectedItemsListSignal', this.selectedItemsListSignal());
-
-    return this.selectedItemsListSignal().reduce(
-      (total, item) => total + (item.transAmount || 0),
+  totalAmountSignal = computed(() =>
+    this.selectedItemsListSignal().reduce(
+      (sum, item) => sum + (item.transAmount || 0),
       0
-    );
-  });
+    )
+  );
 
   ngOnInit(): void {
     this.initForm();
@@ -110,51 +115,90 @@ export class SalesEntryFormComponent {
 
   initForm(): void {
     this.form = this.fb.group({
-      transactionMaster: this.fb.group({
-        masterId: [0],
-        refType: [''],
+      salesMaster: this.fb.group({
+        salesMasterId: [0],
         payTypeId: [''],
         billNo: [''],
         saveDate: [''],
         customerId: [0],
-        totalAmount: [''],
         remarks: [''],
       }),
 
-      inventoryList: this.fb.array([this.createInventory()]),
+      selectedStockList: this.fb.array([this.createInventory()]),
     });
     // Add the first empty row to make sure UI appears
   }
 
   // Helper to create a new category FormGroup
   createInventory(category?: any): FormGroup {
-    const rate = category?.rate || 0;
-    const qty = category?.qty || 0;
-    const disPercent = category?.disPercent || 0;
-    const disAmount = category?.disAmount || 0;
-
-    // Calculate Transaction Amount
-    const transAmount = rate * qty;
-
+    const qty = Number(category?.qty ?? 0);
+    const rate = Number(category?.pricePerUnit ?? 0);
+  
+    const selectedItem = category?.selectedItem ?? category?.medicine ?? null;
+    const taxRate = Number(category?.taxRate ?? selectedItem?.taxRate ?? 0);
+  
+    // 1️⃣ Total Amount
+    const totalAmt = +(qty * rate).toFixed(2);
+  
+    // 2️⃣ Discount
+    const disPercent = Number(category?.disPercent ?? 0);
+    let discountAmt = Number(category?.discountAmt ?? 0);
+  
+    // If percent is provided, calculate amount
+    if (disPercent > 0) {
+      discountAmt = +((totalAmt * disPercent) / 100).toFixed(2);
+    }
+  
+    // Safety: discount should never exceed total
+    discountAmt = Math.min(discountAmt, totalAmt);
+  
+    // 3️⃣ Taxable Amount
+    const taxableAmt = +(totalAmt - discountAmt).toFixed(2);
+  
+    // 4️⃣ Tax Amount
+    const taxAmt = +((taxableAmt * taxRate) / 100).toFixed(2);
+  
+    // 5️⃣ Net Amount
+    const netAmt = +(taxableAmt + taxAmt).toFixed(2);
+  
     return this.fb.group({
-      inventoryId: [category ? category.inventoryId : 0],
-      masterId: [category ? category.masterId : ''],
-      unitId: [category ? category.unitId : ''],
-      detailId: [category ? category.detailId : this.localDetailId--],
-      qty: [category ? category.qty : ''],
-      rate: [category ? category.rate : ''],
-      medicine: [category ? category.medicine : ''],
-      medicineId: [category ? category.medicineId : ''],
+      salesDetailId: [category?.purchaseDetailId ?? 0],
+      supplierId: [category?.supplierId ?? ''],
+  
+      stockMasterId: [
+        selectedItem?.stockMasterId ?? category?.stockMasterId ?? '',
+      ],
+      unit: [selectedItem?.unit ?? category?.unit ?? ''],
+      unitId: [selectedItem?.unitId ?? category?.unitId ?? ''],
+  
+      qty: [qty],
+      pricePerUnit: [rate],
+  
+      totalAmt: [totalAmt],          // ✅ FIXED
+      taxRate: [taxRate],
+  
+      taxableAmt: [taxableAmt],      // ✅ total - discount
+      taxAmt: [taxAmt],
+  
       disPercent: [disPercent],
-      disAmount: [disAmount],
-      transAmount: [transAmount],
-      lastEdited: [''],
+      discountAmt: [discountAmt],
+  
+      netAmt: [netAmt],
+      transAmount: [netAmt],         // ✅ final payable
+  
+      medicine: [selectedItem],
     });
   }
 
+  setLastEdited(field: 'disPercent' | 'discountAmt') {
+    this.lastEditedField.set(field);
+  }
+  
+  
+
   // Get the selectedCategoryList FormArray
   get inventoryList(): FormArray {
-    return this.form.get('inventoryList') as FormArray;
+    return this.form.get('selectedStockList') as FormArray;
   }
 
   // Adds a new inventory entry to the inventoryList.
@@ -167,6 +211,8 @@ export class SalesEntryFormComponent {
     this.inventoryList.removeAt(index);
   }
 
+  
+
   private resetInventoryList(): void {
     this.inventoryList.clear();
     this.addInventory();
@@ -175,23 +221,26 @@ export class SalesEntryFormComponent {
   private fetchDefaultForm() {
     // START FROM HERE API CALL VIA RESOURCE() api
     this.salesService
-      .fetchDefaultForm(this.masterIdSignal())
+      .fetchDefaultForm(
+        this.IdsSignal().customerId,
+        this.IdsSignal().salesMasterId
+      )
       .pipe(takeUntilDestroyed(this.destroy$))
       .subscribe((_res: any) => {
         if (_res) {
           console.log('patchFormValues form api', _res);
-          this.customerListSignal.update(() => _res.patientList);
+          this.customerListSignal.update(() => _res.customerList);
           this.payTypeSignal.update(() => _res.payTypeList);
           // selectedItemsListSignal
-          this.inventoryListSignal.update(() => _res.inventoryList);
+          this.inventoryListSignal.update(() => _res.stockList);
           this.supplierListSignal.update(() => _res.supplierList);
           this.patchFormValues(_res.form);
+          console.log('form', _res.form);
 
           // for edit case
-          console.log('masterIdSignal', this.masterIdSignal());
-          if (this.masterIdSignal() > 0) {
+          if (this.IdsSignal().salesMasterId > 0) {
             this.mode = 'edit';
-            this.selectedItemsListSignal.update(() => _res.form.inventoryList);
+            this.selectedItemsListSignal.update(() => _res.form.stockList);
           }
         }
       });
@@ -199,7 +248,7 @@ export class SalesEntryFormComponent {
 
   patchFormValues(apiData: any) {
     this.form.patchValue({
-      transactionMaster: apiData.transactionMaster,
+      salesMaster: apiData.salesMaster,
     });
   }
 
@@ -208,81 +257,8 @@ export class SalesEntryFormComponent {
     this.inventoryLists.set(this.inventoryList.value);
   }
 
-  // onValueChange(index: number, editedField?: 'disPercent' | 'disAmount'): void {
-  //   const control = this.inventoryList.at(index);
-  //   let { rate, qty, disPercent, disAmount } = control.value;
-
-  //   rate = Number(rate) || 0;
-  //   qty = Number(qty) || 0;
-  //   disPercent = Number(disPercent) || 0;
-  //   disAmount = Number(disAmount) || 0;
-
-  //   const baseAmount = rate * qty;
-
-  //   // Store the last edited field
-  //   control.patchValue({ lastEdited: editedField }, { emitEvent: false });
-
-  //   if (editedField === 'disPercent') {
-  //     // Recalculate disAmount
-  //     disAmount = (baseAmount * disPercent) / 100;
-  //   } else if (editedField === 'disAmount') {
-  //     // Recalculate disPercent
-  //     disPercent = baseAmount > 0 ? (disAmount / baseAmount) * 100 : 0;
-  //   }
-
-  //   // Round to 2 decimal places
-  //   disAmount = parseFloat(disAmount.toFixed(2));
-  //   disPercent = parseFloat(disPercent.toFixed(2));
-
-  //   // Transaction amount BEFORE discount (you can subtract discount later if needed)
-  //   const transAmount = parseFloat(baseAmount.toFixed(2));
-
-  //   control.patchValue({
-  //     disAmount,
-  //     disPercent,
-  //     transAmount
-  //   }, { emitEvent: false });
-
-  //   this.updateInventorySignal();
-  //   this.calculateTotalAmount();
-  // }
-  onValueChange(index: number, editedField?: 'disPercent' | 'disAmount'): void {
-    const control = this.inventoryList.at(index);
-    let { rate, qty, disPercent, disAmount } = control.value;
-
-    rate = Number(rate) || 0;
-    qty = Number(qty) || 0;
-    disPercent = isNaN(Number(disPercent)) ? 0 : Number(disPercent);
-    disAmount = isNaN(Number(disAmount)) ? 0 : Number(disAmount);
-
-    const baseAmount = rate * qty;
-
-    control.patchValue({ lastEdited: editedField }, { emitEvent: false });
-
-    if (editedField === 'disPercent') {
-      disAmount = (baseAmount * disPercent) / 100;
-    } else if (editedField === 'disAmount') {
-      disPercent = baseAmount > 0 ? (disAmount / baseAmount) * 100 : 0;
-    }
-
-    disAmount = parseFloat(disAmount.toFixed(2));
-    if (editedField === 'disAmount') {
-      disPercent = parseFloat(disPercent.toFixed(2));
-    }
-
-    const transAmount = parseFloat(baseAmount.toFixed(2));
-
-    control.patchValue(
-      {
-        disAmount,
-        disPercent,
-        transAmount,
-      },
-      { emitEvent: false }
-    );
-
-    this.updateInventorySignal();
-    this.calculateTotalAmount();
+  onValueChange(index: number): void {
+    this.recalcRow(index);
   }
 
   // ✅ Function to Calculate Total Amount
@@ -293,49 +269,94 @@ export class SalesEntryFormComponent {
 
     // Patch total amount into form
     this.form.patchValue({
-      transactionMaster: { totalAmount: total },
+      salesMaster: { totalAmount: total },
     });
   }
+  // onItemSelected(index: number, stockMasterId: any) {
+  //   const selectedItem = this.inventoryListSignal().find(
+  //     (x) => x.stockMasterId === stockMasterId
+  //   );
+  //   if (!selectedItem) return;
+  
+  //   const rowCtrl = this.inventoryList.at(index) as FormGroup;
+  //   if (!rowCtrl) return;
+  
+  //   // Patch all relevant fields
+  //   rowCtrl.patchValue(
+  //     {
+  //       medicine: selectedItem,
+  //       stockMasterId: selectedItem.stockMasterId,
+  //       unit: selectedItem.unit,
+  //       unitId: selectedItem.unitId ?? '',
+  //       pricePerUnit: selectedItem.pricePerUnit ?? 0,
+  //       taxRate: selectedItem.taxRate ?? 0,
+  //     },
+  //     { emitEvent: false } // prevent recursion
+  //   );
+  
+  //   // Recalculate totals, tax, net amount
+  //   this.recalcRow(index);
+  // }
+  
+  
 
   // **BUG FIX**: Add New Item on Enter Key Press
   onEnterKeyPress(index: number): void {
-    // **1. Get the last entered row values**
-    const lastItem = this.inventoryList.at(index)?.value;
-
-    // **3. Update Signal with User-Entered Values**
-    // this.selectedItemsListSignal.update(items => [...items, lastItem]);
-
+    event?.preventDefault();
+  
+    const rowCtrl = this.inventoryList.at(index) as FormGroup;
+    if (!rowCtrl) return;
+  
+    // 🔁 Ensure all calculations are up-to-date
+    this.recalcRow(index);
+  
+    const medicine = rowCtrl.get('medicine')?.value;
+    if (!medicine) return;
+  
+    console.log('item',medicine)
+    // ✅ Take all updated fields directly from FormGroup
+    const normalized = {
+      salesDetailId: rowCtrl.get('salesDetailId')?.value ?? 0,
+  
+      stockMasterId: medicine.stockMasterId,
+      name: medicine.name,
+      unit: medicine.unit,
+  
+      qty: rowCtrl.get('qty')?.value ?? 0,
+      pricePerUnit: rowCtrl.get('pricePerUnit')?.value ?? 0,
+  
+      totalAmt: rowCtrl.get('totalAmt')?.value ?? 0,
+      discountAmt: rowCtrl.get('discountAmt')?.value ?? 0,   // 🔑 fixed
+      taxRate: medicine.taxRate??0,
+      taxableAmt: rowCtrl.get('taxableAmt')?.value ?? 0,
+      taxAmt: rowCtrl.get('taxAmt')?.value ?? 0,
+  
+      netAmt: rowCtrl.get('netAmt')?.value ?? 0,
+      transAmount: rowCtrl.get('transAmount')?.value ?? 0,
+    };
+  
+    // 🔁 Push/update table list
     this.selectedItemsListSignal.update((items) => {
-      const exists = items.some((item) => item.detailId === lastItem?.detailId);
-
-      const patchedItem = {
-        ...lastItem,
-        inventoryId: lastItem.medicine?.inventoryId ?? lastItem.inventoryId,
-        unitId: lastItem.medicine?.unitId ?? lastItem.unitId,
-        medicineId: lastItem.medicine?.medicineId ?? lastItem.medicineId,
-        medicine: lastItem.medicine?.medicine ?? lastItem.medicine,
-        masterId: lastItem.medicine?.masterId ?? lastItem.masterId,
-      };
-
-      if (exists) {
-        // Update existing item
-        return items.map((item) =>
-          item.detailId === lastItem?.detailId
-            ? { ...item, ...patchedItem }
-            : item
-        );
-      } else {
-        // Add a new item with transformed values
-        return [...items, patchedItem];
-      }
+      const exists = items.some(
+        (x) => x.stockMasterId === normalized.stockMasterId
+      );
+  
+      return exists
+        ? items.map((x) =>
+            x.stockMasterId === normalized.stockMasterId ? normalized : x
+          )
+        : [...items, normalized];
     });
-
+  
+    // 🔁 Reset the entry row
     this.resetInventoryList();
   }
+  
+  
 
   pushSelectedItemsList() {
     const selectedList = this.selectedItemsListSignal();
-    const inventoryArray = this.form.get('inventoryList') as FormArray;
+    const inventoryArray = this.form.get('selectedStockList') as FormArray;
     // Clear existing FormArray before patching new data
     inventoryArray.clear();
 
@@ -373,26 +394,23 @@ export class SalesEntryFormComponent {
 
   updateInventory(index: number, updatedData: any): void {
     this.inventoryList.at(index).patchValue(updatedData);
-    this.patchMedicineValue(index, updatedData);
+    this.onProductSelected(index, updatedData);
   }
 
-  patchMedicineValue(index: number, selectedItem: any) {
-    const inventoryList = this.form.get('inventoryList') as FormArray;
-    if (!inventoryList || !inventoryList.at(index)) return;
+  onProductSelected(index: number, item: any): void {
+    const row = this.inventoryList.at(index) as FormGroup;
+    if (!row) return;
 
-    // Find the exact reference from inventoryListSignal()
-    const matchedItem =
-      this.inventoryListSignal().find(
-        (item) => item.inventoryId === selectedItem.inventoryId
-      ) || selectedItem;
+    row.patchValue(
+      {
+        stockMasterId: item.stockMasterId,
+        unit: item.unit,
+        taxRate: item.taxRate ?? 0,
+      },
+      { emitEvent: false } // 🔥 prevents recursion
+    );
 
-    // Get the current value from the form
-    const currentValue = inventoryList.at(index).get('medicine')?.value;
-
-    // ✅ Prevent unnecessary patching to avoid infinite loop
-    if (currentValue !== matchedItem) {
-      inventoryList.at(index).patchValue({ medicine: matchedItem });
-    }
+    this.recalcRow(index);
   }
 
   onDelete(id: number) {
@@ -412,4 +430,62 @@ export class SalesEntryFormComponent {
     this.resetInventoryList();
     this.selectedItemsListSignal.set([]);
   }
+
+  private recalcRow(index: number): void {
+    const row = this.inventoryList.at(index) as FormGroup;
+    if (!row) return;
+
+    const qty = Number(row.get('qty')?.value ?? 0);
+    const rate = Number(row.get('pricePerUnit')?.value ?? 0);
+    const item = row.get('medicine')?.value;
+
+const taxRate = Number(item?.taxRate ?? 0);
+// console.log('new',item,item.get('taxRate')?.value)
+
+    // const taxRate = Number(row.get('taxRate')?.value ?? 0);
+  
+    const totalAmt = +(qty * rate).toFixed(2);
+  
+    const disPercentCtrl = row.get('disPercent');
+    const disAmountCtrl = row.get('discountAmt');
+  
+    let disPercent = Number(disPercentCtrl?.value ?? 0);
+    let discountAmt = Number(disAmountCtrl?.value ?? 0);
+  
+    // 🔁 AUTO-SYNC + 🔒 DISABLE
+    if (this.lastEditedField() === 'disPercent') {
+      discountAmt = +((totalAmt * disPercent) / 100).toFixed(2);
+      disAmountCtrl?.disable({ emitEvent: false });
+      disPercentCtrl?.enable({ emitEvent: false });
+    }
+  
+    if (this.lastEditedField() === 'discountAmt') {
+      disPercent =
+        totalAmt > 0 ? +((discountAmt / totalAmt) * 100).toFixed(2) : 0;
+      disPercentCtrl?.disable({ emitEvent: false });
+      disAmountCtrl?.enable({ emitEvent: false });
+    }
+  
+    // 🛡 Safety
+    discountAmt = Math.min(discountAmt, totalAmt);
+  
+    const taxableAmt = +(totalAmt - discountAmt).toFixed(2);
+    const taxAmt = +((taxableAmt * taxRate) / 100).toFixed(2);
+    const netAmt = +(taxableAmt + taxAmt).toFixed(2);
+  console.log('new',row.value)
+    row.patchValue(
+      {
+        totalAmt,
+        disPercent,
+        discountAmt,
+        taxRate,
+        taxableAmt,
+        taxAmt,
+        netAmt,
+        transAmount: netAmt,
+      },
+      { emitEvent: false }
+    );
+  }
+  
 }

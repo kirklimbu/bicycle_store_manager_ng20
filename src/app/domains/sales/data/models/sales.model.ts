@@ -31,6 +31,7 @@ export interface FilterValues {
   toDate?: string;
   supplierId?: number;
 }
+export type DiscountField = 'disPercent' | 'disAmount';
 
 // export interface ISalesFormDtoWrapper {
 //   form: ISalesFormDto;

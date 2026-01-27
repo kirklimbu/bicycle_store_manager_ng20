@@ -1,0 +1,18 @@
+.ant-select {
+    width: 100%;
+}
+
+.ant-page-header {
+    padding: 1rem 0;
+}
+
+input.totalAmount {
+    border-color: red;
+    color: red;
+    font-weight: bold;
+}
+
+:host ::ng-deep input[type='number'] {
+    text-align: right;
+  }
+  

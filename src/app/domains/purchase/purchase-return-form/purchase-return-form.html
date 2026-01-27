@@ -1,5 +1,6 @@
 <div class="form-container">
-    <nz-page-header nzTitle="Add Purchase Return" [nzSubtitle]="supplierNameSignal()">
+    <nz-page-header nzTitle="Add Purchase Return"
+        [nzSubtitle]="'Seller: '+ supplierNameSignal() +'/'+ supplierNumberSignal()">
         <nz-breadcrumb [nzAutoGenerate]=" true" nz-page-header-breadcrumb>
         </nz-breadcrumb>
     </nz-page-header>
@@ -96,8 +97,8 @@
                                     <nz-option [nzValue]="item" [nzLabel]="item.name"></nz-option>
                                     }
                                 </nz-select> -->
-                                <nz-select nzShowSearch placeholder="Select product" formControlName="selectedItem"
-                                    (ngModelChange)="onProductSelected(i, $event)">
+                                <nz-select [nzDisabled]="true" nzShowSearch placeholder="Select product"
+                                    formControlName="selectedItem" (ngModelChange)="onProductSelected(i, $event)">
                                     @for (item of inventoryListSignal(); track item.stockMasterId) {
                                     <nz-option [nzValue]="item" [nzLabel]="item.name"></nz-option>
                                     }

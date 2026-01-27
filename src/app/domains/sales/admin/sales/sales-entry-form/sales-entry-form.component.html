@@ -5,7 +5,7 @@
     </nz-page-header>
     <!-- BEGIN :: FORM SECTION -->
     <form nz-form nzLayout="vertical" [formGroup]="form" class="ant-advanced-search-form">
-        <div formGroupName="transactionMaster" nz-row nzGutter="24">
+        <div formGroupName="salesMaster" nz-row nzGutter="24">
             <div nz-col [nzSpan]="24" [nzMd]="8" [nzLg]="4">
                 <nz-form-item>
                     <nz-form-label>Bill No.</nz-form-label>
@@ -18,7 +18,7 @@
                 <nz-form-item>
                     <nz-form-label>Save Date</nz-form-label>
                     <nz-form-control>
-                        <input nz-input placeholder="Date" formControlName="saveDate" />
+                        <input readonly nz-input placeholder="Date" formControlName="saveDate" />
                     </nz-form-control>
                 </nz-form-item>
             </div>
@@ -36,10 +36,10 @@
             </div>
             <div nz-col [nzSpan]="24" [nzMd]="8" [nzLg]="4">
                 <nz-form-item>
-                    <nz-form-label>Patient </nz-form-label>
-                    <nz-select nz-input placeholder="Select pay type" formControlName="customerId">
-                        @for (item of customerListSignal(); track $index) {
-                        <nz-option [nzValue]="item.patientId" [nzLabel]="item.name"></nz-option>
+                    <nz-form-label>Customer </nz-form-label>
+                    <nz-select readonly nz-input placeholder="Select pay type" formControlName="customerId">
+                        @for (item of customerListSignal(); track item.customerId) {
+                        <nz-option [nzValue]="item.customerId" [nzLabel]="item.name"></nz-option>
                         }
 
                     </nz-select>
@@ -81,16 +81,16 @@
             </div>
             } -->
 
-            <div nz-col [nzSpan]="24" [nzMd]="8" [nzLg]="4">
-                <!-- RED COLOR INDICATOR -->
+            <!-- <div nz-col [nzSpan]="24" [nzMd]="8" [nzLg]="4">
                 <nz-form-item>
                     <nz-form-label>Total Amount</nz-form-label>
                     <nz-form-control>
-                        <input class="totalAmount" disabled nz-input placeholder="Total Amount"
+                        <input class="totalAmount" 
+                         nz-input placeholder="Total Amount"
                             [value]="totalAmountSignal()" />
                     </nz-form-control>
                 </nz-form-item>
-            </div>
+            </div> -->
             <div nz-col [nzSpan]="24" [nzMd]="8" [nzLg]="8">
                 <nz-form-item>
                     <nz-form-label>Remarks</nz-form-label>
@@ -105,65 +105,110 @@
         </div>
         <nz-divider></nz-divider>
 
-        <div formArrayName="inventoryList">
+
+        <div formArrayName="selectedStockList">
             <div *ngFor="let skill of inventoryList.controls let i=index">
                 <div [formGroupName]="i">
-                    <div nz-row nzGutter="24">
-                        <div nz-col [nzSpan]="24" [nzMd]="8" [nzLg]="4">
+                    <div nz-row nzGutter="16">
+                        <!-- ITEM -->
+                        <div nz-col nzXs="24" nzMd="8" nzLg="6">
                             <nz-form-item>
-                                <nz-form-label>Product Name </nz-form-label>
-                                <nz-select nz-input [nzShowSearch]="true" placeholder="Select product"
-                                    formControlName="medicine" (ngModelChange)="patchMedicineValue(i, $event)">
-                                    >
+                                <nz-form-label>Item</nz-form-label>
+                                <nz-select nzShowSearch nzPlaceHolder="Select product" formControlName="medicine">
                                     @for (item of inventoryListSignal(); track item.inventoryId) {
-                                    <nz-option [nzValue]="item" [nzLabel]="item.medicine"></nz-option>
+                                    <nz-option [nzValue]="item" [nzLabel]="item.name"></nz-option>
                                     }
                                 </nz-select>
                             </nz-form-item>
                         </div>
-                        <div nz-col [nzSpan]="24" [nzMd]="8" [nzLg]="4">
+
+                        <!-- QTY -->
+                        <div nz-col nzXs="12" nzMd="4" nzLg="2">
                             <nz-form-item>
-                                <nz-form-label>Quantity</nz-form-label>
+                                <nz-form-label>Qty</nz-form-label>
                                 <nz-form-control>
-                                    <input type="number" nz-input min="1" placeholder="Quantity" formControlName="qty"
-                                        (input)="onValueChange(i,form.get('lastEdited')?.value)" />
+                                    <input nz-input type="number" min="0" formControlName="qty"
+                                        (input)="onValueChange(i)" />
                                 </nz-form-control>
                             </nz-form-item>
                         </div>
-                        <div nz-col [nzSpan]="24" [nzMd]="8" [nzLg]="4">
+
+                        <!-- RATE -->
+                        <div nz-col nzXs="12" nzMd="4" nzLg="2">
                             <nz-form-item>
                                 <nz-form-label>Rate</nz-form-label>
                                 <nz-form-control>
-                                    <input type="number" nz-input min="1" placeholder="Rate" formControlName="rate"
-                                        (input)="onValueChange(i,form.get('lastEdited')?.value)" />
+                                    <input nz-input type="number" min="1" formControlName="pricePerUnit"
+                                        (input)="onValueChange(i)" />
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div><div nz-col nzXs="12" nzMd="4" nzLg="2">
+                            <nz-form-item>
+                                <nz-form-label>Total</nz-form-label>
+                                <nz-form-control>
+                                    <input nz-input type="number" min="1" formControlName="totalAmt"
+                                        readonly />
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
 
+                        
+                        <div nz-col nzXs="12" nzMd="4" nzLg="2">
+                            <nz-form-item>
+                                <nz-form-label>Dis. %</nz-form-label>
+                                <nz-form-control>
+                        <input
+  type="number"
+  nz-input
+  formControlName="disPercent"
+  (focus)="setLastEdited('disPercent')"
+  (blur)="onValueChange(i)"
+/>
+</nz-form-control>
+</nz-form-item>
+</div>
+<div nz-col nzXs="12" nzMd="4" nzLg="2">
+    <nz-form-item>
+        <nz-form-label>Dis. Amt.</nz-form-label>
+        <nz-form-control>
+<input
+  type="number"
+  nz-input
+  formControlName="discountAmt"
+  (focus)="setLastEdited('discountAmt')"
+  (blur)="onValueChange(i)"
+/>
+
+</nz-form-control>
+</nz-form-item>
+</div>
+                        <!-- TAXABLE -->
+                        <div nz-col nzXs="12" nzMd="4" nzLg="2">
+                            <nz-form-item>
+                                <nz-form-label>Taxable</nz-form-label>
+                                <nz-form-control>
+                                    <input nz-input readonly formControlName="taxableAmt" readonly />
                                 </nz-form-control>
                             </nz-form-item>
                         </div>
-                        <div nz-col [nzSpan]="24" [nzMd]="8" [nzLg]="4">
+
+                        <!-- TAX -->
+                        <div nz-col nzXs="12" nzMd="4" nzLg="2">
                             <nz-form-item>
-                                <nz-form-label>Discount %</nz-form-label>
+                                <nz-form-label>Tax %</nz-form-label>
                                 <nz-form-control>
-                                    <input type="number" nz-input placeholder="Discount %" formControlName="disPercent"
-                                        step="any" (blur)="onValueChange(i, 'disPercent')" />
+                                    <input  readonly nz-input formControlName="taxRate" />
                                 </nz-form-control>
                             </nz-form-item>
                         </div>
-                        <div nz-col [nzSpan]="24" [nzMd]="8" [nzLg]="4">
+
+                        <!-- NET -->
+                        <div nz-col nzXs="24" nzMd="6" nzLg="3">
                             <nz-form-item>
-                                <nz-form-label>Discount Amount </nz-form-label>
+                                <nz-form-label>Net</nz-form-label>
                                 <nz-form-control>
-                                    <input type="number" nz-input min="0" step="0.01" placeholder="Discount Amount"
-                                        formControlName="disAmount" step="any" (blur)="onValueChange(i, 'disAmount')" />
-                                </nz-form-control>
-                            </nz-form-item>
-                        </div>
-                        <div nz-col [nzSpan]="24" [nzMd]="8" [nzLg]="4">
-                            <nz-form-item>
-                                <nz-form-label>Transaction Amount </nz-form-label>
-                                <nz-form-control>
-                                    <input nz-input placeholder="Transaction Amount" formControlName="transAmount"
-                                        readonly (keydown.enter)="onEnterKeyPress(i)" />
+                                    <input nz-input formControlName="netAmt" readonly
+                                        (keydown.enter)="onEnterKeyPress(i)" />
                                 </nz-form-control>
                             </nz-form-item>
                         </div>
@@ -183,28 +228,36 @@
         <thead>
             <tr>
                 <th nzWidth="3%">Sn.</th>
-                <th nzWidth="20%">Medicine</th>
-                <th nzWidth="10%">Qty</th>
-                <th nzWidth="10%">Rate</th>
-                <th nzWidth="10%">Discount %</th>
-                <th nzWidth="10%">Discount Amount</th>
-                <th nzWidth="10%">Total</th>
-                <th nzWidth="10%">Table Actions</th>
+                <th nzWidth="20%">Item</th>
+                <th nzWidth="5%">Qty</th>
+                <th nzWidth="5%">Rate</th>
+                <th nzWidth="5%">Total</th>
+                <th nzWidth="5%">Dis. Amt</th>
+                <th nzWidth="5%">Taxable Amt</th>
+                <th nzWidth="5%">Tax%</th>
+
+                <th nzWidth="5%">Tax Amt</th>
+                <th nzWidth="10%">Net Amt</th>
+                <th nzWidth="10%">Actions</th>
             </tr>
         </thead>
         <tbody>
             @for (row of selectedItemsListSignal(); track $index ; ) {
             <tr>
                 <td>{{ $index+1 }}.</td>
-                <td>{{ row.medicine }}</td>
+                <td>{{ row.name }}</td>
                 <td>{{ row.qty }}</td>
-                <td>{{ row.rate }}</td>
-                <td>{{ row.disPercent |number :'1.1-1'}}</td>
-                <td>{{ row.disAmount|number :'1.2-2' }}</td>
+                <td>{{ row.pricePerUnit }}</td>
+                <td>{{ row.totalAmt |number :'1.1-2'}}</td>
+                <td>{{ row.discountAmt|number :'1.2-2' }}</td>
+                <td>{{ row.taxableAmt|number :'1.2-2' }}</td>
+                <td>{{ row.taxRate }}</td>
+
+                <td>{{ row.taxAmt|number :'1.2-2' }}</td>
                 <td>{{ row.transAmount|number :'1.2-2' }}</td>
                 <td>
-                    <!-- <lib-table-action-buttons [showDeleteButton]="true" (edit)="onEdit(row)"
-                        (delete)="onDelete(row.detailId)" /> -->
+                     <!-- <lib-table-action-buttons [showDeleteButton]="true" (edit)="onEdit(row)"
+                        (delete)="onDelete(row.detailId)" />  -->
                 </td>
 
             </tr>
@@ -217,7 +270,10 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td>Total</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Net Total</td>
                 <td>
                     <span nz-typography nzType=" danger">{{ totalAmountSignal()|number :'1.2-2' }}</span>
                 </td>

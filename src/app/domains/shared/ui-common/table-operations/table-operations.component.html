@@ -76,14 +76,14 @@
                 </nz-col>
 
                 <!-- ➕ Add Button (Group 2 — Always on far right) -->
-                <!-- @if (showAddButton()) {
+                @if (showAddButton()) {
                 <nz-col [nzXs]="24" [nzSm]="24" [nzMd]="8" [nzLg]="8" class="add-col">
                     <button type="button" nz-button nzType="primary" (click)="add.emit(0)">
                         <span nz-icon [nzType]="primaryButtonIcon()" nzTheme="outline"></span>
                         {{ primaryButtonLabel() }}
                     </button>
                 </nz-col>
-                } -->
+                }
                 <nz-col [nzXs]="24" [nzSm]="12" [nzMd]="12" [nzLg]="8" class="action-col">
                     <nz-space>
 

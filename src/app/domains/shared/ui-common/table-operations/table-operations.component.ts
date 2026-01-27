@@ -75,7 +75,7 @@ export class TableOperationsComponent implements OnInit {
   showFromDate = input<boolean>(false);
   showToDate = input<boolean>(false);
   showSearch = input<boolean>(false);
-  showAddButton = input<boolean>(true);
+  showAddButton = input<boolean>(false);
 
   primaryButtonLabel = input<string>('Add');
   primaryButtonIcon = input<string>('plus');
@@ -131,6 +131,7 @@ export class TableOperationsComponent implements OnInit {
       this.showSelector1() ||
       this.showFromDate() ||
       this.showToDate() ||
+      this.showAddButton() ||
       this.showExportButton()
   );
 

@@ -39,14 +39,21 @@ export class SalesService {
     });
   }
 
-  fetchDefaultForm(id: number): Observable<ICustomResponse> {
-    return this.http.get<ICustomResponse>(`${this.apiUrl}sales/form`, {
-      params: { customerId: id },
+  fetchDefaultForm(
+    customerId: number,
+    salesMasterId: number
+  ): Observable<ICustomResponse> {
+    const params: Record<string, string> = {
+      salesMasterId: String(salesMasterId),
+      customerId: String(customerId),
+    };
+    return this.http.get<ICustomResponse>(`${this.apiUrl}sales/form2`, {
+      params,
     });
   }
 
   saveSales(data: any): Observable<ISales> {
-    return this.http.post<ISales>(`${this.apiUrl}sales/save`, data);
+    return this.http.post<ISales>(`${this.apiUrl}sales/save2`, data);
   }
 
   // sales return
