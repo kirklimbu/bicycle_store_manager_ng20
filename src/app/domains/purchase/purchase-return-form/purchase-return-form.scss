@@ -11,3 +11,7 @@ input.totalAmount {
     color: red;
     font-weight: bold;
 }
+
+:host ::ng-deep input[type='number'] {
+    text-align: right;
+}

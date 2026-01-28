@@ -142,52 +142,42 @@
                                         (input)="onValueChange(i)" />
                                 </nz-form-control>
                             </nz-form-item>
-                        </div><div nz-col nzXs="12" nzMd="4" nzLg="2">
+                        </div>
+                        <div nz-col nzXs="12" nzMd="4" nzLg="2">
                             <nz-form-item>
                                 <nz-form-label>Total</nz-form-label>
                                 <nz-form-control>
-                                    <input nz-input type="number" min="1" formControlName="totalAmt"
-                                        readonly />
+                                    <input nz-input type="number" min="1" formControlName="totalAmt" readonly />
                                 </nz-form-control>
                             </nz-form-item>
                         </div>
 
-                        
+
                         <div nz-col nzXs="12" nzMd="4" nzLg="2">
                             <nz-form-item>
                                 <nz-form-label>Dis. %</nz-form-label>
                                 <nz-form-control>
-                        <input
-  type="number"
-  nz-input
-  formControlName="disPercent"
-  (focus)="setLastEdited('disPercent')"
-  (blur)="onValueChange(i)"
-/>
-</nz-form-control>
-</nz-form-item>
-</div>
-<div nz-col nzXs="12" nzMd="4" nzLg="2">
-    <nz-form-item>
-        <nz-form-label>Dis. Amt.</nz-form-label>
-        <nz-form-control>
-<input
-  type="number"
-  nz-input
-  formControlName="discountAmt"
-  (focus)="setLastEdited('discountAmt')"
-  (blur)="onValueChange(i)"
-/>
+                                    <input type="number" nz-input formControlName="disPercent"
+                                        (focus)="setLastEdited('disPercent')" (blur)="onValueChange(i)" />
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                        <div nz-col nzXs="12" nzMd="4" nzLg="2">
+                            <nz-form-item>
+                                <nz-form-label>Dis. Amt.</nz-form-label>
+                                <nz-form-control>
+                                    <input type="number" nz-input formControlName="discountAmt"
+                                        (focus)="setLastEdited('discountAmt')" (blur)="onValueChange(i)" />
 
-</nz-form-control>
-</nz-form-item>
-</div>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
                         <!-- TAXABLE -->
                         <div nz-col nzXs="12" nzMd="4" nzLg="2">
                             <nz-form-item>
                                 <nz-form-label>Taxable</nz-form-label>
                                 <nz-form-control>
-                                    <input nz-input readonly formControlName="taxableAmt" readonly />
+                                    <input nz-input min="0" readonly formControlName="taxableAmt" readonly />
                                 </nz-form-control>
                             </nz-form-item>
                         </div>
@@ -195,9 +185,9 @@
                         <!-- TAX -->
                         <div nz-col nzXs="12" nzMd="4" nzLg="2">
                             <nz-form-item>
-                                <nz-form-label>Tax Amt</nz-form-label>
+                                <nz-form-label>Tax Amt.</nz-form-label>
                                 <nz-form-control>
-                                    <input  readonly nz-input formControlName="taxAmt" />
+                                    <input readonly nz-input formControlName="taxAmt" />
                                 </nz-form-control>
                             </nz-form-item>
                         </div>
@@ -205,7 +195,7 @@
                         <!-- NET -->
                         <div nz-col nzXs="24" nzMd="6" nzLg="3">
                             <nz-form-item>
-                                <nz-form-label>Net</nz-form-label>
+                                <nz-form-label>Net Amt.</nz-form-label>
                                 <nz-form-control>
                                     <input nz-input formControlName="netAmt" readonly
                                         (keydown.enter)="onEnterKeyPress(i)" />
@@ -254,8 +244,7 @@
                 <td>{{ row.taxAmt|number :'1.2-2' }}</td>
                 <td>{{ row.transAmount|number :'1.2-2' }}</td>
                 <td>
-                     <!-- <lib-table-action-buttons [showDeleteButton]="true" (edit)="onEdit(row)"
-                        (delete)="onDelete(row.detailId)" />  -->
+                    <lib-table-action-buttons (edit)="onEdit(row)" (delete)="onDelete(row.detailId)" />
                 </td>
 
             </tr>
@@ -279,7 +268,7 @@
 
         </tfoot>
     </nz-table>
-    <!-- <lib-form-submit-buttons [showSecondaryButton]="true" [secondaryButtonLabel]="'Cancel'" (primaryAction)="onSave()"
+    <!-- <lib-form-submit-buttons [showSecondaryButton]="false" [secondaryButtonLabel]="'Cancel'" (primaryAction)="onSave()"
         (secondaryAction)="onCancel()" /> -->
     <nz-divider></nz-divider>
 

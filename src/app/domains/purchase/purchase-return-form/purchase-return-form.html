@@ -28,10 +28,21 @@
             <div nz-col [nzSpan]="24" [nzMd]="8" [nzLg]="4">
                 <nz-form-item>
                     <nz-form-label> Purchase Master </nz-form-label>
-                    <nz-select nz-input placeholder="Select supplier" formControlName="purchaseMasterId">
+                    <nz-select nz-input placeholder="Select " formControlName="purchaseMasterId">
                         @for (item of purchaseMasterListSignal(); track item.purchaseMasterId) {
                         <nz-option [nzValue]="item.purchaseMasterId" [nzLabel]="item.supplierBillNo"></nz-option>
                         }
+                    </nz-select>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="24" [nzMd]="8" [nzLg]="4">
+                <nz-form-item>
+                    <nz-form-label>Pay Type </nz-form-label>
+                    <nz-select nz-input placeholder="Select pay type" formControlName="payTypeId">
+                        @for (item of payTypeSignal(); track $index) {
+                        <nz-option [nzValue]="item.id" [nzLabel]="item.name"></nz-option>
+                        }
+
                     </nz-select>
                 </nz-form-item>
             </div>
@@ -86,10 +97,10 @@
         <div formArrayName="selectedStockList">
             <div *ngFor="let skill of inventoryList.controls let i=index">
                 <div [formGroupName]="i">
-                    <div nz-row nzGutter="24">
-                        <div nz-col [nzXs]="24" [nzSm]="12" [nzMd]="6" [nzLg]="6">
+                    <div nz-row nzGutter="16">
+                        <div nz-col nzXs="24" nzMd="8" nzLg="6">
                             <nz-form-item>
-                                <nz-form-label>Product Name </nz-form-label>
+                                <nz-form-label>Item</nz-form-label>
                                 <!-- <nz-select nzShowSearch nz-input [nzShowSearch]="true" placeholder="Select product"
                                     formControlName="selectedItem" (ngModelChange)="patchMedicineValue(i, $event)">
                                     >
@@ -98,24 +109,24 @@
                                     }
                                 </nz-select> -->
                                 <nz-select [nzDisabled]="true" nzShowSearch placeholder="Select product"
-                                    formControlName="selectedItem" (ngModelChange)="onProductSelected(i, $event)">
+                                    formControlName="medicine">
                                     @for (item of inventoryListSignal(); track item.stockMasterId) {
                                     <nz-option [nzValue]="item" [nzLabel]="item.name"></nz-option>
                                     }
                                 </nz-select>
                             </nz-form-item>
                         </div>
-                        <div nz-col [nzXs]="12" [nzSm]="6" [nzMd]="3" [nzLg]="3">
+                        <div nz-col nzXs="12" nzMd="4" nzLg="2">
                             <nz-form-item>
                                 <nz-form-label>Qty.</nz-form-label>
                                 <nz-form-control>
-                                    <input type="number" nz-input min="1" placeholder="Quantity" formControlName="qty"
+                                    <input type="number" nz-input min="0" placeholder="Quantity" formControlName="qty"
                                         (input)="onValueChange(i)" />
                                 </nz-form-control>
                             </nz-form-item>
                         </div>
 
-                        <div nz-col [nzXs]="12" [nzSm]="6" [nzMd]="3" [nzLg]="3">
+                        <div nz-col nzXs="12" nzMd="4" nzLg="2">
                             <nz-form-item>
                                 <nz-form-label>Rate</nz-form-label>
                                 <nz-form-control>
@@ -125,28 +136,56 @@
                                 </nz-form-control>
                             </nz-form-item>
                         </div>
-                        <div nz-col [nzXs]="12" [nzSm]="6" [nzMd]="3" [nzLg]="3">
+                        <div nz-col nzXs="12" nzMd="4" nzLg="2">
                             <nz-form-item>
-                                <nz-form-label>Taxable Amt.</nz-form-label>
+                                <nz-form-label>Total</nz-form-label>
                                 <nz-form-control>
-                                    <input readonly [disabled] type="number" nz-input min="0" placeholder="Taxable Amt"
-                                        formControlName="taxableAmt" step="any" />
+                                    <input nz-input type="number" min="1" formControlName="totalAmt" readonly />
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                        <div nz-col nzXs="12" nzMd="4" nzLg="2">
+                            <nz-form-item>
+                                <nz-form-label>Dis. %</nz-form-label>
+                                <nz-form-control>
+                                    <input type="number" nz-input formControlName="disPercent"
+                                        (focus)="setLastEdited('disPercent')" (blur)="onValueChange(i)" />
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                        <div nz-col nzXs="12" nzMd="4" nzLg="2">
+                            <nz-form-item>
+                                <nz-form-label>Dis. Amt.</nz-form-label>
+                                <nz-form-control>
+                                    <input type="number" nz-input formControlName="discountAmt"
+                                        (focus)="setLastEdited('discountAmt')" (blur)="onValueChange(i)" />
+
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                        <!-- TAXABLE -->
+                        <div nz-col nzXs="12" nzMd="4" nzLg="2">
+                            <nz-form-item>
+                                <nz-form-label>Taxable</nz-form-label>
+                                <nz-form-control>
+                                    <input nz-input min="0" formControlName="taxableAmt" readonly />
                                 </nz-form-control>
                             </nz-form-item>
                         </div>
 
-                        <div nz-col [nzXs]="12" [nzSm]="6" [nzMd]="3" [nzLg]="3">
+
+                        <div nz-col nzXs="12" nzMd="4" nzLg="2">
                             <nz-form-item>
                                 <nz-form-label>Tax Amt.</nz-form-label>
                                 <nz-form-control>
-                                    <input [disabled] readonly type="number" nz-input min="0" placeholder="Tax Rate"
+                                    <input [disabled] readonly type="number" nz-input min="0" placeholder="Tax Amount"
                                         formControlName="taxAmt" step="any">
 
                                 </nz-form-control>
                             </nz-form-item>
                         </div>
 
-                        <div nz-col [nzXs]="12" [nzSm]="6" [nzMd]="3" [nzLg]="4">
+                        <div nz-col nzXs="24" nzMd="6" nzLg="3">
                             <nz-form-item>
                                 <nz-form-label>Net Amt. </nz-form-label>
                                 <nz-form-control>
@@ -171,26 +210,29 @@
         <thead>
             <tr>
                 <th nzWidth="3%">Sn.</th>
-                <th nzWidth="20%">Product Name</th>
-                <th nzWidth="10%">Qty.</th>
-                <th nzWidth="10%">Rate</th>
-                <th nzWidth="10%">Taxable Amt.</th>
-                <th nzWidth="10%">Tax Amt.</th>
-                <th nzWidth="10%">Net Amt.</th>
-                <th nzWidth="10%">Table Actions</th>
+                <th nzWidth="20%">Item</th>
+                <th nzWidth="5%">Qty</th>
+                <th nzWidth="5%">Rate</th>
+                <th nzWidth="5%">Total</th>
+                <th nzWidth="5%">Dis. Amt</th>
+                <th nzWidth="5%">Taxable </th>
+
+                <th nzWidth="5%">Tax Amt</th>
+                <th nzWidth="10%">Net Amt</th>
+                <th nzWidth="10%">Actions</th>
             </tr>
         </thead>
         <tbody>
             @for (row of selectedItemsListSignal(); track row.purchaseDetailId ; ) {
             <tr>
                 <td>{{ $index+1 }}.</td>
-                <!-- <td>{{ row.selectedItem.name }}</td> -->
-                <td>{{ row.name || row.stockMasterId }}</td>
-                <!-- You can map to name if you store it -->
-
+                <td>{{ row.name }}</td>
                 <td>{{ row.qty }}</td>
                 <td>{{ row.pricePerUnit }}</td>
+                <td>{{ row.totalAmt |number :'1.1-2'}}</td>
+                <td>{{ row.discountAmt|number :'1.2-2' }}</td>
                 <td>{{ row.taxableAmt|number :'1.2-2' }}</td>
+
                 <td>{{ row.taxAmt|number :'1.2-2' }}</td>
                 <td>{{ row.netAmt|number :'1.2-2' }}</td>
                 <td>
@@ -208,7 +250,9 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td>Total</td>
+                <td></td>
+                <td></td>
+                <td>Net Total</td>
                 <td>
                     <span nz-typography nzType=" danger">{{ totalAmountSignal()|number :'1.2-2' }}</span>
                 </td>
