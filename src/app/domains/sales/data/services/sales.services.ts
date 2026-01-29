@@ -58,25 +58,24 @@ export class SalesService {
 
   // sales return
   fetchSalesReturnForm(
-    salesRetMasterId: number,
     salesMasterId: number,
+
+    salesRetMasterId: number,
     customerId: number
   ): Observable<ISalesReturnFormDtoWrapper> {
+
     const params: Record<string, string> = {
-      salesRetMasterId: String(salesRetMasterId),
       salesMasterId: String(salesMasterId),
+      salesRetMasterId: String(salesRetMasterId),
+      customerId: String(customerId),
     };
 
-    if (customerId !== undefined) {
-      params['purRetMasterId'] = String(customerId);
-    }
     return this.http.get<ISalesReturnFormDtoWrapper>(
       `${this.apiUrl}sales/return/form`,
-      {
-        params,
-      }
+      { params }
     );
   }
+
   saveSalesReturn(data: any): Observable<ICustomResponse> {
     return this.http.post<ICustomResponse>(
       `${this.apiUrl}sales/return/save`,

@@ -115,7 +115,7 @@
                             <nz-form-item>
                                 <nz-form-label>Item</nz-form-label>
                                 <nz-select nzShowSearch nzPlaceHolder="Select product" formControlName="medicine">
-                                    @for (item of inventoryListSignal(); track item.inventoryId) {
+                                    @for (item of inventoryListSignal(); track item.stockMasterId) {
                                     <nz-option [nzValue]="item" [nzLabel]="item.name"></nz-option>
                                     }
                                 </nz-select>
@@ -125,7 +125,7 @@
                         <!-- QTY -->
                         <div nz-col nzXs="12" nzMd="4" nzLg="2">
                             <nz-form-item>
-                                <nz-form-label>Qty</nz-form-label>
+                                <nz-form-label>Qty.</nz-form-label>
                                 <nz-form-control>
                                     <input nz-input type="number" min="0" formControlName="qty"
                                         (input)="onValueChange(i)" />
@@ -178,6 +178,7 @@
                                 <nz-form-label>Taxable</nz-form-label>
                                 <nz-form-control>
                                     <input nz-input min="0" readonly formControlName="taxableAmt" readonly />
+                                    <input nz-input min="0" readonly formControlName="taxableAmt" readonly />
                                 </nz-form-control>
                             </nz-form-item>
                         </div>
@@ -227,7 +228,7 @@
 
                 <th nzWidth="5%">Tax Amt</th>
                 <th nzWidth="10%">Net Amt</th>
-                <th nzWidth="10%">Actions</th>
+                <th nzWidth="10%">Table Actions</th>
             </tr>
         </thead>
         <tbody>

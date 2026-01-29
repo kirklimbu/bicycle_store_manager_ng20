@@ -32,3 +32,32 @@ input[disabled] {
         padding: 10px;
     }
 }
+
+
+
+
+/* Targets all readonly nz-input fields */
+input[readonly].ant-input,
+textarea[readonly].ant-input {
+  background-color: #f5f5f5;  /* Gray background like disabled */
+  border-color: #d9d9d9;
+  color: rgba(0, 0, 0, 0.65);
+  cursor: not-allowed;
+}
+
+/* Targets NZ-Zorro number inputs (nz-input-number) */
+.ant-input-number[readonly] {
+  background-color: #f5f5f5;
+
+  .ant-input-number-input {
+    background-color: #f5f5f5;
+    color: rgba(0, 0, 0, 0.65);
+  }
+
+  .ant-input-number-handler-wrap {
+    display: none; /* hide increment/decrement buttons */
+  }
+}
+
+
+

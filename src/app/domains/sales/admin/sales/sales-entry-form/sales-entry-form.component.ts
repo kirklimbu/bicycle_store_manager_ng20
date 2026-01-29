@@ -84,7 +84,7 @@ export class SalesEntryFormComponent {
   private salesService = inject(SalesService);
   private notification = inject(NzNotificationService);
 
-  queryParamMapSignal = toSignal(this.route.queryParamMap, {
+  private queryParamMapSignal = toSignal(this.route.queryParamMap, {
     initialValue: this.route.snapshot.queryParamMap,
   });
   IdsSignal = computed(() => {
@@ -373,16 +373,6 @@ export class SalesEntryFormComponent {
     this.notification.create(type, message, '');
   }
 
-  /**
-   * edit section
-   */
-
-  /*************  ✨ Windsurf Command ⭐  *************/
-  /**
-   * Clears the inventoryList and adds a new item to it based on the given row object.
-   * @param row - The row object containing the data to be added to the inventoryList.
-   */
-  /*******  9557a6c5-47b1-4a08-8c35-029540b6662d  *******/
   onEdit(row: any) {
     this.inventoryList.clear();
     this.inventoryList.push(this.createInventory(row));
@@ -390,10 +380,7 @@ export class SalesEntryFormComponent {
 
 
   updateInventory(index: number, row: any): void {
-    // this.inventoryList.at(index).patchValue(updatedData);
     const inventoryRow = this.inventoryList.at(index) as FormGroup;
-
-    // this.onProductSelected(index, updatedData);
     const selectedProduct = this.inventoryListSignal().find(
       (item) => item.stockMasterId === row.stockMasterId
     );
@@ -421,7 +408,7 @@ export class SalesEntryFormComponent {
 
 
 
-  onProductSelected(index: number, item: any): void {
+  name(index: number, item: any): void {
     const row = this.inventoryList.at(index) as FormGroup;
     if (!row) return;
 

@@ -131,6 +131,7 @@ export class PurchaseReturnForm {
   }
 
   createInventory(category?: any): FormGroup {
+    console.log('create new row purchase return', category);
 
     const selectedItem =
       category?.medicine ??
@@ -258,6 +259,7 @@ export class PurchaseReturnForm {
     const qty = Number(rowCtrl.get('qty')?.value ?? 0);
     const rate = Number(rowCtrl.get('pricePerUnit')?.value ?? 0);
     const medicine = rowCtrl.get('medicine')?.value;
+    console.log('item purchse returnßß', medicine);
 
     if (!medicine || qty <= 0 || rate <= 0) {
       this.createNotification(
@@ -314,7 +316,6 @@ export class PurchaseReturnForm {
 
 
   onSave() {
-    console.log('form values', this.form.value);
 
     const payload = {
       ...this.form.value,
@@ -377,25 +378,61 @@ export class PurchaseReturnForm {
     this.recalcRow(index);
   }
 
-  onProductSelected(index: number, item: any): void {
-    const row = this.inventoryList.at(index) as FormGroup;
-    if (!row) return;
-    console.log('row onProductSelected', row);
+  // onProductSelected(index: number, item: any): void {
+  //   const row = this.inventoryList.at(index) as FormGroup;
+  //   if (!row) return;
+  //   console.log('row onProductSelected', row);
 
-    row.patchValue(
-      {
-        medicine: item,
-        stockMasterId: item.stockMasterId,
-        unit: item.unit,
-        unitId: item.unitId,
-        pricePerUnit: item.pricePerUnit ?? 0,
-        taxRate: item.taxRate ?? 0,
-      },
-      { emitEvent: false } // 🔥 prevents recursion
-    );
+  //   row.patchValue(
+  //     {
+  //       medicine: item,
+  //       stockMasterId: item.stockMasterId,
+  //       unit: item.unit,
+  //       unitId: item.unitId,
+  //       pricePerUnit: item.pricePerUnit ?? 0,
+  //       taxRate: item.taxRate ?? 0,
+  //     },
+  //     { emitEvent: false } // 🔥 prevents recursion
+  //   );
 
-    this.recalcRow(index);
-  }
+  //   this.recalcRow(index);
+  // }onProductSelected(index: number, item: any): void {
+  //   const row = this.inventoryList.at(index) as FormGroup;
+  //   if (!row) return;
+  //   console.log('row onProductSelected', row);
+
+  //   row.patchValue(
+  //     {
+  //       medicine: item,
+  //       stockMasterId: item.stockMasterId,
+  //       unit: item.unit,
+  //       unitId: item.unitId,
+  //       pricePerUnit: item.pricePerUnit ?? 0,
+  //       taxRate: item.taxRate ?? 0,
+  //     },
+  //     { emitEvent: false } // 🔥 prevents recursion
+  //   );
+
+  //   this.recalcRow(index);
+  // }onProductSelected(index: number, item: any): void {
+  //   const row = this.inventoryList.at(index) as FormGroup;
+  //   if (!row) return;
+  //   console.log('row onProductSelected', row);
+
+  //   row.patchValue(
+  //     {
+  //       medicine: item,
+  //       stockMasterId: item.stockMasterId,
+  //       unit: item.unit,
+  //       unitId: item.unitId,
+  //       pricePerUnit: item.pricePerUnit ?? 0,
+  //       taxRate: item.taxRate ?? 0,
+  //     },
+  //     { emitEvent: false } // 🔥 prevents recursion
+  //   );
+
+  //   this.recalcRow(index);
+  // }
 
   onDelete(
     id: number
@@ -417,33 +454,6 @@ export class PurchaseReturnForm {
     this.selectedItemsListSignal.set([]);
   }
 
-  // private recalcRow(index: number): void {
-  //   const row = this.inventoryList.at(index) as FormGroup;
-  //   if (!row) return;
-
-  //   const qty = Number(row.get('qty')?.value ?? 0);
-  //   const rate = Number(row.get('pricePerUnit')?.value ?? 0);
-
-  //   // taxRate can come from the selected item, or the row
-  //   const selectedItem = row.get('selectedItem')?.value as any;
-  //   const taxRate = Number(
-  //     selectedItem?.taxRate ?? row.get('taxRate')?.value ?? 0
-  //   );
-
-  //   const taxableAmt = +(qty * rate).toFixed(2);
-  //   const taxAmt = +((taxableAmt * taxRate) / 100).toFixed(2);
-  //   const netAmt = +(taxableAmt + taxAmt).toFixed(2);
-
-  //   row.patchValue(
-  //     {
-  //       taxRate,
-  //       taxableAmt,
-  //       taxAmt,
-  //       netAmt,
-  //     },
-  //     { emitEvent: false }
-  //   );
-  // }
 
   private recalcRow(index: number): void {
     const row = this.inventoryList.at(index) as FormGroup;
