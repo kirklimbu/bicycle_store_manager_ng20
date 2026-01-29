@@ -7,9 +7,9 @@ import { ICustomResponse } from 'src/app/domains/shared/models/CustomResponse.mo
 import { environment } from 'src/environments/environment';
 import // ISalesFormDtoWrapper,
 
-// ISales,
-'../models/sales.model';
-import { ISales } from '../models/sales.model';
+  // ISales,
+  '../models/sales.model';
+import { ISales, ISalesMasterDto, ISalesReturnFormDtoWrapper } from '../models/sales.model';
 
 @Injectable({
   providedIn: 'root',
@@ -57,19 +57,37 @@ export class SalesService {
   }
 
   // sales return
-  // fetchSalesReturnForm(
-  //   id: number,
-  //   customerId: number
-  // ): Observable<ISalesReturnFormDtoWrapper> {
-  //   return this.http.get<ISalesReturnFormDtoWrapper>(
-  //     `${this.apiUrl}sales/return/form`,
-  //     { params: { masterId: id, customerId: customerId } }
-  //   );
-  // }
-  // saveSalesReturn(data: any): Observable<ICustomResponse> {
-  //   return this.http.post<ICustomResponse>(
-  //     `${this.apiUrl}sales/return/save`,
-  //     data
-  //   );
-  // }
+  fetchSalesReturnForm(
+    salesRetMasterId: number,
+    salesMasterId: number,
+    customerId: number
+  ): Observable<ISalesReturnFormDtoWrapper> {
+    const params: Record<string, string> = {
+      salesRetMasterId: String(salesRetMasterId),
+      salesMasterId: String(salesMasterId),
+    };
+
+    if (customerId !== undefined) {
+      params['purRetMasterId'] = String(customerId);
+    }
+    return this.http.get<ISalesReturnFormDtoWrapper>(
+      `${this.apiUrl}sales/return/form`,
+      {
+        params,
+      }
+    );
+  }
+  saveSalesReturn(data: any): Observable<ICustomResponse> {
+    return this.http.post<ICustomResponse>(
+      `${this.apiUrl}sales/return/save`,
+      data
+    );
+  }
+
+  getSalesMasterList(query: any): Observable<ISalesMasterDto[]> {
+    return this.http.get<ISalesMasterDto[]>(
+      `${this.apiUrl}sales/master/list`,
+      { params: query }
+    );
+  }
 }

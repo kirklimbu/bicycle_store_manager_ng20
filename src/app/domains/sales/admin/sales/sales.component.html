@@ -1,13 +1,19 @@
 <!-- <nz-breadcrumb [nzAutoGenerate]="true"></nz-breadcrumb> -->
 <div class="table-container">
     <div class="site-page-header-ghost-wrapper">
-        <nz-page-header [nzGhost]="false">
+        <nz-page-header nzTitle="Sales List" [nzGhost]="false">
             <nz-page-header-extra>
-                <app-table-operations key="sakes-filter" [fields]="[
+                <!-- <app-table-operations key="sakes-filter" [fields]="[
     { name: 'fromDate', label: 'From Date (B.S)', type: 'date', required: true },
     { name: 'toDate', label: 'To Date (B.S)', type: 'date', required: true },
     
-  ]" (filterChange)="onFilterChange($event)" />
+  ]" (filterChange)="onFilterChange($event)" /> -->
+                <lib-table-operations [showSelector1]="false" [selector1Options]="manualSelectorOptions"
+                    [showAddButton]="false" [isLocalSearch]="false" [showSearch]="false" [showFromDate]="true"
+                    [showToDate]="true" [showExportButton]="false" [showSecondaryButton]="true"
+                    [secondaryButtonLabel]="'Sales'" [secondaryButtonIcon]="''" [tertiaryButtonIcon]="''"
+                    [showTertiaryButton]="true" [tertiaryButtonLabel]="'Sales Return'" (search)="onSearch($event)"
+                    (secondaryButtonClick)="onSales()" (tertiaryButtonClick)="onSalesReturn()" />
             </nz-page-header-extra>
 
         </nz-page-header>
@@ -30,24 +36,24 @@
             </tr>
         </thead>
         <tbody>
-            @for (purchase of nzTable.data; track $index) {
+            @for (Sales of nzTable.data; track $index) {
 
             <tr>
                 <td nzAlign="center">{{$index+1}}.</td>
-                <td nzAlign="center">{{ purchase.customerName |titlecase }}</td>
-                <td nzAlign="center">{{purchase.saveDate |nepaliDateFormatter}}</td>
-                <td nzAlign="center">{{ purchase.netAmt |number }}</td>
+                <td nzAlign="center">{{ Sales.customerName |titlecase }}</td>
+                <td nzAlign="center">{{Sales.saveDate |nepaliDateFormatter}}</td>
+                <td nzAlign="center">{{ Sales.netAmt |number }}</td>
 
-                <td nzAlign="center">{{purchase.qty|number}}</td>
-                <td nzAlign="center">{{purchase.stockName|titlecase}}</td>
-                <td nzAlign="center">{{purchase.transType}}</td>
-                <td nzAlign="center">{{purchase.unit}}</td>
+                <td nzAlign="center">{{Sales.qty|number}}</td>
+                <td nzAlign="center">{{Sales.stockName|titlecase}}</td>
+                <td nzAlign="center">{{Sales.transType}}</td>
+                <td nzAlign="center">{{Sales.unit}}</td>
                 <!-- <td nzAlign="center">
                     <lib-table-action-buttons [showEditButton]="true" [showDeleteButton]="false" [showButton4]="true"
                         [showViewMoreButton]="true" [button3Label]="'Lab'" [button4Label]="'Transaction'"
-                        [button3Icon]="'experiment'" [button4Icon]="'dollar'" (delete)="onDelete(purchase.purchaseId)"
-                        (edit)="onEdit(purchase.purchaseId)" (viewMore)="onViewMore(purchase.purchaseId)"
-                        (buttonAction4)="showTransaction(purchase.purchaseId)" />
+                        [button3Icon]="'experiment'" [button4Icon]="'dollar'" (delete)="onDelete(Sales.SalesId)"
+                        (edit)="onEdit(Sales.SalesId)" (viewMore)="onViewMore(Sales.SalesId)"
+                        (buttonAction4)="showTransaction(Sales.SalesId)" />
                 </td> -->
             </tr>
             }

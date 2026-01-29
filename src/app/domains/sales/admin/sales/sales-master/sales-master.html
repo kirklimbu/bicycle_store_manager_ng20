@@ -1,0 +1,78 @@
+<!-- <nz-breadcrumb [nzAutoGenerate]="true"></nz-breadcrumb> -->
+<div class="table-container">
+    <div class="site-page-header-ghost-wrapper">
+        <nz-page-header nzTitle="Sales Master List" [nzGhost]="false">
+            <nz-page-header-extra>
+                <lib-table-operations [showSelector1]="false" [selector1Options]="manualSelectorOptions"
+                    [showAddButton]="false" [isLocalSearch]="false" [showSearch]="false" [showFromDate]="true"
+                    [showToDate]="true" [showExportButton]="false" [showAddButton]="true" (search)="onSearch($event)"
+                    (add)="onAdd()" />
+            </nz-page-header-extra>
+        </nz-page-header>
+
+    </div>
+
+
+
+    <!-- @if(data$|async;as data ){ -->
+
+    <nz-table [nzFrontPagination]="false" #nzTable [nzBordered]="true" [nzData]="data" [nzScroll]="{ x: '900px' }">
+        <thead>
+            <!-- <tr>
+        <th nzAlign="center" nzWidth="5%">#</th>
+        <th nzAlign="center">Name</th>
+        <th nzAlign="center">Address</th>
+        <th nzAlign="center">refType</th>
+        <th nzAlign="center">Save Date</th>
+        <th
+          nzAlign="center"
+         
+        >
+          Pay Type
+        </th>
+        <th nzAlign="center">Bill No</th>
+        <th nzAlign="center" nzWidth="10%">Discount Amount</th>
+        <th nzAlign="center" nzWidth="10%">Amount</th>
+      </tr> -->
+            <tr>
+                <!-- [(nzSortOrder)]="column.sortOrder"
+         [nzSortFn]="column.sortFn" -->
+                @for (column of listOfColumns; track column.name) {
+                <th nzAlign="center" [nzFilters]="column.listOfFilter" [nzFilterFn]="column.filterFn">
+                    {{ column.name }}
+                </th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @for (sales of nzTable.data|search:filterCriteria; track
+            sales.salesMasterId;) {
+
+            <tr>
+                <td nzWidth="1%" nzAlign="center">{{ $index + 1 }}.</td>
+                <td nzWidth="20%" nzAlign="left">{{ sales.billNo }}</td>
+
+                <td nzAlign="center">{{ sales.saveDate | nepaliDateFormatter }}</td>
+                <!-- <td nzAlign="center">{{ sales.pricePerUnit }}</td> -->
+                <!-- <td nzAlign="center">{{ sales.qty }}</td> -->
+                <td nzAlign="center">{{ sales.taxableAmt }}</td>
+                <td nzAlign="center">{{ sales.taxAmt }}</td>
+                <td nzAlign="center">{{ sales.netAmt }}</td>
+                <td nzAlign="center">{{ sales.discountAmt }}</td>
+                <td nzAlign="center">{{ sales.totalAmt }}</td>
+                <td nzAlign="center">{{ sales.payType }}</td>
+
+                <td nzAlign="center">
+                    <lib-table-action-buttons [showEditButton]="true" [showDeleteButton]="false" [showButton4]="true"
+                        [showViewMoreButton]="false" [button4Label]="'Sales Return'" [button3Icon]="'experiment'"
+                        [button4Icon]="'dollar'" (delete)="onDelete(sales.salesMasterId)" (edit)="onEdit(sales)"
+                        (buttonAction4)="onSalesReturn(sales)" />
+                </td>
+                <!-- (viewMore)=" onViewMore(sales.salesId)"
+                        (buttonAction4)="showTransaction(sales.supplierId)" -->
+            </tr>
+            }
+        </tbody>
+    </nz-table>
+    <!-- } -->
+</div>

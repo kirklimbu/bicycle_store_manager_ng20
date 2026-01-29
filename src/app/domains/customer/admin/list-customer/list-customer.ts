@@ -63,4 +63,11 @@ export class ListCustomer implements OnInit {
       },
     });
   }
+  onShowSales(id: number): void {
+    this.router.navigate(['/auth/list-sales'], {
+      queryParams: {
+        customerId: id,
+      },
+    });
+  }
 }

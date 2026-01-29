@@ -1,5 +1,7 @@
 // Replace ./path/to/IInventoryMaster1Dto with the actual path to the file containing the IInventoryMaster1Dto interface.
 
+import { IPaytype } from "../../../purchase/data/models/purhase.model";
+
 export interface ISales {
   salesMasterId: number;
   customerId: number;
@@ -30,99 +32,80 @@ export interface FilterValues {
   fromDate?: string;
   toDate?: string;
   supplierId?: number;
+  customerId?: number;
 }
 export type DiscountField = 'disPercent' | 'disAmount';
 
-// export interface ISalesFormDtoWrapper {
-//   form: ISalesFormDto;
-//   payTypeList: IAccTreeShortDto[];
-//   inventoryList: IInventoryDetailDto[];
-//   patientList: IPatient2Dto[];
-// }
+export interface ISalesReturnFormDtoWrapper {
+  form: ISalesReturnFormDto;
+  payTypeList: IPaytype[];
+  stockList: IStockMasterDto[];
+  salesMasterList: ISalesMasterShortDto[];
+}
+export interface IStockMasterDto {
+  stockMasterId: number;
+  name: string;
+  unit: string;
+  path: string;
+  taxRate: number;
+  pricePerUnit: number;
+}
+export interface ISalesMasterShortDto {
+  salesMasterId: number;
+  billNo: string;
+}
+export interface ISalesMasterDto {
+  salesMasterId: number;
+  customerId: number;
 
-// export interface ISalesFormDto {
-//   transactionMaster: ISalesTransactionMaster1Dto;
-//   inventoryList: IInventoryDetailDto[];
-//   payTypeList: IAccTreeShortDto[];
-// }
+  billNo: string;
+  saveDate: string;
 
-// export interface ISalesTransaction1Dto {
-//   masterId: number;
-//   salesId: number;
-//   refId: number;
-//   refType: string;
-//   payType: string;
-//   saveDate: string;
-//   billNo: string;
-//   amount: number;
-//   disAmount: number;
-//   customerName: string;
-//   customerAddress: string;
-// }
+  totalAmt: number;
+  discountAmt: number;
+  taxableAmt: number;
+  taxAmt: number;
+  netAmt: number;
 
-// export interface IInventoryDetailDto {
-//   inventoryId: number;
-//   unitId: number;
-//   qty: number;
-//   purchaseRate: number;
-//   salesRate: number;
-//   medicineId: number;
-//   medicine: string;
-//   expiryDate: string;
-//   saveDate: string;
-//   batch: string;
-// }
+  payType: string;
+}
 
-// export interface ISalesTransactionMaster1Dto {
-//   masterId: number;
-//   refType: string;
-//   payTypeId: number;
-//   payType: string;
-//   billNo: string;
-//   saveDate: string;
-//   customerId: number;
-//   totalAmount: number;
-//   remarks: string;
-// }
 
-// export interface IPatient2Dto {
-//   patientId: number;
-//   name: string;
-//   address: string;
-//   mobile1: string;
-//   mobile2: string;
-//   dobBs: string;
-//   dobAd: string;
-//   gender: string;
-// }
 
-// export interface IAccTreeShortDto {
-//   id: number;
-//   parentId: number;
-//   name: string;
-//   type: string;
-// }
-// // sales return section
+export interface ISalesReturnFormDto {
+  salesReturnMaster: ISalesReturnMasterDto;
+  selectedStockList: ISalesReturnStockDto[];
+}
+export interface ISalesReturnMasterDto {
+  salesRetMasterId: number;
+  customerId: number;
+  salesMasterId: number;
+  saveDate: string;
+  remarks: string;
+  payTypeId: number;
+  customerName: string;
+  mobile: string;
+}
+export interface ISalesReturnStockDto {
+  salesDetailId: number;
+  salesMasterId: number;
+  customerId: number;
 
-// export interface ISalesReturnFormDtoWrapper {
-//   form: ISalesReturnFormDto;
-//   inventoryList: IInventoryDetailDto[];
-//   payTypeList: IPaytype[];
-//   conditionList: string[];
-// }
+  stockMasterId: number;
+  name: string;
 
-// export interface ISalesReturnFormDto {
-//   transactionMaster: ISalesReturnTransactionMasterFormDto;
-//   inventoryList: IInventoryDetailDto[];
-// }
-// export interface ISalesReturnTransactionMasterFormDto {
-//   masterId: number;
-//   payTypeId: number;
-//   payType: string;
-//   billNo: string;
-//   saveDate: string;
-//   condition: string;
-//   customerId: number;
-//   totalAmount: number;
-//   remarks: string;
-// }
+  qty: number;
+  unitId: number;
+  pricePerUnit: number;
+
+  totalAmt: number;
+  discountAmt: number;
+  taxableAmt: number;
+  taxAmt: number;
+  netAmt: number;
+
+  taxRate: number;
+}
+
+
+
