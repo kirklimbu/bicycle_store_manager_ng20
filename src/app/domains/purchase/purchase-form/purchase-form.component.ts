@@ -70,6 +70,7 @@ export class PurchaseFormComponent implements OnInit {
   inventoryListSignal = signal<any[]>([]);
   supplierListSignal = signal<ISupplier[]>([]);
   selectedItemsListSignal = signal<any[]>([]);
+  lastEditedField = signal<'disPercent' | 'discountAmt' | null>(null);
 
   private destroy$ = inject(DestroyRef);
   private route = inject(ActivatedRoute);
@@ -99,12 +100,13 @@ export class PurchaseFormComponent implements OnInit {
   });
 
   totalAmountSignal = computed(() => {
-    console.log('selectedItemsListSignal', this.selectedItemsListSignal());
-
-    return this.selectedItemsListSignal().reduce(
-      (total, item) => total + (item.netAmt || 0),
+    const total = this.selectedItemsListSignal().reduce(
+      (sum, item) => sum + (Number(item.netAmt) || 0),
       0
     );
+
+    // round to 2 decimal places
+    return Math.round(total * 100) / 100;
   });
 
   ngOnInit(): void {
@@ -131,14 +133,30 @@ export class PurchaseFormComponent implements OnInit {
   }
 
   createInventory(category?: any): FormGroup {
+
+    const selectedItem =
+      category?.medicine ??
+      this.inventoryListSignal().find(
+        (x) => x.stockMasterId === category?.stockMasterId
+      ) ??
+      null;
+
     const qty = Number(category?.qty ?? 0);
-    const rate = Number(category?.pricePerUnit ?? 0);
+    const rate = Number(category?.pricePerUnit ?? selectedItem?.pricePerUnit ?? 0);
+    const taxRate = Number(selectedItem?.taxRate ?? category?.taxRate ?? 0);
 
-    // accept both api shapes: category.selectedItem or category (if already merged)
-    const selectedItem = category?.selectedItem ?? null;
-    const taxRate = Number(category?.taxRate ?? selectedItem?.taxRate ?? 0);
+    const totalAmt = +(qty * rate).toFixed(2);
 
-    const taxableAmt = +(qty * rate).toFixed(2);
+    const disPercent = Number(category?.disPercent ?? 0);
+    let discountAmt = Number(category?.discountAmt ?? 0);
+
+    if (disPercent > 0) {
+      discountAmt = +((totalAmt * disPercent) / 100).toFixed(2);
+    }
+
+    discountAmt = Math.min(discountAmt, totalAmt);
+
+    const taxableAmt = +(totalAmt - discountAmt).toFixed(2);
     const taxAmt = +((taxableAmt * taxRate) / 100).toFixed(2);
     const netAmt = +(taxableAmt + taxAmt).toFixed(2);
 
@@ -146,25 +164,30 @@ export class PurchaseFormComponent implements OnInit {
       purchaseMasterId: [category?.purchaseMasterId ?? ''],
       purchaseDetailId: [category?.purchaseDetailId ?? 0],
       supplierId: [category?.supplierId ?? ''],
+      medicine: [selectedItem],
+      stockMasterId: [selectedItem?.stockMasterId ?? ''],
+      unit: [selectedItem?.unit ?? ''],
+      unitId: [selectedItem?.unitId ?? ''],
 
-      stockMasterId: [
-        selectedItem?.stockMasterId ?? category?.stockMasterId ?? '',
-      ],
-      unit: [selectedItem?.unit ?? category?.unit ?? ''],
+      qty: [qty],
+      pricePerUnit: [rate],
 
-      qty: [category?.qty ?? 1],
-      pricePerUnit: [category?.pricePerUnit ?? 0],
+      totalAmt: [totalAmt],
+      disPercent: [disPercent],
+      discountAmt: [discountAmt],
 
-      taxRate: [taxRate],
       taxableAmt: [taxableAmt],
+      taxRate: [taxRate],
       taxAmt: [taxAmt],
-      netAmt: [netAmt],
 
-      detailId: [category?.detailId ?? this.localDetailId--],
-      selectedItem: [selectedItem],
+      netAmt: [netAmt],
+      transAmount: [netAmt],
     });
   }
 
+  setLastEdited(field: 'disPercent' | 'discountAmt') {
+    this.lastEditedField.set(field);
+  }
   // Get the selectedCategoryList FormArray
   get inventoryList(): FormArray {
     return this.form.get('selectedStockList') as FormArray;
@@ -223,53 +246,83 @@ export class PurchaseFormComponent implements OnInit {
   }
 
   onEnterKeyPress(index: number): void {
-    // ensure latest math is patched
+
+    event?.preventDefault();
+
+    const rowCtrl = this.inventoryList.at(index) as FormGroup;
+    if (!rowCtrl) return;
+
+    const qty = Number(rowCtrl.get('qty')?.value ?? 0);
+    const rate = Number(rowCtrl.get('pricePerUnit')?.value ?? 0);
+    const medicine = rowCtrl.get('medicine')?.value;
+    console.log('item purchse returnßß', medicine);
+
+    if (!medicine || qty <= 0 || rate <= 0) {
+      this.createNotification(
+        'warning',
+        'Please select item, quantity and rate'
+      );
+      return;
+    }
     this.recalcRow(index);
 
-    const row = this.inventoryList.at(index)?.value;
-    if (!row?.selectedItem) return;
 
     const normalized = {
-      ...row,
-      stockMasterId: row.selectedItem?.stockMasterId ?? row.stockMasterId,
-      unit: row.selectedItem?.unit ?? row.unit,
-      taxRate: row.selectedItem?.taxRate ?? row.taxRate,
+      stockMasterId: medicine?.stockMasterId ?? 0,
+      name: medicine.name,
+      unit: medicine.unit,
+
+      qty: rowCtrl.get('qty')?.value ?? 0,
+      pricePerUnit: rowCtrl.get('pricePerUnit')?.value ?? 0,
+
+      totalAmt: rowCtrl.get('totalAmt')?.value ?? 0,
+      disPercent: rowCtrl.get('disPercent')?.value ?? 0,   // 🔑 fixed
+      discountAmt: rowCtrl.get('discountAmt')?.value ?? 0,   // 🔑 fixed
+      taxRate: medicine.taxRate ?? 0,
+      taxableAmt: rowCtrl.get('taxableAmt')?.value ?? 0,
+      taxAmt: rowCtrl.get('taxAmt')?.value ?? 0,
+
+      netAmt: rowCtrl.get('netAmt')?.value ?? 0,
+      transAmount: rowCtrl.get('transAmount')?.value ?? 0,
     };
 
     this.selectedItemsListSignal.update((items) => {
-      const exists = items.some((x) => x.detailId === normalized.detailId);
+      const exists = items.some(
+        (x) => x.stockMasterId === normalized.stockMasterId
+      );
+
       return exists
         ? items.map((x) =>
-            x.detailId === normalized.detailId ? normalized : x
-          )
+          x.stockMasterId === normalized.stockMasterId ? normalized : x
+        )
         : [...items, normalized];
     });
 
     this.resetInventoryList();
   }
 
-  pushSelectedItemsList() {
-    const selectedList = this.selectedItemsListSignal();
-    const inventoryArray = this.form.get('selectedStockList') as FormArray;
-    // Clear existing FormArray before patching new data
-    inventoryArray.clear();
 
-    // Patch each item in the API response
-    selectedList.forEach((item: any) => {
-      inventoryArray.push(this.createInventory(item));
-    });
-  }
 
   onSave() {
-    this.pushSelectedItemsList();
+    const payload = {
+      ...this.form.value,
+      selectedStockList: this.selectedItemsListSignal(), // ✅ send table data
+    };
     this.purchaseService
-      .savePurchase(this.form.value)
+      .savePurchase(payload)
       .pipe(takeUntilDestroyed(this.destroy$))
-      .subscribe((res: any) => {
-        this.createNotification('success', res.message);
-        this.form.reset();
-        this.resetInventoryList();
-        this.selectedItemsListSignal.set([]);
+      .subscribe({
+        next: (res: any) => {
+          this.createNotification('success', res.message);
+
+          this.form.reset();
+          this.resetInventoryList();
+          this.selectedItemsListSignal.set([]);
+        },
+        error: () => {
+          // ❌ DO NOTHING
+          // keep user data intact
+        },
       });
   }
 
@@ -281,32 +334,42 @@ export class PurchaseFormComponent implements OnInit {
    * edit section
    */
 
-  onEdit(id: any) {
+  onEdit(row: any) {
     // edit form Array
-    this.updateInventory(0, id);
+
+    this.inventoryList.clear();
+    this.inventoryList.push(this.createInventory(row));
   }
 
-  updateInventory(index: number, updatedData: any): void {
-    this.inventoryList.at(index).patchValue(updatedData);
-    // this.patchMedicineValue(index, updatedData);
-    this.onProductSelected(index, updatedData);
-  }
+  updateInventory(index: number, row: any): void {
+    const inventoryRow = this.inventoryList.at(index) as FormGroup;
 
-  onProductSelected(index: number, item: any): void {
-    const row = this.inventoryList.at(index) as FormGroup;
-    if (!row) return;
+    // 🔥 find SAME object reference used in nz-select
+    const selectedProduct = this.inventoryListSignal().find(
+      (item) => item.stockMasterId === row.stockMasterId
+    );
 
-    row.patchValue(
+    inventoryRow.patchValue(
       {
-        stockMasterId: item.stockMasterId,
-        unit: item.unit,
-        taxRate: item.taxRate ?? 0,
+        purchaseDetailId: row.purchaseDetailId,
+        purchaseMasterId: row.purchaseMasterId,
+        supplierId: row.supplierId,
+
+        qty: row.qty,
+        pricePerUnit: row.pricePerUnit,
+
+        selectedItem: selectedProduct, // ✅ KEY FIX
+        stockMasterId: selectedProduct?.stockMasterId,
+        unit: selectedProduct?.unit,
+        taxRate: selectedProduct?.taxRate,
       },
-      { emitEvent: false } // 🔥 prevents recursion
+      { emitEvent: false }
     );
 
     this.recalcRow(index);
   }
+
+
 
   onDelete(id: number) {
     this.selectedItemsListSignal.update((list) =>
@@ -327,30 +390,87 @@ export class PurchaseFormComponent implements OnInit {
   }
 
   private recalcRow(index: number): void {
+    // const row = this.inventoryList.at(index) as FormGroup;
+    // if (!row) return;
+
+    // const qty = Number(row.get('qty')?.value ?? 0);
+    // const rate = Number(row.get('pricePerUnit')?.value ?? 0);
+    // const item = row.get('medicine')?.value;
+
+    // const taxRate = Number(item?.taxRate ?? row.get('taxRate')?.value ?? 0);
+    // const totalAmt = +(qty * rate).toFixed(2);
+
+    // let disPercent = Number(row.get('disPercent')?.value ?? 0);
+    // let discountAmt = Number(row.get('discountAmt')?.value ?? 0);
+
+    // if (this.lastEditedField() === 'disPercent') {
+    //   discountAmt = +((totalAmt * disPercent) / 100).toFixed(2);
+    // }
+
+    // if (this.lastEditedField() === 'discountAmt') {
+    //   disPercent = totalAmt > 0 ? +((discountAmt / totalAmt) * 100).toFixed(2) : 0;
+    // }
+
+    // discountAmt = Math.min(discountAmt, totalAmt);
+
+    // const taxableAmt = +(totalAmt - discountAmt).toFixed(2);
+    // const taxAmt = +((taxableAmt * taxRate) / 100).toFixed(2);
+    // const netAmt = +(taxableAmt + taxAmt).toFixed(2);
+
+    // row.patchValue(
+    //   {
+    //     totalAmt,
+    //     disPercent,
+    //     discountAmt,
+    //     taxableAmt,
+    //     taxRate,
+    //     taxAmt,
+    //     netAmt,
+    //     transAmount: netAmt,
+    //   },
+    //   { emitEvent: false }
+    // );
     const row = this.inventoryList.at(index) as FormGroup;
     if (!row) return;
 
-    const qty = Number(row.get('qty')?.value ?? 0);
-    const rate = Number(row.get('pricePerUnit')?.value ?? 0);
+    const formValues = row.getRawValue();
+    const qty = Number(formValues.qty || 0);
+    const rate = Number(formValues.pricePerUnit || 0);
+    const taxRate = Number(formValues.medicine?.taxRate || 0);
 
-    // taxRate can come from the selected item, or the row
-    const selectedItem = row.get('selectedItem')?.value as any;
-    const taxRate = Number(
-      selectedItem?.taxRate ?? row.get('taxRate')?.value ?? 0
-    );
+    const totalAmt = qty * rate;
 
-    const taxableAmt = +(qty * rate).toFixed(2);
-    const taxAmt = +((taxableAmt * taxRate) / 100).toFixed(2);
-    const netAmt = +(taxableAmt + taxAmt).toFixed(2);
+    // We pull the current values from the form
+    let disPercent = Number(formValues.disPercent || 0);
+    let discountAmt = Number(formValues.discountAmt || 0);
 
-    row.patchValue(
-      {
-        taxRate,
-        taxableAmt,
-        taxAmt,
-        netAmt,
-      },
-      { emitEvent: false }
-    );
+    // LOGIC: Decide which one to recalculate based on user interaction
+    if (this.lastEditedField() === 'disPercent') {
+      // User changed %, so we update the Cash Amount
+      discountAmt = (totalAmt * disPercent) / 100;
+    }
+    else if (this.lastEditedField() === 'discountAmt') {
+      // User changed Cash, so we update the %
+      disPercent = totalAmt > 0 ? (discountAmt / totalAmt) * 100 : 0;
+    }
+
+    // Safety check: Discount can't be more than the total price
+    discountAmt = Math.min(discountAmt, totalAmt);
+
+    const taxableAmt = totalAmt - discountAmt;
+    const taxAmt = (taxableAmt * taxRate) / 100;
+    const netAmt = taxableAmt + taxAmt;
+
+    // Update the row with clean numbers
+    row.patchValue({
+      totalAmt: totalAmt,
+      disPercent: disPercent,
+      discountAmt: discountAmt,
+      taxableAmt: taxableAmt,
+      taxAmt: taxAmt,
+      netAmt: netAmt,
+      transAmount: netAmt
+    }, { emitEvent: false });
+
   }
 }

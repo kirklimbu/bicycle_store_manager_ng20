@@ -338,13 +338,14 @@ export class SalesReturnFormComponent {
   }
 
 
-
   onSave() {
     const payload = {
-      ...this.form.value,
-      selectedStockList: this.selectedItemsListSignal(), // ✅ send table data
+      salesReturnMaster: this.form.value.salesReturnMaster,
+      selectedStockList: this.selectedItemsListSignal(), // ✅ REAL DATA
     };
-    this.salesService.saveSalesReturn(this.form.value)
+
+    this.salesService
+      .saveSalesReturn(payload)
       .pipe(takeUntilDestroyed(this.destroy$))
       .subscribe({
         next: (res: any) => {
@@ -355,11 +356,12 @@ export class SalesReturnFormComponent {
           this.selectedItemsListSignal.set([]);
         },
         error: () => {
-          // ❌ DO NOTHING
           // keep user data intact
         },
       });
   }
+
+
 
   createNotification(type: string, message: string): void {
     this.notification.create(type, message, '');
@@ -420,7 +422,7 @@ export class SalesReturnFormComponent {
 
   onDelete(id: number) {
     this.selectedItemsListSignal.update((list) =>
-      list.filter((item) => item.detailId !== id)
+      list.filter((item) => item.stockMasterId !== id)
     );
     // Use RxJS timer to delay the notification
     // timer(500)

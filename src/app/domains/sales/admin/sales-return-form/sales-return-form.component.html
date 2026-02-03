@@ -73,7 +73,9 @@
         <nz-divider></nz-divider>
 
         <div formArrayName="selectedStockList">
-            <div *ngFor="let skill of inventoryList.controls let i=index">
+            @for (skill of inventoryList.controls; track skill; let i = $index) {
+            <div>
+                <!-- <div *ngFor="let skill of inventoryList.controls let i=index"> -->
                 <div [formGroupName]="i">
                     <div nz-row [nzGutter]="16">
                         <div nz-col nzXs="24" nzMd="8" nzLg="6">
@@ -168,6 +170,7 @@
                     </div>
                 </div>
             </div>
+            }
         </div>
     </form>
 
@@ -205,7 +208,8 @@
                 <td>{{ row.taxAmt|number :'1.2-2' }}</td>
                 <td>{{ row.netAmt|number :'1.2-2' }}</td>
                 <td>
-                    <lib-table-action-buttons (edit)="onEdit(row)" (delete)="onDelete(row.detailId)" />
+                    <lib-table-action-buttons [showDeleteButton]="true" (edit)="onEdit(row)"
+                        (delete)="onDelete(row.stockMasterId)" />
                 </td>
             </tr>
             }
