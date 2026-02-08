@@ -124,13 +124,9 @@ export class OpeningAccountForm {
 
     const qty = Number(category?.qty ?? 0);
     const rate = Number(category?.pricePerUnit ?? selectedItem?.pricePerUnit ?? 0);
-    const taxRate = Number(selectedItem?.taxRate ?? category?.taxRate ?? 0);
 
     const totalAmt = +(qty * rate).toFixed(2);
-
-    const taxableAmt = +(totalAmt).toFixed(2);
-    const taxAmt = +((taxableAmt * taxRate) / 100).toFixed(2);
-    const netAmt = +(taxableAmt + taxAmt).toFixed(2);
+    const netAmt = +(totalAmt).toFixed(2);
 
     return this.fb.group({
       purchaseMasterId: [category?.purchaseMasterId ?? ''],
@@ -145,11 +141,6 @@ export class OpeningAccountForm {
       pricePerUnit: [rate],
 
       totalAmt: [totalAmt],
-
-      taxableAmt: [taxableAmt],
-      taxRate: [taxRate],
-      taxAmt: [taxAmt],
-
       netAmt: [netAmt],
       transAmount: [netAmt],
     });
@@ -235,9 +226,6 @@ export class OpeningAccountForm {
       unitId: medicine?.unitId ?? 0,
       pricePerUnit: rowCtrl.get('pricePerUnit')?.value ?? 0,
       name: medicine?.name ?? 'Unknown',
-      taxRate: medicine?.taxRate ?? 0,
-      taxableAmt: rowCtrl.get('taxableAmt')?.value ?? 0,
-      taxAmt: rowCtrl.get('taxAmt')?.value ?? 0,
       netAmt: rowCtrl.get('netAmt')?.value ?? 0
 
     };
@@ -298,34 +286,6 @@ export class OpeningAccountForm {
     this.inventoryList.push(this.createInventory(row));
   }
 
-  // updateInventory(index: number, row: any): void {
-  //   const inventoryRow = this.inventoryList.at(index) as FormGroup;
-
-  //   // 🔥 find SAME object reference used in nz-select
-  //   const selectedProduct = this.inventoryListSignal().find(
-  //     (item) => item.stockMasterId === row.stockMasterId
-  //   );
-
-  //   inventoryRow.patchValue(
-  //     {
-  //       purchaseDetailId: row.purchaseDetailId,
-  //       purchaseMasterId: row.purchaseMasterId,
-  //       supplierId: row.supplierId,
-
-  //       qty: row.qty,
-  //       pricePerUnit: row.pricePerUnit,
-
-  //       selectedItem: selectedProduct, // ✅ KEY FIX
-  //       stockMasterId: selectedProduct?.stockMasterId,
-  //       unit: selectedProduct?.unit,
-  //       taxRate: selectedProduct?.taxRate,
-  //     },
-  //     { emitEvent: false }
-  //   );
-
-  //   this.recalcRow(index);
-  // }
-
 
 
   onDelete(id: number) {
@@ -354,20 +314,14 @@ export class OpeningAccountForm {
     const formValues = row.getRawValue();
     const qty = Number(formValues.qty || 0);
     const rate = Number(formValues.pricePerUnit || 0);
-    const taxRate = Number(formValues.medicine?.taxRate || 0);
 
     const totalAmt = +(qty * rate).toFixed(2);
 
-    const taxableAmt = totalAmt;
-    const taxAmt = (taxableAmt * taxRate) / 100;
-    const netAmt = taxableAmt + taxAmt;
+    const netAmt = totalAmt;
 
     // Update the row with clean numbers
     row.patchValue({
       totalAmt: totalAmt,
-
-      taxableAmt: taxableAmt,
-      taxAmt: taxAmt,
       netAmt: netAmt,
       transAmount: netAmt
     }, { emitEvent: false });

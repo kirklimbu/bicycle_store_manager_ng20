@@ -89,27 +89,6 @@
                             </nz-form-item>
                         </div>
 
-                        <div nz-col nzXs="12" nzMd="4" nzLg="2">
-                            <nz-form-item>
-                                <nz-form-label>Taxable </nz-form-label>
-                                <nz-form-control>
-                                    <input readonly [disabled] type="number" nz-input min="0" placeholder="Taxable Amt"
-                                        formControlName="taxableAmt" step="any" />
-                                </nz-form-control>
-                            </nz-form-item>
-                        </div>
-
-                        <div nz-col nzXs="12" nzMd="4" nzLg="2">
-                            <nz-form-item>
-                                <nz-form-label>Tax Amt.</nz-form-label>
-                                <nz-form-control>
-                                    <input [disabled] readonly type="number" nz-input min="0" placeholder="Tax Rate"
-                                        formControlName="taxAmt" step="any">
-
-                                </nz-form-control>
-                            </nz-form-item>
-                        </div>
-
                         <div nz-col nzXs="24" nzMd="6" nzLg="3">
                             <nz-form-item>
                                 <nz-form-label>Net Amt. </nz-form-label>
@@ -139,9 +118,7 @@
                 <th nzWidth="5%">Qty</th>
                 <th nzWidth="5%">Rate</th>
                 <th nzWidth="5%">Total</th>
-                <th nzWidth="5%">Taxable </th>
 
-                <th nzWidth="5%">Tax Amt</th>
                 <th nzWidth="10%">Net Amt</th>
                 <th nzWidth="10%">Table Actions</th>
             </tr>
@@ -154,9 +131,7 @@
                 <td>{{ row.qty }}</td>
                 <td>{{ row.pricePerUnit }}</td>
                 <td>{{ row.totalAmt |number :'1.1-2'}}</td>
-                <td>{{ row.taxableAmt|number :'1.2-2' }}</td>
 
-                <td>{{ row.taxAmt|number :'1.2-2' }}</td>
                 <td>{{ row.netAmt|number :'1.2-2' }}</td>
                 <td>
                     <lib-table-action-buttons [showDeleteButton]="true" (edit)="onEdit(row)"
@@ -172,8 +147,7 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
-                <td></td>
+
                 <td></td>
                 <td>Net Total</td>
                 <td>

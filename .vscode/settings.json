@@ -1,5 +1,42 @@
 {
-  "nxConsole.generateAiAgentRules": true,
   "editor.fontSize": 11,
-  "editor.fontFamily": "Fira Code"
-}
+  "editor.fontFamily": "Fira Code",
+  "editor.fontLigatures": true,
+  
+  // --- PERFORMANCE BOOSTERS ---
+  "editor.minimap.enabled": false, // Saves RAM and GPU
+  "editor.cursorBlinking": "solid", // Reduces CPU cycles for rendering
+  "editor.cursorSmoothCaretAnimation": false,
+  "editor.guides.indentation": false, // Less visual calculation
+  "editor.renderWhitespace": "none",
+  "editor.controlCharacters": false,
+  "editor.selectionHighlight": false,
+  "editor.occurrencesHighlight": false,
+  
+  // --- ANGULAR EFFICIENCY ---
+  "editor.formatOnSave": true, // Essential for fast dev
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "angular.enable-strict-mode-prompt": false,
+  "nxConsole.generateAiAgentRules": true,
+
+  // --- SYSTEM LIGHTNESS ---
+  "workbench.iconTheme": "vscode-icons", // Use a simple icon set
+  "workbench.startupEditor": "none",
+  "explorer.confirmDelete": false,
+  "files.autoSave": "onFocusChange",
+  "git.autorefresh": false, // Manual git refresh saves background CPU
+  "update.mode": "manual", // Prevent background update checks
+  "telemetry.telemetryLevel": "off", // Stop background data sending
+  
+  // --- SEARCH OPTIMIZATION (Crucial for old SSDs) ---
+  "search.followSymlinks": false,
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true, // Stops VS Code from indexing huge folders
+    "**/dist": true,
+    "**/tmp": true
+  }
+} 

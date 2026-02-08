@@ -36,7 +36,7 @@ export interface ISelectedStockItem {
   unitId: number;
   pricePerUnit: number;
   name: string;
-  taxRate: number;
+  taxRate?: number;
   // Note: Add optional fields if your UI calculations need them (e.g., netAmt)
   netAmt?: number;
   discountAmt?: number;

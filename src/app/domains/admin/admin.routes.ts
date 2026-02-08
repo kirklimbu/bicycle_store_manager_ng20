@@ -1,8 +1,6 @@
 import { Routes } from '@angular/router';
-import { Role } from '../shared/util-auth/models/user.model';
-import { UserProfileComponent } from '../user-profile/user-profile.component';
-import { hasRoleGuard } from '../shared/util-auth/guards/hasRole.guard';
 import { AuthGuard } from '../shared/util-auth/guards/auth.guard';
+import { UserProfileComponent } from '../user-profile/user-profile.component';
 
 export const FEATURE_ADMIN_ROUTES: Routes = [
   {
@@ -56,6 +54,10 @@ export const FEATURE_ADMIN_ROUTES: Routes = [
     path: '',
     canActivate: [AuthGuard],
     loadChildren: () => import('../stock').then((m) => m.FEATURE_STOCK_ROUTES),
+  }, {
+    path: '',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('../product').then((m) => m.FEATURE_PRODUCT_ROUTES),
   },
   {
     path: '',
