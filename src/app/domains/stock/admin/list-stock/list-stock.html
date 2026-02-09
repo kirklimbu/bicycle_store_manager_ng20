@@ -1,33 +1,15 @@
-<section>
-    <div>
-        <div class="table-operations">
-            <!-- <nz-input-group [nzSuffix]="suffixIconSearch">
-                <input [(ngModel)]="searchValue" type="text" nz-input placeholder="Search staff... " />
-            </nz-input-group>
-            <ng-template #suffixIconSearch>
-                <span nz-icon nzType="search"></span>
-            </ng-template> -->
-            <!-- <button nz-button nzType="default" (click)="onSearch()">
-        <span nz-icon nzType="search"></span>
-        Search
-      </button> -->
-            <!-- @if (setList$ | async; as set) {
-        } -->
-            <!-- <button
-        class="action-button"
-        nzDanger
-        nz-button
-        nzType="primary"
-        routerLinkActive
-        (click)="onAdd()"
-      >
-        Add
-      </button> -->
-            <button class="action-button" nz-button nzType="primary" (click)="onAdd()">
-                Add
-            </button>
-        </div>
+<div class="table-container">
+    <div class="site-page-header-ghost-wrapper">
+        <nz-page-header nzTitle="Stock List" [nzGhost]="false">
+            <nz-page-header-extra>
+                <lib-table-operations [showSelector1]="false" [showAddButton]="false" [showSecondaryButton]="true"
+                    [secondaryButtonLabel]="'ADD 2'" [secondaryButtonIcon]="''" [tertiaryButtonIcon]="''"
+                    [showTertiaryButton]="true" [tertiaryButtonLabel]="'ADD'" (secondaryButtonClick)="onAdd2()"
+                    (tertiaryButtonClick)="onAdd()" />
+            </nz-page-header-extra>
+        </nz-page-header>
     </div>
+
     @if (data$ | async; as table) {
     <nz-table #borderedTable nzBordered nzTitle="Stock List" [nzData]="table" [nzFrontPagination]="false"
         [nzScroll]="{ x: '1100px' }">
@@ -112,4 +94,4 @@
         </tbody>
     </nz-table>
     }
-</section>
+</div>

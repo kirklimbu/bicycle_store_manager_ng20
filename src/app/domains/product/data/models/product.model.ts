@@ -1,4 +1,4 @@
-import { IPaytype, ISupplier } from "../../../purchase/data/models/purhase.model";
+import { IPaytype } from "../../../purchase/data/models/purhase.model";
 import { IUnit } from "../../../stock/data/model/stock";
 
 export interface IProductFormDtoWrapper {

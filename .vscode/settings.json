@@ -6,12 +6,12 @@
   // --- PERFORMANCE BOOSTERS ---
   "editor.minimap.enabled": false, // Saves RAM and GPU
   "editor.cursorBlinking": "solid", // Reduces CPU cycles for rendering
-  "editor.cursorSmoothCaretAnimation": false,
+  "editor.cursorSmoothCaretAnimation": "off",
   "editor.guides.indentation": false, // Less visual calculation
   "editor.renderWhitespace": "none",
   "editor.controlCharacters": false,
   "editor.selectionHighlight": false,
-  "editor.occurrencesHighlight": false,
+  "editor.occurrencesHighlight": "off",
   
   // --- ANGULAR EFFICIENCY ---
   "editor.formatOnSave": true, // Essential for fast dev

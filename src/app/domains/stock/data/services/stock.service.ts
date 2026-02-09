@@ -7,6 +7,7 @@ import {
   IStock,
   IStockDetailDto,
   IStockDetailFormDto,
+  IStockForm2DtoWrapper,
   IStockFormDtoWrapper,
 } from '../model/stock';
 import { IProduct } from 'src/app/domains/home/data/model/home.model';
@@ -17,7 +18,7 @@ import { IProduct } from 'src/app/domains/home/data/model/home.model';
 export class StockService {
 
 
-  
+
   apiUrl = `${environment.apiUrl}auth/`;
   private http = inject(HttpClient);
 
@@ -48,7 +49,23 @@ export class StockService {
       formData
     );
   }
+  // stock-2
+  getDefaultForm2(id: number): Observable<IStockForm2DtoWrapper> {
+    return this.http.get<IStockForm2DtoWrapper>(`${this.apiUrl}stock/form2`, {
+      params: { stockMasterId: id },
+    });
+  }
 
+  saveStock2(data: any): Observable<ICustomResponse> {
+    // return this.http.post<ICustomResponse>(`${this.apiUrl}stock/save`, data);
+
+
+
+    return this.http.post<ICustomResponse>(
+      `${this.apiUrl}stock/save2`,
+      { ...data },
+    );
+  }
   // stock-detail section
   getStockDetailForm(id: number): Observable<IStockDetailFormDto> {
     return this.http.get<IStockDetailFormDto>(

@@ -1,5 +1,6 @@
 import { ICompany } from './../../../company/data/model/company.model';
 import { ICategory } from './../../../home/data/model/home.model';
+import { IProduct } from '../../../product';
 export interface IStock {
   stockMasterId: number;
   name: string;
@@ -30,6 +31,13 @@ export interface IStockFormDtoWrapper {
   categoryList: ICategory[];
   companyList: ICompany[];
   unitList: IUnit[];
+}
+export interface IStockForm2DtoWrapper {
+  form: IStock;
+  categoryList: ICategory[];
+  companyList: ICompany[];
+  unitList: IUnit[];
+  productList: IProduct[];
 }
 
 export interface IUnit {

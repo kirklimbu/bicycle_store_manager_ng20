@@ -1,0 +1,374 @@
+<div nz-row nzJustify="start">
+    <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="24" [nzLg]="24" [nzXl]="24">
+        <div class="form-container">
+            <nz-card [nzTitle]="mode() === 'add' ? 'Add Stock' : 'Edit Stock'">
+                <form nz-form [nzLayout]="'vertical'" (ngSubmit)="onSave()">
+                    <!-- START: Responsive Two-Column Layout -->
+                    <div nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24 }">
+                        <!-- First Column -->
+                        <!-- <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="8">
+                            <nz-form-item>
+                                <nz-form-control nzErrorTip="Please add Branch name!">
+                                    <div class="flex">
+                                        <nz-form-label nzRequired>Photo</nz-form-label>
+                                        <p>
+
+                                            <small>
+                                                <span nz-typography nzType="danger">*Add square (1:1) photo.</span>
+
+                                            </small>
+                                        </p>
+                                        <label for="">
+                                            <div class="clearfix">
+                                                <nz-upload class="avatar-uploader"
+                                                    [nzShowUploadList]="{'showRemoveIcon':true }"
+                                                    [nzBeforeUpload]="profilePicUpload" nzAccept=".png,.jpg,.jpeg"
+                                                    [nzSize]="10000" [nzFileType]="'image/png,image/jpeg,image/jpg'"
+                                                    nzListType="picture-card" [(nzFileList)]="fileList"
+                                                    [nzShowButton]="fileList.length < 1"
+                                                    (nzChange)="handleChange($event)">
+
+                                                    @if(!avatarUrl){
+                                                    <ng-container>
+                                                        <span class="upload-icon" nz-icon
+                                                            [nzType]="loading ? 'loading' : 'plus'"></span>
+                                                        <div class="ant-upload-text">Upload</div>
+                                                    </ng-container>
+
+                                                    }
+                                                    @if (avatarUrl) {
+
+                                                    <img [src]="avatarUrl" width="250" height="250" alt="profile pic" />
+                                                    }
+                                                </nz-upload>
+
+                                            </div>
+                                        </label>
+                                    </div>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div> -->
+                        <div nz-col nzXs="24" nzSm="24" nzMd="8">
+                            <div class="image-preview-wrapper">
+                                @if (selectedProductImage()) {
+                                <div class="image-box selected">
+                                    <img [src]="selectedProductImage()" alt="Product" class="responsive-img" />
+                                </div>
+                                } @else {
+                                <div class="image-box empty">
+                                    <span nz-icon nzType="picture" nzTheme="outline" class="placeholder-icon"></span>
+                                    <span class="placeholder-text">Select an item to view photo</span>
+                                </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24 }">
+
+                        <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="8">
+                            <nz-form-item>
+                                <!-- <nz-form-label nzRequired>Item</nz-form-label>
+                                <nz-form-control nzErrorTip="Please add Item">
+                                    <nz-select nzAllowClear nzShowSearch formControlName="productId"
+                                        nzPlaceHolder="Select Item">
+                                        <nz-option [nzValue]="0" nzLabel="No Item"></nz-option>
+                                        @for(job of productListSignal();track job.productId){
+
+                                        <nz-option [nzValue]="job.productId" [nzLabel]="job.name"></nz-option>
+                                        }
+                                    </nz-select>
+                                </nz-form-control> -->
+
+                                <nz-form-label>Item</nz-form-label>
+                                <nz-select name="productId" nzAllowClear nzShowSearch [ngModel]="state().productId"
+                                    (ngModelChange)="updateField('productId', $event)" name="productId" nzShowSearch>
+                                    @for(item of productListSignal(); track item.productId) {
+                                    <nz-option [nzValue]="item.productId" [nzLabel]="item.name"></nz-option>
+                                    }
+                                </nz-select>
+                            </nz-form-item>
+                        </div>
+                        <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="8">
+                            <nz-form-item>
+                                <!-- <nz-form-label nzRequired>Brand</nz-form-label>
+                                <nz-form-control nzErrorTip="Please add Brand">
+                                    <nz-select nzAllowClear nzShowSearch formControlName="companyId"
+                                        nzPlaceHolder="Select Brand">
+                                        <nz-option [nzValue]="0" nzLabel="No Office"></nz-option>
+                                        @for(job of companyListSignal();track job.companyId){
+
+                                        <nz-option [nzValue]="job.companyId" [nzLabel]="job.name"></nz-option>
+                                        }
+                                    </nz-select>
+                                </nz-form-control> -->
+                                <nz-form-label>Select Company</nz-form-label>
+                                <nz-select name="companyId" [ngModel]="state().companyId"
+                                    (ngModelChange)="updateField('companyId', $event)" nzShowSearch
+                                    nzPlaceHolder="Choose company...">
+                                    @for(item of companyListSignal(); track item.companyId){
+                                    <nz-option [nzValue]="item.companyId" [nzLabel]="item.name"></nz-option>
+                                    }
+                                </nz-select>
+                            </nz-form-item>
+                        </div>
+                        <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="8">
+
+                            <nz-form-item>
+                                <!-- <nz-form-label nzRequired>Category</nz-form-label>
+                                <nz-form-control nzErrorTip="Please add Category">
+                                    <nz-select nzAllowClear nzShowSearch formControlName="categoryId"
+                                        nzPlaceHolder="Select Category">
+                                        @for(job of categoryListSignal();track job.categoryId){
+
+                                        <nz-option [nzValue]="job.categoryId" [nzLabel]="job.name"></nz-option>
+                                        }
+                                    </nz-select>
+                                </nz-form-control> -->
+                                <nz-form-label>Select Category</nz-form-label>
+                                <nz-select name="categoryId" [ngModel]="state().categoryId"
+                                    (ngModelChange)="updateField('categoryId', $event)" nzShowSearch
+                                    nzPlaceHolder="Choose category...">
+                                    @for(item of categoryListSignal(); track item.categoryId){
+                                    <nz-option [nzValue]="item.categoryId" [nzLabel]="item.name"></nz-option>
+                                    }
+                                </nz-select>
+
+                            </nz-form-item>
+                        </div>
+
+                        <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="8">
+
+                            <nz-form-item>
+                                <!-- <nz-form-label nzRequired>Unit</nz-form-label>
+                                <nz-form-control nzErrorTip="Please add Unit">
+                                    <nz-select nzAllowClear nzShowSearch formControlName="unitId"
+                                        nzPlaceHolder="Select Unit">
+                                        @for(job of unitListSignal();track job.unitId){
+
+                                        <nz-option [nzValue]="job.unitId" [nzLabel]="job.name"></nz-option>
+                                        }
+                                    </nz-select>
+                                </nz-form-control> -->
+
+                                <nz-form-label>Unit</nz-form-label>
+                                <nz-select name="unitId" [ngModel]="state().unitId"
+                                    (ngModelChange)="updateField('unitId', $event)" name="unitId" nzShowSearch>
+                                    @for(item of unitListSignal(); track item.unitId) {
+                                    <nz-option [nzValue]="item.unitId" [nzLabel]="item.name"></nz-option>
+                                    }
+                                </nz-select>
+                            </nz-form-item>
+                        </div>
+
+                        <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="8">
+                            <nz-form-item>
+                                <nz-form-label>Manufacture Date (YYYY/MM)</nz-form-label>
+                                <input nz-input appYearMonthMask placeholder="2024/12" class="bg-blue-50"
+                                    [ngModel]="state().mfgDate" (ngModelChange)="updateField('mfgDate', $event)"
+                                    name="mfgDate" />
+                            </nz-form-item>
+                        </div>
+
+                        <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="8">
+                            <nz-form-item>
+                                <nz-form-label>Expire Date (YYYY/MM)</nz-form-label>
+                                <input nz-input appYearMonthMask placeholder="2026/05" class="bg-blue-50"
+                                    [ngModel]="state().expDate" (ngModelChange)="updateField('expDate', $event)"
+                                    name="expDate" />
+                            </nz-form-item>
+                        </div>
+                        <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="8">
+
+                            <nz-form-item>
+                                <!-- <nz-form-label nzRequired>MRP.</nz-form-label>
+                                <nz-form-control nzErrorTip="Please add MRP.">
+                                    <input nz-input type="number" formControlName="mrp" placeholder="50" />
+                                </nz-form-control> -->
+                                <nz-form-label>MRP.</nz-form-label>
+                                <nz-input-number name="mrp" style="width: 100%" class="bg-blue-50"
+                                    [ngModel]="state().mrp" (ngModelChange)="updateField('mrp', $event)" name="mrp">
+                                </nz-input-number>
+                            </nz-form-item>
+                        </div>
+
+                        <!-- END: Responsive Two-Column Layout -->
+
+                        <!-- third Column -->
+                        <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="8">
+                            <nz-form-item>
+
+                                <!-- <nz-form-label>Cost Price Per Unit</nz-form-label>
+                                <nz-form-control nzErrorTip="Please add Cost Price Per Unit">
+                                    <input min="0" nz-input type="number" formControlName="costPerUnit"
+                                        placeholder="100" />
+                                </nz-form-control> -->
+
+                                <nz-form-label>Cost Price Per Unit</nz-form-label>
+                                <nz-input-number name="costPerUnit" style="width: 100%" [disabled]="!isCostEditable()"
+                                    [ngModel]="state().costPerUnit" (ngModelChange)="updateField('costPerUnit', $event)"
+                                    name="costPerUnit">
+                                </nz-input-number>
+                                @if(!isCostEditable()) {
+                                <span class="text-xs text-gray-400">Editing locked by admin</span>
+                                }
+                            </nz-form-item>
+                        </div>
+                        <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="8">
+
+                            <nz-form-item>
+
+                                <!-- <nz-form-label>Sell Price Per Unit</nz-form-label>
+                                <nz-form-control nzErrorTip="Please add Sell Price Per Unit">
+                                    <input nz-input min="0" type="number" formControlName="sellPerUnit"
+                                        placeholder="120" />
+                                </nz-form-control> -->
+                                <nz-form-label>Sell Price (Auto)</nz-form-label>
+                                <nz-input-number name="sellPerUnit" style="width: 100%" class="bg-blue-50"
+                                    [ngModel]="state().sellPerUnit" (ngModelChange)="updateField('sellPerUnit', $event)"
+                                    name="sellPerUnit">
+                                </nz-input-number>
+                            </nz-form-item>
+                        </div>
+                        <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="8">
+
+                            <nz-form-item>
+
+                                <!-- <nz-form-label>Purchase Tax Rate</nz-form-label>
+                                <nz-form-control nzErrorTip="Please add Purchase Tax Rate">
+                                    <input nz-input type="number" min="0" formControlName="taxRatePurchase"
+                                        placeholder="13" />
+                                </nz-form-control> -->
+
+                                <nz-form-label>Purchase Tax Rate</nz-form-label>
+                                <nz-input-number name="taxRatePurchase" style="width: 100%" class="bg-blue-50"
+                                    [ngModel]="state().taxRatePurchase"
+                                    (ngModelChange)="updateField('taxRatePurchase', $event)" name="taxRatePurchase">
+                                </nz-input-number>
+                            </nz-form-item>
+                        </div>
+
+                        <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="8">
+
+                            <nz-form-item>
+
+                                <!-- <nz-form-label>Sales Tax Rate</nz-form-label>
+                                <nz-form-control nzErrorTip="Please add Sales Tax Rate">
+                                    <input class="disabled-input" min="0" nz-input type="number"
+                                        formControlName="taxRateSales" placeholder="13" />
+                                </nz-form-control> -->
+                                <nz-form-label>Sales Tax Rate</nz-form-label>
+                                <nz-input-number name="taxRateSales" style="width: 100%" class="bg-blue-50"
+                                    [ngModel]="state().taxRateSales"
+                                    (ngModelChange)="updateField('taxRateSales', $event)" name="taxRateSales">
+                                </nz-input-number>
+                            </nz-form-item>
+                        </div>
+                        <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="8">
+
+                            <nz-form-item>
+
+                                <!-- <nz-form-label>Discount %</nz-form-label>
+                                <nz-form-control nzErrorTip="Please add discount %">
+                                    <input nz-input type="number" min="0" formControlName="disPercent"
+                                        placeholder="5" />
+                                </nz-form-control> -->
+                                <nz-form-label>Discount %</nz-form-label>
+                                <nz-input-number name="disPercent" style="width: 100%" class="bg-blue-50"
+                                    [ngModel]="state().disPercent" (ngModelChange)="updateField('disPercent', $event)"
+                                    name="disPercent">
+                                </nz-input-number>
+                            </nz-form-item>
+                        </div>
+                        <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="8">
+
+                            <nz-form-item>
+
+                                <!-- <nz-form-label>Discount Amt.</nz-form-label>
+                                <nz-form-control nzErrorTip="Please add discount amount">
+                                    <input nz-input type="number" min="0" formControlName="discountAmt"
+                                        placeholder="50" />
+                                </nz-form-control> -->
+                                <nz-form-label>Discount Amt.</nz-form-label>
+                                <nz-input-number name="discountAmt" style="width: 100%" class="bg-blue-50"
+                                    [ngModel]="state().discountAmt" (ngModelChange)="updateField('discountAmt', $event)"
+                                    name="discountAmt">
+                                </nz-input-number>
+                            </nz-form-item>
+                        </div>
+                        <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="8">
+
+                            <nz-form-item>
+
+                                <!-- <nz-form-label>Margin %</nz-form-label>
+                                <nz-form-control nzErrorTip="Please add margin %">
+                                    <input nz-input type="number" min="0" formControlName="marginPercent"
+                                        placeholder="5" />
+                                </nz-form-control> -->
+                                <nz-form-label>Margin %</nz-form-label>
+                                <nz-input-number name="marginPercent" style="width: 100%" class="bg-blue-50"
+                                    [ngModel]="state().marginPercent"
+                                    (ngModelChange)="updateField('marginPercent', $event)" name="marginPercent">
+                                </nz-input-number>
+                            </nz-form-item>
+                        </div>
+
+
+
+
+                        <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="8">
+
+                            <nz-form-item>
+                                <!-- <nz-form-label nzRequired>Min Notification</nz-form-label>
+                                <nz-form-control nzErrorTip="Please add Cost price.">
+                                    <input nz-input type="number" formControlName="minNotification" placeholder="35" />
+                                </nz-form-control> -->
+                                <nz-form-label>Min Notification</nz-form-label>
+                                <nz-input-number name="minNotification" style="width: 100%" class="bg-blue-50"
+                                    [ngModel]="state().minNotification"
+                                    (ngModelChange)="updateField('minNotification', $event)" name="minNotification">
+                                </nz-input-number>
+                            </nz-form-item>
+                        </div>
+                        <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="8">
+                            <nz-form-item>
+                                <!-- <nz-form-label>Status</nz-form-label>
+                                <nz-form-control>
+                                    <nz-switch formControlName="hasActive" [nzCheckedChildren]="checkedTemplate"
+                                        [nzUnCheckedChildren]="unCheckedTemplate"></nz-switch>
+                                    <ng-template #checkedTemplate>Active</ng-template>
+                                    <ng-template #unCheckedTemplate>Not Active</ng-template>
+                                </nz-form-control> -->
+
+                                <nz-form-label>Status</nz-form-label>
+                                <nz-form-control>
+                                    <nz-switch name="hasActive" [ngModel]="state().hasActive"
+                                        [nzCheckedChildren]="checkedTemplate"
+                                        [nzUnCheckedChildren]="unCheckedTemplate"></nz-switch>
+                                    <ng-template #checkedTemplate>Active</ng-template>
+                                    <ng-template #unCheckedTemplate>Not Active</ng-template>
+                                </nz-form-control>
+
+                            </nz-form-item>
+                        </div>
+
+                    </div>
+
+                    <nz-divider></nz-divider>
+
+                    <nz-form-item>
+                        <nz-form-control>
+                            <div nz-row [nzJustify]="'end'">
+                                <div nz-col [nzXs]="24" [nzSm]="24" [nzLg]="'auto'">
+                                    <button nz-button [nzType]="'primary'" class="submit-button">
+                                        {{ mode() === 'add' ? 'SAVE' : 'UPDATE' }}
+                                    </button>
+                                </div>
+                            </div>
+                        </nz-form-control>
+                    </nz-form-item>
+                </form>
+            </nz-card>
+        </div>
+    </div>
+</div>

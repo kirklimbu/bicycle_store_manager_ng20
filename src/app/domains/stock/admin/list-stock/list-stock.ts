@@ -11,6 +11,10 @@ import { Observable } from 'rxjs';
 import { IStock } from '../../data/model/stock';
 import { StockService } from '../../data/services/stock.service';
 import { NzTagModule } from 'ng-zorro-antd/tag';
+import { TableActionButtonsComponent } from '../../../shared/ui-common/table-action-buttons/table-action-buttons.component';
+import { TableOperationsComponent } from '../../../shared/ui-common/table-operations/table-operations.component';
+import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
+import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 
 @Component({
   selector: 'app-list-stock',
@@ -23,8 +27,15 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
     NzInputModule,
     NzIconModule,
     NzImageModule,
-    NzTagModule
+    NzTagModule,
+    NzPageHeaderModule,
+    NzBreadCrumbModule,
+
     // SearchPipe,
+    // project
+    TableOperationsComponent,
+    TableActionButtonsComponent,
+
   ],
   templateUrl: './list-stock.html',
   styleUrl: './list-stock.scss',
@@ -62,5 +73,24 @@ export class ListStock {
 
   onAdd(): void {
     this.router.navigate(['/auth/add-stock']);
+  }
+
+  onAdd2() {
+    console.log('purchae click');
+    this.router.navigate(['/auth/add-stock2']);
+
+
+    // this.router.navigate(['auth/purchase-master'], {
+    //   queryParams: { supplierId: this.supplierIdSignal() },
+    // });
+  }
+
+  onPurchaseReturn() {
+    // this.router.navigate(['auth/purchase-return'], {
+    //   queryParams: {
+    //     supplierId: this.supplierIdSignal(),
+    //     purchaseReturnMasterId: 0,
+    //   },
+    // });
   }
 }
