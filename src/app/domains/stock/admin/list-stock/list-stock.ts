@@ -63,6 +63,13 @@ export class ListStock {
       },
     });
   }
+  onEdit2(id: number): void {
+    this.router.navigate(['/auth/add-stock2'], {
+      queryParams: {
+        id: id,
+      },
+    });
+  }
   onViewDetail(id: number): void {
     this.router.navigate(['/auth/list-stock-detail'], {
       queryParams: {

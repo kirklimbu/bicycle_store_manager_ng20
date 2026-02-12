@@ -356,7 +356,7 @@ export class AddStock2 {
     }
 
     this.loading.set(true);
-    this.stockService.saveStock(this.state())
+    this.stockService.saveStock2(this.state())
       .pipe(takeUntilDestroyed(this.destroy$))
       .subscribe({
         next: (res) => {
