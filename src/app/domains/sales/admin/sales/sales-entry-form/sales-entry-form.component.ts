@@ -448,48 +448,109 @@ export class SalesEntryFormComponent {
 
 
 
+  // private recalcRow(index: number): void {
+  //   const row = this.inventoryList.at(index) as FormGroup;
+  //   if (!row) return;
+
+  //   const qty = Number(row.get('qty')?.value ?? 0);
+  //   const rate = Number(row.get('pricePerUnit')?.value ?? 0);
+  //   const item = row.get('medicine')?.value;
+
+  //   const taxRate = Number(item?.taxRate ?? row.get('taxRate')?.value ?? 0);
+  //   const totalAmt = +(qty * rate).toFixed(2);
+
+  //   let disPercent = Number(row.get('disPercent')?.value ?? 0);
+  //   let discountAmt = Number(row.get('discountAmt')?.value ?? 0);
+
+  //   if (this.lastEditedField() === 'disPercent') {
+  //     discountAmt = +((totalAmt * disPercent) / 100).toFixed(2);
+  //   }
+
+  //   if (this.lastEditedField() === 'discountAmt') {
+  //     disPercent = totalAmt > 0 ? +((discountAmt / totalAmt) * 100).toFixed(2) : 0;
+  //   }
+
+  //   discountAmt = Math.min(discountAmt, totalAmt);
+
+  //   const taxableAmt = +(totalAmt - discountAmt).toFixed(2);
+  //   const taxAmt = +((taxableAmt * taxRate) / 100).toFixed(2);
+  //   const netAmt = +(taxableAmt + taxAmt).toFixed(2);
+
+  //   row.patchValue(
+  //     {
+  //       totalAmt,
+  //       disPercent,
+  //       discountAmt,
+  //       taxableAmt,
+  //       taxRate,
+  //       taxAmt,
+  //       netAmt,
+  //       transAmount: netAmt,
+  //     },
+  //     { emitEvent: false }
+  //   );
+  // }
+
+  onProductSelect(index: number): void {
+    const row = this.inventoryList.at(index) as FormGroup;
+    const selectedItem = row.get('medicine')?.value;
+
+    if (selectedItem) {
+      row.patchValue({
+        pricePerUnit: selectedItem.pricePerUnit || 0,
+        taxRate: selectedItem.taxRate || 0,
+        unit: selectedItem.unit,
+        stockMasterId: selectedItem.stockMasterId
+      });
+
+      // Handle conditional enabling of the price field
+      const priceCtrl = row.get('pricePerUnit');
+      if (selectedItem.hasAllowCostEdit) {
+        priceCtrl?.enable();
+      } else {
+        priceCtrl?.disable();
+      }
+
+      this.recalcRow(index);
+    }
+  }
+
+  // 3. Ensuring calculations remain robust
+  // I've streamlined your recalcRow to be more defensive
   private recalcRow(index: number): void {
     const row = this.inventoryList.at(index) as FormGroup;
     if (!row) return;
 
-    const qty = Number(row.get('qty')?.value ?? 0);
-    const rate = Number(row.get('pricePerUnit')?.value ?? 0);
-    const item = row.get('medicine')?.value;
+    // Use getRawValue() because pricePerUnit might be disabled
+    const formValues = row.getRawValue();
+    const qty = Number(formValues.qty || 0);
+    const rate = Number(formValues.pricePerUnit || 0);
+    const taxRate = Number(formValues.medicine?.taxRate || 0);
 
-    const taxRate = Number(item?.taxRate ?? row.get('taxRate')?.value ?? 0);
-    const totalAmt = +(qty * rate).toFixed(2);
-
-    let disPercent = Number(row.get('disPercent')?.value ?? 0);
-    let discountAmt = Number(row.get('discountAmt')?.value ?? 0);
+    const totalAmt = qty * rate;
+    let disPercent = Number(formValues.disPercent || 0);
+    let discountAmt = Number(formValues.discountAmt || 0);
 
     if (this.lastEditedField() === 'disPercent') {
-      discountAmt = +((totalAmt * disPercent) / 100).toFixed(2);
-    }
-
-    if (this.lastEditedField() === 'discountAmt') {
-      disPercent = totalAmt > 0 ? +((discountAmt / totalAmt) * 100).toFixed(2) : 0;
+      discountAmt = (totalAmt * disPercent) / 100;
+    } else if (this.lastEditedField() === 'discountAmt') {
+      disPercent = totalAmt > 0 ? (discountAmt / totalAmt) * 100 : 0;
     }
 
     discountAmt = Math.min(discountAmt, totalAmt);
+    const taxableAmt = totalAmt - discountAmt;
+    const taxAmt = (taxableAmt * taxRate) / 100;
+    const netAmt = taxableAmt + taxAmt;
 
-    const taxableAmt = +(totalAmt - discountAmt).toFixed(2);
-    const taxAmt = +((taxableAmt * taxRate) / 100).toFixed(2);
-    const netAmt = +(taxableAmt + taxAmt).toFixed(2);
-
-    row.patchValue(
-      {
-        totalAmt,
-        disPercent,
-        discountAmt,
-        taxableAmt,
-        taxRate,
-        taxAmt,
-        netAmt,
-        transAmount: netAmt,
-      },
-      { emitEvent: false }
-    );
+    row.patchValue({
+      totalAmt,
+      disPercent: parseFloat(disPercent.toFixed(2)),
+      discountAmt: parseFloat(discountAmt.toFixed(2)),
+      taxableAmt: parseFloat(taxableAmt.toFixed(2)),
+      taxAmt: parseFloat(taxAmt.toFixed(2)),
+      netAmt: parseFloat(netAmt.toFixed(2)),
+      transAmount: netAmt
+    }, { emitEvent: false });
   }
-  _
 
 }

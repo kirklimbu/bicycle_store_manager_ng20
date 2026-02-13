@@ -7,6 +7,8 @@ export interface IPurchaseFormDtoWrapper {
 export interface IPurchaseFormDto {
   transactionMaster: ITransactionMaster1Dto;
   stockList: IInventoryDetail1Dto[];
+  selectedStockList?: IInventoryMaster1Dto[];
+
 }
 
 export interface IPurchaseTransaction1Dto {

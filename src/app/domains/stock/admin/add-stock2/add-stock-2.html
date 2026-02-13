@@ -218,6 +218,22 @@
 
                             <nz-form-item>
 
+                                <!-- <nz-form-label>Margin %</nz-form-label>
+                                <nz-form-control nzErrorTip="Please add margin %">
+                                    <input nz-input type="number" min="0" formControlName="marginPercent"
+                                        placeholder="5" />
+                                </nz-form-control> -->
+                                <nz-form-label>Margin %</nz-form-label>
+                                <nz-input-number name="marginPercent" style="width: 100%" class="bg-blue-50"
+                                    [ngModel]="state().marginPercent"
+                                    (ngModelChange)="updateField('marginPercent', $event)" name="marginPercent">
+                                </nz-input-number>
+                            </nz-form-item>
+                        </div>
+                        <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="8">
+
+                            <nz-form-item>
+
                                 <!-- <nz-form-label>Sell Price Per Unit</nz-form-label>
                                 <nz-form-control nzErrorTip="Please add Sell Price Per Unit">
                                     <input nz-input min="0" type="number" formControlName="sellPerUnit"
@@ -296,22 +312,7 @@
                                 </nz-input-number>
                             </nz-form-item>
                         </div>
-                        <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="8">
 
-                            <nz-form-item>
-
-                                <!-- <nz-form-label>Margin %</nz-form-label>
-                                <nz-form-control nzErrorTip="Please add margin %">
-                                    <input nz-input type="number" min="0" formControlName="marginPercent"
-                                        placeholder="5" />
-                                </nz-form-control> -->
-                                <nz-form-label>Margin %</nz-form-label>
-                                <nz-input-number name="marginPercent" style="width: 100%" class="bg-blue-50"
-                                    [ngModel]="state().marginPercent"
-                                    (ngModelChange)="updateField('marginPercent', $event)" name="marginPercent">
-                                </nz-input-number>
-                            </nz-form-item>
-                        </div>
 
 
 
