@@ -374,7 +374,7 @@ export class PurchaseFormComponent implements OnInit {
 
   onDelete(id: number) {
     this.selectedItemsListSignal.update((list) =>
-      list.filter((item) => item.detailId !== id)
+      list.filter((item) => item.stockMasterId !== id)
     );
     // Use RxJS timer to delay the notification
     // timer(500)

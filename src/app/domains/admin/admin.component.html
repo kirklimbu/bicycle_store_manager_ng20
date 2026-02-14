@@ -69,7 +69,11 @@
       </li>
       <li nz-submenu nzTitle="Report" nzIcon="cluster">
         <ul>
-          <li nz-menu-item [routerLink]="['/auth/sales']">
+
+          <li nz-menu-item [routerLink]="['/auth/report-purchase']">
+            Purchase list
+          </li>
+          <li nz-menu-item [routerLink]="['/auth/list-sales']">
             Sales list
           </li>
         </ul>

@@ -67,9 +67,9 @@ export class TableOperationsComponent implements OnInit {
   // props
 
   date!: string;
-
+  label = input<string>('Search');
+  placeholder = input<string>('Search...');
   searchValue = model<number>(0);
-  placeholder = input<string>('Search');
   isLocalSearch = input<boolean>(false);
   showSelector1 = input<boolean>(false);
   showFromDate = input<boolean>(false);

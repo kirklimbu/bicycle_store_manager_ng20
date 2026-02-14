@@ -24,6 +24,7 @@ export interface IStock {
   unit: string;
   doc?: string;
   path?: string;
+  batch?: string;
 }
 
 export interface IStockFormDtoWrapper {

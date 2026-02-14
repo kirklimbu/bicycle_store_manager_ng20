@@ -48,14 +48,24 @@ export class SalesComponent {
   private readonly salesService = inject(SalesService);
   private readonly route = inject(ActivatedRoute);
 
-  queryParamMapSignal = toSignal(this.route.queryParamMap, {
-    initialValue: this.route.snapshot.queryParamMap,
-  });
+  // queryParamMapSignal = toSignal(this.route.queryParamMap, {
+  //   initialValue: this.route.snapshot.queryParamMap,
+  // });
 
-  customerIdSignal = computed(() => {
-    const queryParamMap = this.queryParamMapSignal();
-    return queryParamMap ? Number(queryParamMap.get('customerId')) : 0;
+  // customerIdSignal = computed(() => {
+  //   const queryParamMap = this.queryParamMapSignal();
+  //   return queryParamMap ? Number(queryParamMap.get('customerId')) : 0;
+  // });
+
+  private readonly queryParamMap = toSignal(this.route.queryParamMap);
+  readonly isCustomerMode = computed(() => {
+    const params = this.queryParamMap();
+    const customerId = params?.get('customerId');
+    return !!customerId && !isNaN(Number(customerId));
   });
+  // 3. Optional: If you need the ID specifically for your methods
+  readonly customerId = computed(() => Number(this.queryParamMap()?.get('customerId')) || 0);
+
   constructor() {
     // effect(() => {
     //   const filters = this.filterSignal();
@@ -170,14 +180,14 @@ export class SalesComponent {
     console.log('purchae click');
 
     this.router.navigate(['auth/sales-master'], {
-      queryParams: { customerId: this.customerIdSignal() },
+      queryParams: { customerId: this.customerId() },
     });
   }
 
   onSalesReturn() {
     this.router.navigate(['auth/sales-return'], {
       queryParams: {
-        customerId: this.customerIdSignal(),
+        customerId: this.customerId(),
         purchaseReturnMasterId: 0,
       },
     });

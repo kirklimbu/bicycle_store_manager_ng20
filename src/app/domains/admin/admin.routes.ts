@@ -93,6 +93,11 @@ export const FEATURE_ADMIN_ROUTES: Routes = [
     canActivate: [AuthGuard],
     loadChildren: () =>
       import('../opening-account').then((m) => m.FEATURE_OPENING_ACCOUNT_ROUTES),
+  }, {
+    path: '',
+    canActivate: [AuthGuard],
+    loadChildren: () =>
+      import('../report').then((m) => m.FEATURE_REPORT_ROUTES),
   },
 
   {

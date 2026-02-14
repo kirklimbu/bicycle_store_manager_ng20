@@ -253,6 +253,7 @@ export class AddStock2 {
     discountAmt: 0,
     mfgDate: '',
     expDate: '',
+    batch: '',
     file: null as any
   });
 

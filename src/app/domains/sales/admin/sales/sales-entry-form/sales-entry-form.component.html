@@ -245,7 +245,8 @@
                 <td>{{ row.taxAmt|number :'1.2-2' }}</td>
                 <td>{{ row.transAmount|number :'1.2-2' }}</td>
                 <td>
-                    <lib-table-action-buttons (edit)="onEdit(row)" (delete)="onDelete(row.detailId)" />
+                    <lib-table-action-buttons [showDeleteButton]="true" [showDeleteButton]="true" (edit)="onEdit(row)"
+                        (delete)="onDelete(row.stockMasterId)" />
                 </td>
 
             </tr>

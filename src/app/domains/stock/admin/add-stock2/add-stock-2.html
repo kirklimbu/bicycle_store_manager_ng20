@@ -82,7 +82,8 @@
 
                                 <nz-form-label>Item</nz-form-label>
                                 <nz-select name="productId" nzAllowClear nzShowSearch [ngModel]="state().productId"
-                                    (ngModelChange)="updateField('productId', $event)" name="productId" nzShowSearch>
+                                    nzPlaceHolder="Choose Item" (ngModelChange)="updateField('productId', $event)"
+                                    name="productId" nzShowSearch>
                                     @for(item of productListSignal(); track item.productId) {
                                     <nz-option [nzValue]="item.productId" [nzLabel]="item.name"></nz-option>
                                     }
@@ -105,7 +106,7 @@
                                 <nz-form-label>Select Company</nz-form-label>
                                 <nz-select name="companyId" [ngModel]="state().companyId"
                                     (ngModelChange)="updateField('companyId', $event)" nzShowSearch
-                                    nzPlaceHolder="Choose company...">
+                                    nzPlaceHolder="Choose company">
                                     @for(item of companyListSignal(); track item.companyId){
                                     <nz-option [nzValue]="item.companyId" [nzLabel]="item.name"></nz-option>
                                     }
@@ -128,7 +129,7 @@
                                 <nz-form-label>Select Category</nz-form-label>
                                 <nz-select name="categoryId" [ngModel]="state().categoryId"
                                     (ngModelChange)="updateField('categoryId', $event)" nzShowSearch
-                                    nzPlaceHolder="Choose category...">
+                                    nzPlaceHolder="Choose category">
                                     @for(item of categoryListSignal(); track item.categoryId){
                                     <nz-option [nzValue]="item.categoryId" [nzLabel]="item.name"></nz-option>
                                     }
@@ -158,6 +159,14 @@
                                     <nz-option [nzValue]="item.unitId" [nzLabel]="item.name"></nz-option>
                                     }
                                 </nz-select>
+                            </nz-form-item>
+                        </div>
+
+                        <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="8">
+                            <nz-form-item>
+                                <nz-form-label>Batch</nz-form-label>
+                                <input nz-input placeholder="" class="bg-blue-50" [ngModel]="state().batch"
+                                    (ngModelChange)="updateField('batch', $event)" name="batch" />
                             </nz-form-item>
                         </div>
 

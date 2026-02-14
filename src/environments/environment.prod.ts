@@ -3,9 +3,14 @@ export const environment = {
   production: true,
   serviceWorker: true,
 
-  // apiUrl: 'https://abstraders.com.np/inventory/api/', // test-namecheap (namecheap ip)
-  apiUrl: 'http://94.136.187.127:11051/inventory/api/', // test-namecheap (namecheap ip)
+  // neeraj       11072 
+  // bikram     11071 
 
+  // apiUrl: 'http://94.136.187.127:11051/inventory/api/', // test
+  // apiUrl: 'http://94.136.187.127:11072/inventory/api/', // neeraj
+  apiUrl: 'http://94.136.187.127:11071/inventory/api/', // bikram
+
+  defaultImage: '../../../assets/images/logo.png',
   X_TenantID: 'test', // prod ma test
   UserAgent: 'webAgent',
 };
