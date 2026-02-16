@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
 
 import { ICustomResponse } from 'src/app/domains/shared/models/CustomResponse.model';
-import { IPurchaseDetailReport, IPurchaseMasterReport, IPurchaseReport } from '../models/purhase-report.model';
+import { IPurchaseDetailReport, IPurchaseMasterReport, IPurchaseReport, ISalesDetailReport } from '../models/purhase-report.model';
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +23,7 @@ export class ReportService {
       { params: query }
     );
   }
+
   getPurchaseReportList(query: any): Observable<IPurchaseReport[]> {
     return this.http.get<IPurchaseReport[]>(
       `${this.apiUrl}report/purchase/list`,
@@ -33,7 +34,7 @@ export class ReportService {
   getPurchaseDetailReportList(id: number): Observable<IPurchaseDetailReport[]> {
     return this.http.get<IPurchaseDetailReport[]>(
       `${this.apiUrl}report/purchase/detail/list?purchaseMasterId=${id}`,
-     
+
     );
   }
 
@@ -41,6 +42,27 @@ export class ReportService {
     return this.http.post<ICustomResponse>(`${this.apiUrl}purchase/save`, data);
   }
 
+  // sales report
+
+  getSalesReportList(query: any): Observable<ISalesDetailReport[]> {
+    return this.http.get<ISalesDetailReport[]>(
+      `${this.apiUrl}report/sales/list`,
+      { params: query }
+    );
+  }
+
+  getSalesMasterReportList(query: any): Observable<ISalesDetailReport[]> {
+    return this.http.get<ISalesDetailReport[]>(
+      `${this.apiUrl}report/sales/master/list`,
+      { params: query }
+    );
+  }
+
+  getSalesDetailReportList(id: number): Observable<ISalesDetailReport[]> {
+    return this.http.get<ISalesDetailReport[]>(
+      `${this.apiUrl}report/sales/detail/list?salesMasterId=${id}`,
+    );
+  }
   // transaction section
 
   // fetchTransactionForm(

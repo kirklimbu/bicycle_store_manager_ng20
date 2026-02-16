@@ -35,3 +35,12 @@ export interface IPurchaseDetailReport {
   unitId: number;
   unit: string;
 }
+
+export interface ISalesDetailReport {
+  salesMasterId: number;
+  customerId: number;
+  customerName: string;
+  saveDate: string;         // Often handled as ISO strings in enterprise APIs
+  netAmt: number;
+  billNo: string;
+}

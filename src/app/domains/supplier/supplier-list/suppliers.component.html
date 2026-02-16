@@ -21,6 +21,8 @@
                 <th nzWidth="25%" nzAlign="center">Name </th>
                 <th nzAlign="center">Address </th>
                 <th nzAlign="center">Mobile </th>
+                <th nzAlign="center">Business Name </th>
+                <th nzAlign="center">PAN </th>
                 <th nzAlign="center">Outstanding </th>
                 <th nzAlign="center">Action</th>
 
@@ -32,17 +34,19 @@
             <tr>
                 <td nzAlign="center">{{$index+1}}.</td>
                 <td nzAlign="center">{{ supplier.name |titlecase }}</td>
-                <td nzAlign="center">{{ supplier.address |titlecase }}</td>
+                <td nzAlign="center">{{ supplier.location |titlecase }}</td>
                 <td nzAlign="center">
                     <p>
-                        {{ supplier.mobile }}
+                        {{ supplier.mobile1 }}
                     </p>
                     <p>
-                        {{ supplier.phone }}
+                        {{ supplier.mobile2 }}
                     </p>
                 </td>
+                <td nzAlign="center">{{ supplier.businessName |titlecase }}</td>
+                <td nzAlign="center">{{ supplier.pan}}</td>
 
-                <td nzAlign="center">{{supplier.outStanding|number}}</td>
+                <td nzAlign="center">{{supplier.balance|number}}</td>
                 <td nzAlign="center">
                     <lib-table-action-buttons [showDeleteButton]="true" [showViewMoreButton]="true"
                         [showButton4]="false" [button3Icon]="'dollar'" [button3Label]="'Transaction'"

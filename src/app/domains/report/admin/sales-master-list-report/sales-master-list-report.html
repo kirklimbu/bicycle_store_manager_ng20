@@ -1,7 +1,7 @@
 <!-- <nz-breadcrumb [nzAutoGenerate]="true"></nz-breadcrumb> -->
 <div class="table-container">
     <div class="site-page-header-ghost-wrapper">
-        <nz-page-header nzTitle="Purchase Master  Report" [nzGhost]="false">
+        <nz-page-header nzTitle="Sales Master  Report" [nzGhost]="false">
             <nz-page-header-extra>
                 <!-- <app-table-operations key="sakes-filter" [fields]="[
     { name: 'fromDate', label: 'From Date (B.S)', type: 'date', required: true },
@@ -26,10 +26,8 @@
                 <th nzAlign="center" nzWidth="5%"># </th>
                 <th nzAlign="center">Bill No </th>
                 <th nzAlign="center">Save Date </th>
-                <th nzAlign="center">Supplier </th>
-                <th nzAlign="center">Bill No (Supplier) </th>
+                <th nzAlign="center">Customer </th>
 
-                <th nzAlign="center">Save Date </th>
                 <th nzAlign="center">Net Amount (Rs.) </th>
                 <th nzAlign="center">Pay Type </th>
                 <th nzAlign="center">Action</th>
@@ -41,17 +39,15 @@
             <tr>
                 <td nzAlign="center">{{$index+1}}.</td>
                 <td nzAlign="center">{{Sales.billNo}}</td>
-                <td nzAlign="center">{{Sales.saveDate| nepaliDateFormatter}}</td>
-                <td nzAlign="center">{{ Sales.supplierName |titlecase }}</td>
-                <td nzAlign="center">{{ Sales.supplierBillNo }}</td>
+                <td nzAlign="center">{{Sales.saveDate | nepaliDateFormatter}}</td>
+                <td nzAlign="center">{{ Sales.customerName |titlecase }}</td>
 
-                <td nzAlign="center">{{ Sales.supplierSaveDate}}</td>
                 <td nzAlign="center">{{ Sales.netAmt |number }}</td>
                 <td nzAlign="center">{{Sales.payType}}</td>
                 <td nzAlign="center">
                     <lib-table-action-buttons [showEditButton]="false" [showDeleteButton]="false" [showButton4]="false"
-                        [showViewMoreButton]="true" (delete)="onDelete(Sales.purchaseMasterId)"
-                        (viewMore)="onViewMore(Sales.purchaseMasterId)" />
+                        [showViewMoreButton]="true" (delete)="onDelete(Sales.salesMasterId)"
+                        (viewMore)="onViewMore(Sales.salesMasterId)" />
                 </td>
             </tr>
             }
