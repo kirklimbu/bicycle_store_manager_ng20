@@ -15,11 +15,19 @@
                 <!-- 🧾 Selector -->
                 @if (showSelector1()) {
                 <nz-col [nzXs]="24" [nzSm]="12" [nzMd]="4" [nzLg]="4">
-                    <nz-select formControlName="selector" placeholder="Select category" nzAllowClear nzShowSearch>
-                        @for (option of selector1Options(); track option.categoryId) {
-                        <nz-option [nzValue]="option" [nzLabel]="option.name"></nz-option>
-                        }
-                    </nz-select>
+                    <nz-form-item>
+                        <nz-form-label>{{ selector1Label() }}</nz-form-label>
+                        <nz-form-control>
+                            <nz-select [formControlName]="selectorKey()" [nzPlaceHolder]="selectorLabel()" nzAllowClear
+                                nzAllowClear nzShowSearch>
+                                @for (option of selector1Options(); track option.id) {
+                                <!-- <nz-option [nzValue]="option" [nzLabel]="option.name"></nz-option> -->
+                                <nz-option [nzValue]="option[optionLabelKey()]"
+                                    [nzLabel]="option[optionLabelKey()]"></nz-option>
+                                }
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
                 </nz-col>
                 }
 

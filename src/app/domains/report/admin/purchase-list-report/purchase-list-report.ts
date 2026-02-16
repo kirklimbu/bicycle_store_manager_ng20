@@ -4,17 +4,18 @@ import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { NzTableModule } from 'ng-zorro-antd/table';
-import { NepaliDateFormatterPipe } from '../../shared/pipes/nepali-date-formatter.pipe';
-import { TableOperationsComponent } from '../../shared/ui-common/table-operations/table-operations.component';
+import { NepaliDateFormatterPipe } from '../../../shared/pipes/nepali-date-formatter.pipe';
+import { TableOperationsComponent } from '../../../shared/ui-common/table-operations/table-operations.component';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { FilterValues } from '../../sales/data/models/sales.model';
-import { ReportService } from '../data/services/report.services';
+import { FilterValues } from '../../../sales/data/models/sales.model';
+import { ReportService } from '../../data/services/report.services';
 import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-purchase-list-report',
-  imports: [CommonModule,
+  imports: [
+    CommonModule,
     NzTableModule,
     NzSpaceModule,
     NzBreadCrumbModule,

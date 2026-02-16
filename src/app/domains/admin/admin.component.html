@@ -67,18 +67,40 @@
           <li nz-menu-item [routerLink]="['/auth/add-purchase']">Purchase </li>
         </ul>
       </li>
-      <li nz-submenu nzTitle="Report" nzIcon="cluster">
+      <!-- <li nz-submenu nzTitle="Report" nzIcon="cluster">
         <ul>
 
           <li nz-menu-item [routerLink]="['/auth/report-purchase']">
-            Purchase list
+            Purchase Report
+          </li>
+          <li nz-menu-item [routerLink]="['/auth/report-purchase-master']">
+            Purchase Master Report
           </li>
           <li nz-menu-item [routerLink]="['/auth/list-sales']">
-            Sales list
+            Sales Report
+          </li>
+          <li nz-menu-item [routerLink]="['/auth/list-sales-master']">
+            Sales Master Report
+          </li>
+        </ul>
+      </li> -->
+      <li nz-submenu nzTitle="Report" nzIcon="cluster">
+        <ul>
+          <li nz-submenu nzTitle="Purchase Report">
+            <ul>
+              <li nz-menu-item [routerLink]="['/auth/report-purchase']">Purchase List</li>
+              <li nz-menu-item [routerLink]="['/auth/report-purchase-master']">Purchase Master</li>
+            </ul>
+          </li>
+
+          <li nz-submenu nzTitle="Sales Report">
+            <ul>
+              <li nz-menu-item [routerLink]="['/auth/list-sales']">Sales List</li>
+              <li nz-menu-item [routerLink]="['/auth/list-sales-master']">Sales Master</li>
+            </ul>
           </li>
         </ul>
       </li>
-
       <li nz-submenu nzTitle="Account" nzIcon="cluster">
         <ul>
           <li nz-menu-item [routerLink]="['/auth/list-dayend']">

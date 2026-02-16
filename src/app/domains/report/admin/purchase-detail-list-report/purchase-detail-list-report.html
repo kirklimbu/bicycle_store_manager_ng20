@@ -1,0 +1,60 @@
+<!-- <nz-breadcrumb [nzAutoGenerate]="true"></nz-breadcrumb> -->
+<div class="table-container">
+    <div class="site-page-header-ghost-wrapper">
+        <nz-page-header nzTitle="Purchase Detail  Report" [nzGhost]="false">
+            <!-- <nz-page-header-extra>
+           
+                <lib-table-operations [showSelector1]="true" [selector1Label]="'Pay Type'" [selectorKey]="'payType'"
+                    [selector1Options]="manualSelectorOptions" [showAddButton]="false" [isLocalSearch]="false"
+                    [showSearch]="false" [showFromDate]="true" [showToDate]="true"
+                    [showSecondaryButton]="isCustomerMode()" [showTertiaryButton]="isCustomerMode()"
+                    [secondaryButtonLabel]="'Sales'" [tertiaryButtonLabel]="'Sales Return'" (search)="onSearch($event)"
+                    (secondaryButtonClick)="onSales()" (tertiaryButtonClick)="onSalesReturn()" />
+            </nz-page-header-extra> -->
+
+        </nz-page-header>
+    </div>
+
+    @if(data$|async;as data ){
+    <nz-table [nzFrontPagination]="false" #nzTable [nzBordered]="true" [nzData]="data" [nzScroll]="{ x: '900px' }">
+        <thead>
+            <tr>
+                <th nzAlign="center" nzWidth="5%"># </th>
+                <th nzAlign="center">Item</th>
+                <th nzAlign="center">Save Date </th>
+                <th nzAlign="center">Supplier </th>
+
+                <th nzAlign="center">Qty </th>
+                <th nzAlign="center">Unit </th>
+                <th nzAlign="center">Net Amount (Rs.) </th>
+                <th nzAlign="center">Pay Type </th>
+                <!-- <th nzAlign="center">Action</th> -->
+            </tr>
+        </thead>
+        <tbody>
+            @for (Sales of nzTable.data; track $index) {
+
+            <tr>
+                <td nzAlign="center">{{$index+1}}.</td>
+                <td nzAlign="center">{{Sales.stockName|titlecase}}</td>
+                <td nzAlign="center">{{Sales.saveDate}}</td>
+                <td nzAlign="center">{{ Sales.supplierName |titlecase }}</td>
+
+                <td nzAlign="center">{{ Sales.qty}}</td>
+                <td nzAlign="center">{{ Sales.unit}}</td>
+                <td nzAlign="center">{{ Sales.netAmt |number }}</td>
+                <td nzAlign="center">{{Sales.payType}}</td>
+                <!-- <td nzAlign="center">
+                    <lib-table-action-buttons [showEditButton]="true" [showDeleteButton]="false" [showButton4]="true"
+                        [showViewMoreButton]="true" [button3Label]="'Lab'" [button4Label]="'Transaction'"
+                        [button3Icon]="'experiment'" [button4Icon]="'dollar'" (delete)="onDelete(Sales.SalesId)"
+                        (edit)="onEdit(Sales.SalesId)" (viewMore)="onViewMore(Sales.SalesId)"
+                        (buttonAction4)="showTransaction(Sales.SalesId)" />
+                </td> -->
+            </tr>
+            }
+        </tbody>
+    </nz-table>
+    }
+
+</div>

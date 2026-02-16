@@ -33,6 +33,7 @@ export interface FilterValues {
   toDate?: string;
   supplierId?: number;
   customerId?: number;
+  paytypeId?: number;
 }
 export type DiscountField = 'disPercent' | 'disAmount';
 

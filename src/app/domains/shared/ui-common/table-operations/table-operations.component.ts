@@ -103,7 +103,7 @@ export class TableOperationsComponent implements OnInit {
     totalSelectedTests: 0,
     itemList: [],
   });
-  selectorOptions = signal<{ categoryId: string; name: string }[]>([]);
+  // selectorOptions = signal<{ categoryId: string; name: string }[]>([]);
 
   // filtersChanged = output<FilterValues>();
   filters = signal<FilterValues>({});
@@ -118,12 +118,21 @@ export class TableOperationsComponent implements OnInit {
   routeTo = output<string>();
   // search = output<ICategory1Dto>(); //make search api call
   add = output<number>(); //make search api call
-
+  selector1Label = input<string>('Category');
   showExportButton = input<boolean>(false);
   exportButtonIcon = input<string>('file-excel');
   exportButtonLabel = input<string>('Export Excel');
   export = output<any>();
   tertiaryButtonClick = output<any>();
+
+
+  // selector 
+  // Dynamic Configuration ⚙️
+  selectorKey = input<string>('selector'); // The key sent to the API (e.g., 'payType')
+  selectorLabel = input<string>('Select Option');
+  selectorOptions = input<any[]>([]); // The data array
+  optionLabelKey = input<string>('name'); // Property to show in UI
+  optionValueKey = input<string>('id');   // Property to use as value
 
   readonly showButtons = computed(
     () =>
@@ -140,7 +149,7 @@ export class TableOperationsComponent implements OnInit {
 
   form: FormGroup = this.fb.group({
     search: [''],
-    selector: [''],
+    // selector: [''],
     fromDate: [''],
     toDate: [''],
     supplierId: [''],
@@ -167,13 +176,7 @@ export class TableOperationsComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.showSelector1()) {
-      console.log(this.fetchSelector1Data());
-      // const callAPI = this.fetchSelector1Data();
-      // if (callAPI) {
-      //   this.getSelector1Data();
-      // } else {
-      //   this.selectorOptions.update(() => this.manualSelectorOptions);
-      // }
+      this.form.addControl(this.selectorKey(), this.fb.control(null));
     }
   }
 
@@ -205,32 +208,19 @@ export class TableOperationsComponent implements OnInit {
 
   emitFilters(): void {
     const formValues = this.form.value;
-    console.log('form values', formValues);
 
     const filters: FilterValues = {};
-    if (this.showSearch() && formValues.search) {
-      filters.search = formValues.search;
+    // Standard Filters
+    if (this.showSearch() && formValues.search) filters.search = formValues.search;
+    if (this.showFromDate() && formValues.fromDate) filters.fromDate = formValues.fromDate;
+    if (this.showToDate() && formValues.toDate) filters.toDate = formValues.toDate;
+
+    // Dynamic Selector Filter 🎯
+    const key = this.selectorKey();
+    if (this.showSelector1() && formValues[key]) {
+      filters[key] = formValues[key];
     }
 
-    // const shouldProcessSelector = this.showSelector1() && formValues.selector;
-    // if (!shouldProcessSelector) return;
-    // if (this.isLocalSearch){
-
-    //   return;
-    // }else{
-
-    //   filters.selector = formValues.selector;
-    // }
-
-    if (this.showSelector1() && formValues.selector) {
-      filters.selector = formValues.selector;
-    }
-    if (this.showFromDate() && formValues.fromDate) {
-      filters.fromDate = formValues.fromDate;
-    }
-    if (this.showToDate() && formValues.toDate) {
-      filters.toDate = formValues.toDate;
-    }
     this.search.emit(filters);
   }
 

@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
 
 import { ICustomResponse } from 'src/app/domains/shared/models/CustomResponse.model';
-import { IPurchaseReport } from '../models/purhase-report.model';
+import { IPurchaseDetailReport, IPurchaseMasterReport, IPurchaseReport } from '../models/purhase-report.model';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +17,12 @@ export class ReportService {
   apiUrl = environment.apiUrl + 'auth/';
   private readonly http = inject(HttpClient);
 
+  getPurchaseMasterReportList(query: any): Observable<IPurchaseMasterReport[]> {
+    return this.http.get<IPurchaseMasterReport[]>(
+      `${this.apiUrl}report/purchase/master/list`,
+      { params: query }
+    );
+  }
   getPurchaseReportList(query: any): Observable<IPurchaseReport[]> {
     return this.http.get<IPurchaseReport[]>(
       `${this.apiUrl}report/purchase/list`,
@@ -24,15 +30,12 @@ export class ReportService {
     );
   }
 
-  // fetchDefaultForm(
-  //   id1: number,
-  //   id2: number
-  // ): Observable<IPurchaseFormDtoWrapper> {
-  //   return this.http.get<IPurchaseFormDtoWrapper>(
-  //     `${this.apiUrl}purchase/form`,
-  //     { params: { purchaseMasterId: id1, supplierId: id2 } }
-  //   );
-  // }
+  getPurchaseDetailReportList(id: number): Observable<IPurchaseDetailReport[]> {
+    return this.http.get<IPurchaseDetailReport[]>(
+      `${this.apiUrl}report/purchase/detail/list?purchaseMasterId=${id}`,
+     
+    );
+  }
 
   savePurchase(data: any): Observable<ICustomResponse> {
     return this.http.post<ICustomResponse>(`${this.apiUrl}purchase/save`, data);
