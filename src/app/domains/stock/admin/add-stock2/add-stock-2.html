@@ -240,18 +240,11 @@
                             </nz-form-item>
                         </div>
                         <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="8">
-
                             <nz-form-item>
-
-                                <!-- <nz-form-label>Sell Price Per Unit</nz-form-label>
-                                <nz-form-control nzErrorTip="Please add Sell Price Per Unit">
-                                    <input nz-input min="0" type="number" formControlName="sellPerUnit"
-                                        placeholder="120" />
-                                </nz-form-control> -->
-                                <nz-form-label>Sell Price (Auto)</nz-form-label>
-                                <nz-input-number name="sellPerUnit" style="width: 100%" class="bg-blue-50"
-                                    [ngModel]="state().sellPerUnit" (ngModelChange)="updateField('sellPerUnit', $event)"
-                                    name="sellPerUnit">
+                                <nz-form-label>Sell Price (Per Unit)</nz-form-label>
+                                <nz-input-number name="sellPerUnit" style="width: 100%" class="bg-blue-50" [nzMin]="0"
+                                    [ngModel]="state().sellPerUnit"
+                                    (ngModelChange)="updateField('sellPerUnit', $event)">
                                 </nz-input-number>
                             </nz-form-item>
                         </div>

@@ -1,0 +1,42 @@
+.action-row-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  
+  // Critical for professional tables:
+  // This prevents the flex container from ever squishing the buttons
+  flex-shrink: 0;
+  white-space: nowrap; 
+
+  [nz-button] {
+    // Standardizing icon size for a clean look
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    // Smooth interaction for high-end feel
+    transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+    
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+      transform: translateY(-1px);
+    }
+  }
+
+  .icon-edit { color: #1890ff; }
+  .icon-view { color: #52c41a; }
+}
+
+// Target the specific column in the nz-table to be as wide as the content
+::ng-deep .nz-table-content {
+  td.nz-right-sticky, /* If using sticky columns */
+  td:last-child {
+    width: 1%; 
+    white-space: nowrap;
+    padding: 4px 8px !important; // Tighter padding for action cells
+  }
+}

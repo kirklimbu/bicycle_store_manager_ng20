@@ -61,5 +61,9 @@ export class SuppliersComponent {
     this.router.navigate(['/auth/list-purchase'], {
       queryParams: { supplierId: id },
     });
+  } onPayment(id: number) {
+    this.router.navigate(['/auth/list-payment'], {
+      queryParams: { supplierId: id },
+    });
   }
 }

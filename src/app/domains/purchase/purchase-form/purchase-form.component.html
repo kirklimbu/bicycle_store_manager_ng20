@@ -217,6 +217,7 @@
                 <th nzWidth="5%">Qty</th>
                 <th nzWidth="5%">Rate</th>
                 <th nzWidth="5%">Total</th>
+                <th nzWidth="5%">Dis. %</th>
                 <th nzWidth="5%">Dis. Amt</th>
                 <th nzWidth="5%">Taxable </th>
 
@@ -233,9 +234,9 @@
                 <td>{{ row.qty }}</td>
                 <td>{{ row.pricePerUnit }}</td>
                 <td>{{ row.totalAmt |number :'1.1-2'}}</td>
+                <td>{{ row.disPercent|number :'1.2-2' }}</td>
                 <td>{{ row.discountAmt|number :'1.2-2' }}</td>
                 <td>{{ row.taxableAmt|number :'1.2-2' }}</td>
-
                 <td>{{ row.taxAmt|number :'1.2-2' }}</td>
                 <td>{{ row.netAmt|number :'1.2-2' }}</td>
                 <td>
@@ -255,9 +256,14 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td>Net Total</td>
+                <td></td>
+                <td class="font-bold"> <strong>
+                        Total
+                    </strong> </td>
                 <td>
-                    <span nz-typography nzType=" danger">{{ totalAmountSignal()|number :'1.2-2' }}</span>
+                    <span nz-typography nzType=" danger">
+                        <strong>{{ totalAmountSignal() | number :'1.2-2' }}</strong>
+                    </span>
                 </td>
 
             </tr>

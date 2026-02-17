@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, input, output } from '@angular/core';
 // third
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
@@ -18,6 +19,7 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
     NzSpaceModule,
     NzToolTipModule,
     NzPopconfirmModule,
+    NzDropDownModule
   ],
   templateUrl: './table-action-buttons.component.html',
   styleUrl: './table-action-buttons.component.scss',
@@ -47,7 +49,7 @@ export class TableActionButtonsComponent {
   buttonAction4 = output<Event>();
   buttonAction5 = output<Event>();
 
-  onEdit() {}
+  onEdit() { }
 
   onViewMore(id: Event) {
     this.viewMore.emit(id);

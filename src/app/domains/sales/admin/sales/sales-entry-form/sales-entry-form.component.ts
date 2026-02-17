@@ -241,7 +241,7 @@ export class SalesEntryFormComponent {
 
   patchFormValues(apiData: any) {
     this.form.patchValue({
-      salesMaster: apiData.salesMaster,
+      salesMaster: apiData?.salesMaster,
     });
   }
 
@@ -360,6 +360,9 @@ export class SalesEntryFormComponent {
           this.form.reset();
           this.resetInventoryList();
           this.selectedItemsListSignal.set([]);
+          this.router.navigate(['/auth/sales-master'], {
+            queryParams: { customerId: this.IdsSignal().customerId },
+          });
         },
         error: () => {
           // ❌ DO NOTHING

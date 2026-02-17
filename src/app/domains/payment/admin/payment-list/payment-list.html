@@ -1,0 +1,83 @@
+<section>
+    <div>
+        <div class="table-operations">
+            <!-- <nz-input-group [nzSuffix]="suffixIconSearch">
+                <input [(ngModel)]="searchValue" type="text" nz-input placeholder="Search staff... " />
+            </nz-input-group>
+            <ng-template #suffixIconSearch>
+                <span nz-icon nzType="search"></span>
+            </ng-template> -->
+            <!-- <button nz-button nzType="default" (click)="onSearch()">
+        <span nz-icon nzType="search"></span>
+        Search
+      </button> -->
+            <!-- @if (setList$ | async; as set) {
+        } -->
+            <!-- <button
+        class="action-button"
+        nzDanger
+        nz-button
+        nzType="primary"
+        routerLinkActive
+        (click)="onAdd()"
+      >
+        Add
+      </button> -->
+            <button class="action-button" nz-button nzType="primary" (click)="onAdd()">
+                Add
+            </button>
+        </div>
+    </div>
+    @if (data$ | async; as table) {
+    <nz-table #borderedTable nzBordered nzTitle="Stock Detail List" [nzData]="table" [nzFrontPagination]="false"
+        [nzScroll]="{ x: '1100px' }">
+        <thead>
+            <tr>
+                <th nzWidth="5%">Sn.</th>
+                <th>Supplier</th>
+                <th>Amount</th>
+                <th>Payment Type</th>
+                <th>Remarks</th>
+                <!-- <th>Action</th> -->
+            </tr>
+        </thead>
+        <tbody>
+            @for (
+            data of borderedTable.data ;
+            track data.transactionId;
+            let i = $index
+            ) {
+            <tr>
+                <td>{{ i + 1 }}</td>
+                <td>
+                    {{ data.supplierName | titlecase }}
+                </td>
+                <td>
+                    {{ data.transAmt }}
+                </td>
+                <td>
+                    {{ data.payType }}
+                </td>
+
+                <td>
+                    {{ data.remarks }}
+                </td>
+
+                <!-- <td>
+                                                    <div class="action-buttons">
+                                                        <button nzTooltipTitle="Edit" nz-tooltip nz-button (click)="onEdit(data.stockMasterId)">
+                                                            <span nz-icon nzType="form"></span>
+                                                        </button>
+                                                        <button nzTooltipTitle="View Detail" nz-tooltip nz-button
+                                                            (click)="onViewDetail(data.stockMasterId)">
+                                                            <span nz-icon nzType="form"></span>
+                                                        </button>
+                                
+                                                    </div>
+                                                </td> -->
+            </tr>
+            }
+        </tbody>
+    </nz-table>
+    }
+</section>

@@ -66,165 +66,6 @@ const getBase64 = (file: File): Promise<string | ArrayBuffer | null> =>
 })
 export class AddStock2 {
   // props
-  // form!: FormGroup;
-  // mode = 'add';
-  // loading = false;
-  // fileList: any[] = [];
-  // previewVisible = false;
-  // avatarUrl: string | undefined;
-  // previewImage: string | undefined = '';
-
-  // productListSignal = signal<IProduct[]>([]);
-  // unitListSignal = signal<IUnit[]>([]);
-  // categoryListSignal = signal<ICategory[]>([]);
-  // companyListSignal = signal<ICompany[]>([]);
-
-  // private readonly stockService = inject(StockService);
-  // private notification = inject(NzNotificationService);
-  // private readonly destroy$ = inject(DestroyRef);
-  // private readonly fb = inject(FormBuilder);
-  // private route = inject(ActivatedRoute);
-  // private router = inject(Router);
-
-  // queryParamMapSignal = toSignal(this.route.queryParamMap, {
-  //   initialValue: this.route.snapshot.queryParamMap,
-  // });
-
-  // idsSignal = computed(() => ({
-  //   patientId: Number(this.queryParamMapSignal()?.get('id') ?? 0),
-  // }));
-
-  // ngOnInit(): void {
-  //   this.initForm();
-  //   this.fetchDefaultForm();
-  // }
-
-  // initForm(): void {
-  //   this.form = this.fb.group({
-  //     stockMasterId: [],
-  //     productId: [],
-  //     companyId: [''],
-  //     costPerUnit: [],
-  //     sellPerUnit: [''],
-  //     hasActive: [],
-  //     minNotification: [''],
-  //     unitId: [''],
-  //     taxRatePurchase: [''],
-  //     taxRateSales: [''],
-  //     mfgDate: [0],
-  //     expDate: [''],
-  //     marginPercent: [''],
-  //     hasAllowCostEdit: [''],
-  //     mrp: [''],
-  //     disPercent: [],
-  //     discountAmt: [],
-  //   });
-  // }
-
-  // private fetchDefaultForm() {
-  //   this.stockService
-  //     .getDefaultForm2(this.idsSignal().patientId)
-  //     .pipe(takeUntilDestroyed(this.destroy$))
-  //     .subscribe((res: IStockForm2DtoWrapper) => {
-  //       console.log('res:', res);
-  //       this.form.patchValue(res.form);
-  //       this.avatarUrl = res.form.path;
-  //       this.productListSignal.set(res.productList);
-  //       this.categoryListSignal.set(res.categoryList);
-  //       this.unitListSignal.set(res.unitList);
-  //       this.companyListSignal.set(res.companyList);
-  //     });
-  // }
-
-  // onSave() {
-  //   console.log('form:', this.form.value);
-  //   const marginQty2 = this.form.value.marginQty2;
-  //   // if (marginQty2 == null) this.form.patchValue({ marginQty2: 0 });
-
-  //   this.stockService
-  //     .saveStock(this.form.value)
-  //     .pipe(takeUntilDestroyed(this.destroy$))
-  //     .subscribe({
-  //       next: (res: ICustomResponse) => {
-  //         this.notification.success('Success', res.message);
-  //         this.form.reset();
-  //         this.router.navigate(['auth/list-stock']);
-  //       },
-  //     });
-  // }
-
-  // profilePicUpload = (file: any): boolean => {
-  //   this.form.patchValue({
-  //     file: file,
-  //   });
-
-  //   // to display the image
-  //   this.getBase64(file, (img: string) => {
-  //     this.loading = false;
-  //     this.avatarUrl = img;
-  //   });
-
-  //   // this.cd.detectChanges();
-  //   return false;
-  // };
-  // handleChange(info: { file: NzUploadFile }): void {
-  //   console.log('handleChange info');
-
-  //   switch (info.file.status) {
-  //     case 'uploading':
-  //       this.loading = true;
-  //       break;
-  //     case 'done':
-  //       // Get this url from response in real world.
-  //       this.getBase64(info.file!.originFileObj!, (img: string) => {
-  //         this.loading = false;
-
-  //         this.avatarUrl = img;
-  //         this.form.patchValue({
-  //           file: info,
-  //         });
-  //         return;
-  //       });
-  //       break;
-  //     case 'error':
-  //       console.log('handel chg err');
-
-  //       // this.msg.error('Network error');
-  //       this.getBase64(info.file!.originFileObj!, (img: string) => {
-  //         this.loading = false;
-
-  //         this.avatarUrl = img;
-  //         return;
-  //       });
-  //       break;
-  //   }
-  // }
-
-  // private getBase64(img: File, callback: (img: string) => void): void {
-  //   const reader = new FileReader();
-  //   reader.addEventListener('load', () => {
-  //     if (reader.result) {
-  //       callback(reader.result.toString());
-  //     }
-  //   });
-  //   reader.readAsDataURL(img);
-  // }
-
-  // handlePreview = async (file: NzUploadFile): Promise<void> => {
-  //   console.log('file handel prreview', file);
-
-  //   if (!file.url && !file['preview']) {
-  //     if (file.originFileObj) {
-  //       file['preview'] = await getBase64(file.originFileObj);
-  //     }
-  //   }
-  //   this.previewImage = file.url || file['preview'];
-  //   this.previewVisible = true;
-  // };
-
-
-
-
   private readonly stockService = inject(StockService);
   private readonly notification = inject(NzNotificationService);
   private readonly router = inject(Router);
@@ -285,11 +126,11 @@ export class AddStock2 {
 
   // Requirement 3: Calculate Sell Price based on Cost & Margin
   // Formula: Sell = Cost + (Cost * Margin%)
-  calculatedSellPrice = computed(() => {
-    const { costPerUnit, marginPercent } = this.state();
-    const sell = costPerUnit * (1 + marginPercent / 100);
-    return parseFloat(sell.toFixed(2));
-  });
+  // calculatedSellPrice = computed(() => {
+  //   const { costPerUnit, marginPercent } = this.state();
+  //   const sell = costPerUnit * (1 + marginPercent / 100);
+  //   return parseFloat(sell.toFixed(2));
+  // });
 
   // Validation Signal
   isFormValid = computed(() => {
@@ -334,14 +175,38 @@ export class AddStock2 {
   }
 
   // Enterprise pattern: Single update function for the whole state
+  // updateField<K extends keyof ReturnType<typeof this.state>>(key: K, value: any) {
+  //   this.state.update(prev => {
+  //     const updated = { ...prev, [key]: value };
+
+  //     // Auto-update Sell Price if Cost or Margin changes
+  //     if (key === 'costPerUnit' || key === 'marginPercent') {
+  //       updated.sellPerUnit = this.calculateInstantSellPrice(updated.costPerUnit, updated.marginPercent);
+  //     }
+  //     return updated;
+  //   });
+  // }
   updateField<K extends keyof ReturnType<typeof this.state>>(key: K, value: any) {
     this.state.update(prev => {
+      // 1. Apply the new value to the state first
       const updated = { ...prev, [key]: value };
 
-      // Auto-update Sell Price if Cost or Margin changes
-      if (key === 'costPerUnit' || key === 'marginPercent') {
-        updated.sellPerUnit = this.calculateInstantSellPrice(updated.costPerUnit, updated.marginPercent);
+      // 2. Business Logic: Bi-directional Calculation
+      const cost = updated.costPerUnit || 0;
+
+      // Prevent division by zero if cost is 0
+      if (cost > 0) {
+        if (key === 'costPerUnit' || key === 'marginPercent') {
+          // If Cost or Margin changes -> Update Sell Price
+          updated.sellPerUnit = parseFloat((cost * (1 + updated.marginPercent / 100)).toFixed(2));
+        }
+        else if (key === 'sellPerUnit') {
+          // If Sell Price changes -> Update Margin %
+          const calculatedMargin = ((updated.sellPerUnit / cost) - 1) * 100;
+          updated.marginPercent = parseFloat(calculatedMargin.toFixed(2));
+        }
       }
+
       return updated;
     });
   }

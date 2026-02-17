@@ -8,40 +8,35 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { Observable } from 'rxjs';
-import { NepaliDateFormatterPipe } from '../../../../shared/pipes/nepali-date-formatter.pipe';
-import { StockService } from '../../../data/services/stock.service';
-import {
-  IStockDetailDto
-} from './../../../data/model/stock';
+import { IPayment } from '../../data/models/payment.model';
+import { PaymentService } from '../../data/services/payment.services';
 
 @Component({
-  selector: 'app-list-stock-detail',
-  imports: [
-    CommonModule,
+  selector: 'app-payment-list',
+  imports: [CommonModule,
     RouterModule,
     ReactiveFormsModule,
     NzButtonModule,
     NzTableModule,
     NzInputModule,
-    NzIconModule,
-    NepaliDateFormatterPipe,
-  ],
-  templateUrl: './list-stock-detail.html',
-  styleUrl: './list-stock-detail.scss',
+    NzIconModule,],
+  templateUrl: './payment-list.html',
+  styleUrl: './payment-list.scss',
 })
-export class ListStockDetail {
-  data$!: Observable<IStockDetailDto[]>;
+export class PaymentList {
+  data$!: Observable<any[]>;
 
   private router = inject(Router);
   private route = inject(ActivatedRoute);
-  private stockService = inject(StockService);
+  private paymentService = inject(PaymentService);
 
   queryParamMapSignal = toSignal(this.route.queryParamMap, {
     initialValue: this.route.snapshot.queryParamMap,
   });
 
   idsSignal = computed(() => ({
-    stockMasterId: Number(this.queryParamMapSignal()?.get('id') ?? 0),
+    transactionId: Number(this.queryParamMapSignal()?.get('transactionId') ?? 0),
+    supplierId: Number(this.queryParamMapSignal()?.get('supplierId') ?? 0),
   }));
 
   ngOnInit(): void {
@@ -50,13 +45,13 @@ export class ListStockDetail {
 
   private fetchList(): void {
     console.log('calling fetch list');
-    this.data$ = this.stockService.getStockDetailList(
-      this.idsSignal().stockMasterId
+    this.data$ = this.paymentService.getPaymentList(
+      this.idsSignal().supplierId
     );
   }
 
   onEdit(id: number): void {
-    this.router.navigate(['/auth/add-stock-detail'], {
+    this.router.navigate(['/auth/add-payment'], {
       queryParams: {
         id: id,
       },
@@ -64,9 +59,9 @@ export class ListStockDetail {
   }
 
   onAdd(): void {
-    this.router.navigate(['/auth/add-stock-detail'], {
+    this.router.navigate(['/auth/add-payment'], {
       queryParams: {
-        id: this.idsSignal().stockMasterId,
+        supplierId: this.idsSignal().supplierId,
       },
     });
   }

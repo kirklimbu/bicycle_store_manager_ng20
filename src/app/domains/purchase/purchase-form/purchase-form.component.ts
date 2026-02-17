@@ -319,6 +319,9 @@ export class PurchaseFormComponent implements OnInit {
           this.form.reset();
           this.resetInventoryList();
           this.selectedItemsListSignal.set([]);
+          this.router.navigate(['/auth/purchase-master'], {
+            queryParams: { supplierId: this.IdsSignal().supplierId },
+          });
         },
         error: () => {
           // ❌ DO NOTHING

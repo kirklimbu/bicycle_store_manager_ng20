@@ -88,7 +88,15 @@ export const FEATURE_ADMIN_ROUTES: Routes = [
     canActivate: [AuthGuard],
     loadChildren: () =>
       import('../supplier').then((m) => m.FEATURE_SUPPLIER_ROUTES),
-  }, {
+  },
+  {
+    path: '',
+    canActivate: [AuthGuard],
+    loadChildren: () =>
+      import('../payment').then((m) => m.FEATURE_PAYMENT_ROUTES),
+  },
+
+  {
     path: '',
     canActivate: [AuthGuard],
     loadChildren: () =>
