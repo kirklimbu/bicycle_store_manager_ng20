@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
 
 import { ICustomResponse } from 'src/app/domains/shared/models/CustomResponse.model';
-import { IPurchaseDetailReport, IPurchaseMasterReport, IPurchaseReport, ISalesDetailReport } from '../models/purhase-report.model';
+import { IClosingStockReport, IPurchaseDetailReport, IPurchaseMasterReport, IPurchaseReport, ISalesDetailReport } from '../models/purhase-report.model';
 
 @Injectable({
   providedIn: 'root',
@@ -61,6 +61,13 @@ export class ReportService {
   getSalesDetailReportList(id: number): Observable<ISalesDetailReport[]> {
     return this.http.get<ISalesDetailReport[]>(
       `${this.apiUrl}report/sales/detail/list?salesMasterId=${id}`,
+    );
+  }
+
+
+  getClosingStockReportList(): Observable<IClosingStockReport[]> {
+    return this.http.get<IClosingStockReport[]>(
+      `${this.apiUrl}report/closing/stock/list`,
     );
   }
   // transaction section

@@ -1,62 +1,80 @@
-.table-header {
-    padding: 1rem 0;
+.enterprise-table-header {
+  padding: 16px 0;
+  background: #ffffff;
+  border-bottom: 1px solid #f0f0f0;
 
-    .header-row {
-        display: flex;
-        flex-wrap: wrap;
+  .toolbar-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end; // The key to the straight line 📏
+    gap: 16px;
+    width: 100%;
+  }
+
+  .inputs-group {
+    display: flex;
+    flex: 1 1 auto; // Takes available space
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 12px;
+
+    .field-item {
+      flex: 1 1 180px; // Responsive growth
+      max-width: 160px;
+      
+      &.search-box { flex: 1.5 1 240px; }
+      &.date-input { flex: 1 1 140px; }
+      
+      nz-form-item { margin-bottom: 0; }
+      nz-form-label { padding-bottom: 4px; height: 24px; }
+      nz-form-label > label { font-size: 12px; font-weight: 600; color: #595959; }
+    }
+  }
+
+  .actions-group {
+    display: flex;
+    justify-content: flex-end;
+    margin-left: auto; // Pushes buttons to the far right on desktop
+    padding-bottom: 4px; // Align with input baseline
+
+    button {
+      height: 36px;
+    //   border-radius: 6px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
 
-    nz-input-group,
-    nz-select,
-    input[nz-input] {
-        width: 100%;
+    .add-button {
+      background: #1890ff;
+      border-color: #1890ff;
     }
+  }
 
-    .action-col {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-
-        nz-space {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        button {
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-            white-space: nowrap;
-        }
+  /* 📱 Fully Mobile Responsive Logic */
+  @media (max-width: 992px) {
+    .toolbar-container { flex-direction: column; align-items: stretch; }
+    .inputs-group { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      width: 100%; 
     }
-
-    .add-col {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-
-        button {
-            font-weight: 500;
-        }
+    .actions-group { 
+      width: 100%; 
+      justify-content: flex-start;
+      margin-top: 8px;
+      
+      nz-space { width: 100%; }
+      button { flex: 1 1 auto; justify-content: center; }
     }
+  }
 
-    @media (max-width: 768px) {
-        padding: 0.5rem;
-
-        .action-col {
-            justify-content: flex-start;
-            margin-top: 0.5rem;
-        }
-
-        .add-col {
-            justify-content: flex-start;
-            margin-top: 0.5rem;
-        }
+  @media (max-width: 576px) {
+    .inputs-group { grid-template-columns: 1fr; }
+    .actions-group nz-space { 
+      display: grid;
+      grid-template-columns: 1fr 1fr; // Buttons in 2 columns on small phones
     }
-}
-
-.ant-form-vertical .ant-form-item-label {
-    padding: 0 0 2px;
-    font-weight: 600;
+  }
 }

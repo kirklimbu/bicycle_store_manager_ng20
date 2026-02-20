@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, linkedSignal, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
@@ -7,12 +7,12 @@ import { NzTableModule } from 'ng-zorro-antd/table';
 import { Observable } from 'rxjs';
 import { SalesService } from '../../data/services/sales.services';
 // Project
-import { NepaliDateFormatterPipe } from 'src/app/domains/shared/pipes/nepali-date-formatter.pipe';
-import { FilterValues } from '../../data/models/sales.model';
-import { TableOperations } from 'src/app/domains/shared/ui-common/table-operations/table-operations';
-import { TableOperationsComponent } from '../../../shared/ui-common/table-operations/table-operations.component';
-import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
+import { NepaliDateFormatterPipe } from 'src/app/domains/shared/pipes/nepali-date-formatter.pipe';
+import { DayendStore } from '../../../shared/services/dayendstore.service';
+import { TableOperationsComponent } from '../../../shared/ui-common/table-operations/table-operations.component';
+import { FilterValues } from '../../data/models/sales.model';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 
 @Component({
@@ -47,15 +47,15 @@ export class SalesComponent {
   private readonly router = inject(Router);
   private readonly salesService = inject(SalesService);
   private readonly route = inject(ActivatedRoute);
+  private dayendStore = inject(DayendStore);
 
-  // queryParamMapSignal = toSignal(this.route.queryParamMap, {
-  //   initialValue: this.route.snapshot.queryParamMap,
-  // });
-
-  // customerIdSignal = computed(() => {
-  //   const queryParamMap = this.queryParamMapSignal();
-  //   return queryParamMap ? Number(queryParamMap.get('customerId')) : 0;
-  // });
+  initialFilters = linkedSignal(() => {
+    const range = this.dayendStore.getInitialRange();
+    return {
+      fromDate: range.from,
+      toDate: range.to
+    };
+  });
 
   private readonly queryParamMap = toSignal(this.route.queryParamMap);
   readonly isCustomerMode = computed(() => {
@@ -66,14 +66,6 @@ export class SalesComponent {
   // 3. Optional: If you need the ID specifically for your methods
   readonly customerId = computed(() => Number(this.queryParamMap()?.get('customerId')) || 0);
 
-  constructor() {
-    // effect(() => {
-    //   const filters = this.filterSignal();
-    //   if (Object.keys(filters).length > 0) {
-    //     this.fetchPatientList(filters); // You can call your API here
-    //   }
-    // });
-  }
 
   ngOnInit(): void { }
 

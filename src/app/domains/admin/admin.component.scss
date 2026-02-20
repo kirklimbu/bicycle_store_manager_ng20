@@ -88,3 +88,64 @@ nz-footer {
     font-size: 12px;
     color: #1890ff;
 }
+
+nz-header {
+  padding: 0 24px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+  z-index: 1;
+
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+  }
+
+  .status-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    line-height: 1.2;
+
+    .status-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      color: #8c8c8c;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 2px;
+    }
+    
+  }
+
+  .enterprise-tag {
+    font-weight: 500;
+    border-radius: 4px;
+    padding: 2px 8px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-right: 0;
+  }
+  .ant-tag {
+        margin-right: 0;
+
+  }
+  .ant-space{
+        margin-bottom: 1rem;
+    }
+
+  // 📱 Mobile responsiveness: Hide non-essential info
+  @media (max-width: 576px) {
+    padding: 0 12px;
+    .hide-mobile {
+      display: none;
+    }
+    .status-label {
+       display: none; // Keep it ultra-clean on tiny screens
+    }
+  }
+}

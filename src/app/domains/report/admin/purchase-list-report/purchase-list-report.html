@@ -10,8 +10,10 @@
   ]" (filterChange)="onFilterChange($event)" /> -->
                 <lib-table-operations [showSelector1]="false" [selector1Options]="manualSelectorOptions"
                     [showAddButton]="false" [isLocalSearch]="false" [showSearch]="false" [showFromDate]="true"
-                    [showToDate]="true" [showSecondaryButton]="isCustomerMode()" [showTertiaryButton]="isCustomerMode()"
-                    [secondaryButtonLabel]="'Sales'" [tertiaryButtonLabel]="'Sales Return'" (search)="onSearch($event)"
+                    [showToDate]="true" [defaultFromDate]="initialFilters().fromDate"
+                    [defaultToDate]="initialFilters().toDate" [showSecondaryButton]="isCustomerMode()"
+                    [showTertiaryButton]="isCustomerMode()" [secondaryButtonLabel]="'Sales'"
+                    [tertiaryButtonLabel]="'Sales Return'" (search)="onSearch($event)"
                     (secondaryButtonClick)="onSales()" (tertiaryButtonClick)="onSalesReturn()" />
             </nz-page-header-extra>
 

@@ -41,15 +41,17 @@
             </div>
             <div nz-col [nzSpan]="24" [nzMd]="8" [nzLg]="4">
                 <nz-form-item>
-                    <nz-form-label> Type </nz-form-label>
+                    <nz-form-label> Pay Type </nz-form-label>
                     <nz-select nz-input placeholder="Select pay type" formControlName="payTypeId">
-                        @for (item of payTypeSignal(); track $index) {
+                        @for (item of payTypeSignal(); track item.id) {
                         <nz-option [nzValue]="item.id" [nzLabel]="item.name"></nz-option>
                         }
 
                     </nz-select>
                 </nz-form-item>
             </div>
+
+
             @if(mode ==='add') {
             <div nz-col [nzSpan]="24" [nzMd]="8" [nzLg]="4">
                 <nz-form-item>

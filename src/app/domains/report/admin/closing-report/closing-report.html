@@ -1,21 +1,15 @@
 <!-- <nz-breadcrumb [nzAutoGenerate]="true"></nz-breadcrumb> -->
 <div class="table-container">
     <div class="site-page-header-ghost-wrapper">
-        <nz-page-header nzTitle="Sales List" [nzGhost]="false">
-            <nz-page-header-extra>
-                <!-- <app-table-operations key="sakes-filter" [fields]="[
-    { name: 'fromDate', label: 'From Date (B.S)', type: 'date', required: true },
-    { name: 'toDate', label: 'To Date (B.S)', type: 'date', required: true },
-    
-  ]" (filterChange)="onFilterChange($event)" /> -->
+        <nz-page-header nzTitle="Closing Stock Report" [nzGhost]="false">
+            <!-- <nz-page-header-extra>
+                
                 <lib-table-operations [showSelector1]="false" [selector1Options]="manualSelectorOptions"
                     [showAddButton]="false" [isLocalSearch]="false" [showSearch]="false" [showFromDate]="true"
-                    [showToDate]="true" [defaultFromDate]="initialFilters().fromDate"
-                    [defaultToDate]="initialFilters().toDate" [showSecondaryButton]="isCustomerMode()"
-                    [showTertiaryButton]="isCustomerMode()" [secondaryButtonLabel]="'Sales'"
-                    [tertiaryButtonLabel]="'Sales Return'" (search)="onSearch($event)"
+                    [showToDate]="true" [showSecondaryButton]="isCustomerMode()" [showTertiaryButton]="isCustomerMode()"
+                    [secondaryButtonLabel]="'Sales'" [tertiaryButtonLabel]="'Sales Return'" (search)="onSearch($event)"
                     (secondaryButtonClick)="onSales()" (tertiaryButtonClick)="onSalesReturn()" />
-            </nz-page-header-extra>
+            </nz-page-header-extra> -->
 
         </nz-page-header>
     </div>
@@ -26,33 +20,25 @@
             <tr>
                 <th nzAlign="center" nzWidth="5%"># </th>
                 <th nzAlign="center">Stock Name </th>
-                <th nzAlign="center">Save Date </th>
-
-                <th nzAlign="center">Customer Name </th>
-                <th nzAlign="center">Qty. </th>
+                <th nzAlign="center">Batch </th>
+                <th nzAlign="center">Closing Qty </th>
+                <th nzAlign="center">Rate. </th>
                 <th nzAlign="center">Net Amount (Rs.) </th>
 
-                <th nzAlign="center">Pay Type </th>
-                <th nzAlign="center">Unit </th>
                 <!-- <th nzAlign="center">Action</th> -->
 
             </tr>
         </thead>
         <tbody>
-            @for (Sales of nzTable.data; track $index) {
+            @for (Sales of nzTable.data; track Sales.stockMasterId) {
 
             <tr>
                 <td nzAlign="center">{{$index+1}}.</td>
                 <td nzAlign="center">{{Sales.stockName|titlecase}}</td>
-                <td nzAlign="center">{{Sales.saveDate |nepaliDateFormatter}}</td>
-
-                <td nzAlign="center">{{ Sales.customerName |titlecase }}</td>
-
-                <td nzAlign="center">{{Sales.qty|number}}</td>
-                <td nzAlign="center">{{ Sales.netAmt |number }}</td>
-
-                <td nzAlign="center">{{Sales.payType}}</td>
-                <td nzAlign="center">{{Sales.unit}}</td>
+                <td nzAlign="center">{{Sales.batch}}</td>
+                <td nzAlign="center">{{ Sales.closingQty |number }}</td>
+                <td nzAlign="center">{{Sales.costPerUnit|number}}</td>
+                <td nzAlign="center">{{ Sales.totalAmt |number }}</td>
                 <!-- <td nzAlign="center">
                     <lib-table-action-buttons [showEditButton]="true" [showDeleteButton]="false" [showButton4]="true"
                         [showViewMoreButton]="true" [button3Label]="'Lab'" [button4Label]="'Transaction'"

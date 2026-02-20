@@ -67,6 +67,8 @@ export class TableOperationsComponent implements OnInit {
   // props
 
   date!: string;
+  defaultFromDate = input<string>(''); // Default to empty string
+  defaultToDate = input<string>('');
   label = input<string>('Search');
   placeholder = input<string>('Search...');
   searchValue = model<number>(0);
@@ -171,6 +173,13 @@ export class TableOperationsComponent implements OnInit {
       if (Object.keys(activeFilters).length > 0) {
         console.log('Calling API with filters:', activeFilters);
       }
+    });
+    // 🔄 Sync inputs with the form reactively
+    effect(() => {
+      this.form.patchValue({
+        fromDate: this.defaultFromDate(),
+        toDate: this.defaultToDate()
+      }, { emitEvent: false }); // Prevent infinite loops if you have valueChanges subscribers
     });
   }
 

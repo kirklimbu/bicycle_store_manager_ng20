@@ -49,7 +49,7 @@
                 <td nzAlign="center">{{supplier.balance|number}}</td>
                 <td nzAlign="center">
                     <lib-table-action-buttons [showDeleteButton]="true" [showViewMoreButton]="true" [showButton4]="true"
-                        [button3Icon]="'transaction'" [button4Icon]="'dollar'" [button3Label]="'Transaction'"
+                        [button3Icon]="'transaction'" [button4Icon]="'dollar'" [button3Label]="'Purchase'"
                         [button4Label]="'Make Payment'" (delete)="onDelete(supplier.supplierId)"
                         (edit)="onEdit(supplier.supplierId)" (viewMore)="onViewMore(supplier.supplierId)"
                         (buttonAction4)="onPayment(supplier.supplierId)" />

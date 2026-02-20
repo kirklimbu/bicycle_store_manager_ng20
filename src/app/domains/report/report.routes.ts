@@ -8,6 +8,7 @@ import { PurchaseMasterListReport } from './admin/purchase-master-list-report/pu
 import { PurchaseDetailListReport } from './admin/purchase-detail-list-report/purchase-detail-list-report';
 import { SalesMasterListReport } from './admin/sales-master-list-report/sales-master-list-report';
 import { SalesDetailListReport } from './admin/sales-detail-list-report/sales-detail-list-report';
+import { ClosingReport } from './admin/closing-report/closing-report';
 
 export const FEATURE_REPORT_ROUTES: Routes = [
   {
@@ -58,6 +59,17 @@ export const FEATURE_REPORT_ROUTES: Routes = [
     data: {
       roles: [Role.ADMIN],
       breadcrumb: 'Sales Detail Report',
+
+    },
+
+  },
+  {
+    path: 'report-closing-stock',
+    component: ClosingReport,
+    canActivate: [hasRoleGuard],
+    data: {
+      roles: [Role.ADMIN],
+      breadcrumb: 'Closing Stock Report',
 
     },
 

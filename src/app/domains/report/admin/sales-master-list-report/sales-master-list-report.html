@@ -11,6 +11,7 @@
                 <lib-table-operations [showSelector1]="true" [selector1Label]="'Pay Type'" [selectorKey]="'payType'"
                     [selector1Options]="manualSelectorOptions" [showAddButton]="false" [isLocalSearch]="false"
                     [showSearch]="false" [showFromDate]="true" [showToDate]="true"
+                    [defaultFromDate]="initialFilters().fromDate" [defaultToDate]="initialFilters().toDate"
                     [showSecondaryButton]="isCustomerMode()" [showTertiaryButton]="isCustomerMode()"
                     [secondaryButtonLabel]="'Sales'" [tertiaryButtonLabel]="'Sales Return'" (search)="onSearch($event)"
                     (secondaryButtonClick)="onSales()" (tertiaryButtonClick)="onSalesReturn()" />

@@ -58,7 +58,7 @@ import { BsDateInputDirective } from '../../shared/directives/bsdate/bs-date-inp
   ],
 
   templateUrl: './purchase-form.component.html',
-  styleUrl: './purchase-form.component.scss',
+  // styleUrl: './puchase-form.component.scss',
 })
 export class PurchaseFormComponent implements OnInit {
   // props

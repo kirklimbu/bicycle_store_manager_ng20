@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
+import { Component, computed, DestroyRef, inject, linkedSignal, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
@@ -13,6 +13,7 @@ import * as XLSX from 'xlsx';
 import { FilterValues } from '../../sales/data/models/sales.model';
 import { NepaliDateFormatterPipe } from '../../shared/pipes/nepali-date-formatter.pipe';
 import { SearchPipe } from '../../shared/pipes/search.pipe';
+import { DayendStore } from '../../shared/services/dayendstore.service';
 import { TableActionButtonsComponent } from '../../shared/ui-common/table-action-buttons/table-action-buttons.component';
 import { TableOperationsComponent } from '../../shared/ui-common/table-operations/table-operations.component';
 import { IPurchaseTransaction1Dto } from '../data/models/purhase.model';
@@ -90,6 +91,16 @@ export class PurchaseComponent {
   private readonly destroyRef$ = inject(DestroyRef);
   private readonly route = inject(ActivatedRoute);
   private readonly purchseService = inject(PurchaseService);
+  private dayendStore = inject(DayendStore);
+
+  initialFilters = linkedSignal(() => {
+    const range = this.dayendStore.getInitialRange();
+    return {
+      fromDate: range.from,
+      toDate: range.to
+    };
+  });
+
 
   queryParamMapSignal = toSignal(this.route.queryParamMap, {
     initialValue: this.route.snapshot.queryParamMap,
@@ -108,7 +119,9 @@ export class PurchaseComponent {
     // });
   }
 
-  // ngOnInit(): void {}
+  ngOnInit(): void {
+    this.onSearch(this.initialFilters());
+  }
 
   onSearch(query: FilterValues) {
     console.log('search', query);
@@ -140,7 +153,7 @@ export class PurchaseComponent {
     });
   }
 
-  onDelete(id: number) {}
+  onDelete(id: number) { }
 
   onEdit(data: any) {
     this.router.navigate(['auth/add-purchase'], {

@@ -11,22 +11,19 @@ import {
 import {
   FormBuilder,
   FormGroup,
-  FormsModule,
   ReactiveFormsModule,
-  Validators,
+  Validators
 } from '@angular/forms';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { Observable } from 'rxjs';
 import { BsDateInputDirective } from '../../directives/bsdate/bs-date-input.directive';
-import { TruncatePipe } from '../../util-common/truncate.pipe';
 import { FilterField, IFilter } from './data/model/table-filter-model';
 import { FilterStateService } from './data/service/filterstate.service';
 

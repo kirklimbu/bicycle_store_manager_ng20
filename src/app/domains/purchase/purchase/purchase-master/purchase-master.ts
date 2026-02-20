@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, DestroyRef, inject, OnInit } from '@angular/core';
+import { Component, computed, DestroyRef, inject, linkedSignal, OnInit } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
@@ -13,6 +13,7 @@ import { TableOperationsComponent } from 'src/app/domains/shared/ui-common/table
 import { PurchaseService } from '../../data/services/purchase.services';
 import { FilterValues } from 'src/app/domains/sales/data/models/sales.model';
 import { IPurchaseTransaction1Dto } from '../../data/models/purhase.model';
+import { DayendStore } from '../../../shared/services/dayendstore.service';
 
 @Component({
   selector: 'app-purchase-master',
@@ -102,6 +103,15 @@ export class PurchaseMaster implements OnInit {
   private readonly destroyRef$ = inject(DestroyRef);
   private readonly route = inject(ActivatedRoute);
   private readonly purchseService = inject(PurchaseService);
+  private dayendStore = inject(DayendStore);
+
+  initialFilters = linkedSignal(() => {
+    const range = this.dayendStore.getInitialRange();
+    return {
+      fromDate: range.from,
+      toDate: range.to
+    };
+  });
 
   queryParamMapSignal = toSignal(this.route.queryParamMap, {
     initialValue: this.route.snapshot.queryParamMap,
@@ -151,7 +161,7 @@ export class PurchaseMaster implements OnInit {
     });
   }
 
-  onDelete(id: number) {}
+  onDelete(id: number) { }
   onPurchaseReturn(purchase: any) {
     console.log('purchase return', purchase);
     this.router.navigate(['auth/add-purchase-return'], {

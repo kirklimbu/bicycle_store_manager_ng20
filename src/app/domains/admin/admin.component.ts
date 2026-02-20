@@ -1,20 +1,21 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
 // import { SidenavComponent } from 'src/app/shell/sidevav/sidenav.component';
 import { Router, RouterModule } from '@angular/router';
 // import { BreadcrumbModule } from 'xng-breadcrumb';
+import { MessageService } from '@logger/message.service';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { AuthState } from '../auth/login/state/login.state';
-import { MessageService } from '@logger/message.service';
-import { DayendService } from '../dayend/data/services/dayend.service';
 import { IDayend2Dto } from '../dayend/data/model/dayend';
-import { NepaliDateFormatterPipe } from '../shared/pipes/nepali-date-formatter.pipe';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { GlobalConstants } from '../shared/global-constants';
+import { NepaliDateFormatterPipe } from '../shared/pipes/nepali-date-formatter.pipe';
+import { DayendStore } from '../shared/services/dayendstore.service';
+import { NzTagModule } from 'ng-zorro-antd/tag';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
 interface SideNavToggle {
   screenWidth: number;
   collapsed: boolean;
@@ -33,13 +34,16 @@ interface SideNavToggle {
     NzBreadCrumbModule,
     NzMenuModule,
     NzButtonModule,
+    NzTagModule,
+    NzSpaceModule,
+    // project
     NepaliDateFormatterPipe,
   ],
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss'],
   providers: [DatePipe],
 })
-export class AdminComponent implements OnInit {
+export class AdminComponent {
   currentDayend: IDayend2Dto | null = null;
   currentDate!: string | null;
   isCollapsed = false;
@@ -52,13 +56,11 @@ export class AdminComponent implements OnInit {
   private router = inject(Router);
   private messageService = inject(MessageService);
   private destroyRef$ = inject(DestroyRef);
-  dayendService = inject(DayendService);
+  private dayendStore = inject(DayendStore);
   authstate = inject(AuthState);
 
-  ngOnInit(): void {
-    if (this.authstate.isAdmin()) this.fetchCurrentDayend();
-    console.log('oniinti');
-  }
+  currentDayendData = computed(() => this.dayendStore.dayendData());
+
 
   onToggleSideNav(data: SideNavToggle): void {
     this.screenWidth = data.screenWidth;
@@ -87,16 +89,5 @@ export class AdminComponent implements OnInit {
     });
   }
 
-  fetchCurrentDayend() {
-    console.log('dayend  ');
-    this.dayendService
-      .getCurrentDayend()
-      .pipe(takeUntilDestroyed(this.destroyRef$))
-      .subscribe((res) => {
-        console.log('current dayend', res);
 
-        this.currentDayend = res;
-        // this.messageService.createMessage('success', res.message);
-      });
-  }
 }

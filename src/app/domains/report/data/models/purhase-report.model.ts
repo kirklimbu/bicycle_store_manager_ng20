@@ -44,3 +44,12 @@ export interface ISalesDetailReport {
   netAmt: number;
   billNo: string;
 }
+export interface IClosingStockReport {
+  stockMasterId: number;
+  stockName: string;
+  batch: string;
+  closingQty: number;         // Often handled as ISO strings in enterprise APIs
+  costPerUnit: number;
+  totalAmt: number;
+  unitId: number;
+}

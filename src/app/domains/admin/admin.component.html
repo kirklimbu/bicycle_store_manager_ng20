@@ -100,6 +100,11 @@
               <li nz-menu-item [routerLink]="['/auth/report-sales-master']">Sales Master</li>
             </ul>
           </li>
+          <li nz-submenu nzTitle="Stock Report">
+            <ul>
+              <li nz-menu-item [routerLink]="['/auth/report-closing-stock']">Closing</li>
+            </ul>
+          </li>
         </ul>
       </li>
       <li nz-submenu nzTitle="Account" nzIcon="cluster">
@@ -161,22 +166,35 @@
   </nz-sider>
   <nz-layout>
     <nz-header>
-      <nz-icon class="trigger" [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
-        (click)="isCollapsed = !isCollapsed">
-      </nz-icon>
+      <div class="header-container">
+        <div class="left-section">
+          <nz-icon class="trigger" [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+            (click)="isCollapsed = !isCollapsed"></nz-icon>
+        </div>
 
-      @if(authstate.isAdmin()) {
-      <span class="current-dayend">
-        Current Dayend: {{ currentDayend?.saveDate | nepaliDateFormatter }}
-      </span>
+        <div class="right-section" @if(authstate.isAdmin() && currentDayendData()) {>
+          <nz-space nzAlign="center" [nzSize]="'middle'">
 
-      @if(currentDayend?.message) {
-      <span class="current-dayend-message">
-        |
-        {{ currentDayend?.message }}
-      </span>
-      }
-      }
+            <div *nzSpaceItem class="status-group">
+              <span class="status-label">Dayend</span>
+              <nz-tag nzColor="processing" class="enterprise-tag">
+                <span nz-icon nzType="calendar"></span>
+                {{ currentDayendData()?.saveDate | nepaliDateFormatter }}
+              </nz-tag>
+            </div>
+
+            @if(currentDayendData()?.message) {
+            <div *nzSpaceItem class="status-group hide-mobile">
+              <span class="status-label">Status</span>
+              <nz-tag nzColor="success">
+                {{ currentDayendData()?.message }}
+              </nz-tag>
+            </div>
+            }
+
+          </nz-space>
+        </div>
+      </div>
     </nz-header>
 
     <nz-content>

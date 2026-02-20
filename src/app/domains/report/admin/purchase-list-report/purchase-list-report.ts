@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, linkedSignal, signal } from '@angular/core';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
@@ -11,6 +11,7 @@ import { Observable } from 'rxjs';
 import { FilterValues } from '../../../sales/data/models/sales.model';
 import { ReportService } from '../../data/services/report.services';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { DayendStore } from '../../../shared/services/dayendstore.service';
 
 @Component({
   selector: 'app-purchase-list-report',
@@ -42,7 +43,15 @@ export class PurchaseListReport {
   private readonly router = inject(Router);
   private readonly reportService = inject(ReportService);
   private readonly route = inject(ActivatedRoute);
+  private dayendStore = inject(DayendStore);
 
+  initialFilters = linkedSignal(() => {
+    const range = this.dayendStore.getInitialRange();
+    return {
+      fromDate: range.from,
+      toDate: range.to
+    };
+  });
 
   private readonly queryParamMap = toSignal(this.route.queryParamMap);
   readonly isCustomerMode = computed(() => {
@@ -55,7 +64,9 @@ export class PurchaseListReport {
 
 
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.onSearch(this.initialFilters());
+  }
 
   onSearch(query?: any) {
     console.log('search', query);

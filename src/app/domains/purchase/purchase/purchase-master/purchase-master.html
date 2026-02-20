@@ -5,8 +5,9 @@
             <nz-page-header-extra>
                 <lib-table-operations [showSelector1]="false" [selector1Options]="manualSelectorOptions"
                     [showAddButton]="false" [isLocalSearch]="false" [showSearch]="false" [showFromDate]="true"
-                    [showToDate]="true" [showExportButton]="false" [showAddButton]="true" (search)="onSearch($event)"
-                    (add)="onAdd()" />
+                    [showToDate]="true" [defaultFromDate]="initialFilters().fromDate"
+                    [defaultToDate]="initialFilters().toDate" [showExportButton]="false" [showAddButton]="true"
+                    (search)="onSearch($event)" (add)="onAdd()" />
             </nz-page-header-extra>
         </nz-page-header>
 
@@ -52,9 +53,9 @@
                 <td nzWidth="1%" nzAlign="center">{{ $index + 1 }}.</td>
                 <td nzWidth="20%" nzAlign="left">{{ purchase.billNo }}</td>
 
-                <td nzAlign="center">{{ purchase.saveDate | nepaliDateFormatter }}</td>
+                <td nzAlign="center">{{ purchase.saveDate }}</td>
                 <td nzWidth="20%" nzAlign="left">{{ purchase.supplierBillNo }}</td>
-                <td nzAlign="center">{{ purchase.supplierSaveDate | nepaliDateFormatter }}</td>
+                <td nzAlign="center">{{ purchase.supplierSaveDate }}</td>
                 <!-- <td nzAlign="center">{{ purchase.pricePerUnit }}</td> -->
                 <!-- <td nzAlign="center">{{ purchase.qty }}</td> -->
                 <td nzAlign="center">{{ purchase.taxableAmt }}</td>
