@@ -30,6 +30,7 @@ import { DayendStore } from '../../../shared/services/dayendstore.service';
   templateUrl: './purchase-list-report.html',
   styleUrl: './purchase-list-report.scss',
 })
+// stockwise purchase list report
 export class PurchaseListReport {
   // props
   manualSelectorOptions: { categoryId: string; name: string }[] = [
@@ -74,7 +75,7 @@ export class PurchaseListReport {
     // if (!query || !this.hasValidQuery(query)) {
     //   return;
     // }
-    this.data$ = this.reportService.getPurchaseReportList(query);
+    this.data$ = this.reportService.getPurchaseReportStockWiseList(query);
   }
 
   private hasValidQuery(query: any): boolean {

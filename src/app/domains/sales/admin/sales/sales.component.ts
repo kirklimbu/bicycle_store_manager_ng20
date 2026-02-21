@@ -33,6 +33,8 @@ import { FilterValues } from '../../data/models/sales.model';
   templateUrl: './sales.component.html',
   styleUrl: './sales.component.scss',
 })
+
+// stockwise sales list report
 export class SalesComponent {
   // props
 
@@ -67,7 +69,10 @@ export class SalesComponent {
   readonly customerId = computed(() => Number(this.queryParamMap()?.get('customerId')) || 0);
 
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.onSearch(this.initialFilters());
+
+  }
 
   onSearch(query?: any) {
     console.log('search', query);

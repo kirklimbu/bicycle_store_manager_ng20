@@ -87,26 +87,58 @@
       </li> -->
       <li nz-submenu nzTitle="Report" nzIcon="cluster">
         <ul>
-          <li nz-submenu nzTitle="Purchase Report">
+          <!-- <li nz-submenu nzTitle="Purchase Report">
             <ul>
               <li nz-menu-item [routerLink]="['/auth/report-purchase']">Purchase List</li>
               <li nz-menu-item [routerLink]="['/auth/report-purchase-master']">Purchase Master</li>
+            </ul>
+          </li> -->
+          <li nz-submenu nzTitle="Purchase Report">
+            <ul>
+              <li nz-menu-item [routerLink]="['/auth/report-purchase-master']">Purchase Master</li>
+              <li nz-submenu nzTitle="VAT Report">
+                <ul>
+                  <li nz-menu-item [routerLink]="['/auth/report-purchase-month-wise']">
+                    Month Wise
+                  </li>
+                  <li nz-menu-item [routerLink]="['/auth/report-purchase-stock-wise']">
+                    Stock Wise
+                  </li>
+                </ul>
+              </li>
             </ul>
           </li>
 
           <li nz-submenu nzTitle="Sales Report">
             <ul>
-              <li nz-menu-item [routerLink]="['/auth/list-sales']">Sales List</li>
               <li nz-menu-item [routerLink]="['/auth/report-sales-master']">Sales Master</li>
+              <li nz-submenu nzTitle="VAT Report">
+                <ul>
+                  <li nz-menu-item [routerLink]="['/auth/report-sales-month-wise']">
+                    Month Wise
+                  </li>
+                  <li nz-menu-item [routerLink]="['/auth/list-sales']">
+                    Stock Wise
+                  </li>
+                </ul>
+              </li>
             </ul>
           </li>
+
           <li nz-submenu nzTitle="Stock Report">
             <ul>
               <li nz-menu-item [routerLink]="['/auth/report-closing-stock']">Closing</li>
             </ul>
           </li>
+
+          <li nz-submenu nzTitle="Profit-Loss Report">
+            <ul>
+              <li nz-menu-item [routerLink]="['/auth/report-profit-loss']">Profit Loss</li>
+            </ul>
+          </li>
         </ul>
       </li>
+
       <li nz-submenu nzTitle="Account" nzIcon="cluster">
         <ul>
           <li nz-menu-item [routerLink]="['/auth/list-dayend']">

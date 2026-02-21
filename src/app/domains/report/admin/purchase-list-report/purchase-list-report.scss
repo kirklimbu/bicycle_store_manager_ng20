@@ -1,0 +1,113 @@
+.enterprise-table-wrapper {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f0f0f0;
+
+    .ant-table-thead > tr > th {
+        background: #f8f9fb;
+        color: #595959;
+        font-weight: 600;
+        border-bottom: 2px solid #f0f0f0;
+    }
+
+    .enterprise-row:hover td {
+        background: #f6ffed !important; // Success tint for financial rows
+    }
+
+    .sticky-col-main {
+        font-weight: 600;
+        color: #1890ff;
+    }
+
+    // .num-mono {
+    //     font-family: 'Roboto Mono', monospace;
+    //     font-variant-numeric: tabular-nums;
+    // }
+
+    .highlight-val {
+        color: #262626;
+        background-color: #fafafa;
+    }
+
+    .status-badge {
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 11px;
+        background: #f0f0f0;
+        &.cash {
+            background: #f6ffed;
+      color: #52c41a;
+      border: 1px solid #b7eb8f;
+        }
+    }
+
+    .enterprise-footer td {
+        background: #fafafa;
+        font-weight: 700;
+        border-top: 2px solid #e8e8e8;
+    }
+    
+    .footer-grand-total {
+        color: #d4380d; // Professional warm red/orange for totals
+        font-size: 15px;
+    }
+    .date-text,.bill-identifier {
+    font-weight: 600;
+    color: #1890ff;
+    background-color: #f0f5ff; // Subtle highlight for the sticky column
+  }
+
+  .supplier-text {
+    font-weight: 500;
+    color: #262626;
+  }
+
+  .stock-text {
+    color: #595959;
+    font-size: 13px;
+    max-width: 220px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; // Prevents long stock names from breaking layout
+  }
+  .net-amt-cell {
+    font-weight: 700;
+    background-color: #fafafa;
+  }
+
+  .pay-badge {
+padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+background: #f6ffed;
+      color: #52c41a;
+      border: 1px solid #b7eb8f;   
+       &.cash {
+      background: #f6ffed;
+      color: #52c41a;
+      border: 1px solid #b7eb8f;
+    }    &.credit {
+      background: #fff2f0;
+      color: #cf1322;
+      border: 1px solid #ffccc7;
+    }
+  }
+
+  // Visual cues for the net amount column
+  .highlight-col {
+    background-color: #fafafa;
+    border-left: 1px solid #f0f0f0;
+  }
+
+    // Responsive adjustments for mobile
+    @media (max-width: 576px) {
+        .stock-text {
+            max-width: 150px; // Adjust for smaller screens
+        }
+        .enterprise-footer td {
+            font-size: 13px;
+        }
+    }   
+}

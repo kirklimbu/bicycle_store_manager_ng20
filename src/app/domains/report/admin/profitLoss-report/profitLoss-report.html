@@ -1,0 +1,46 @@
+<!-- <nz-breadcrumb [nzAutoGenerate]="true"></nz-breadcrumb> -->
+<div class="table-container">
+    <div class="site-page-header-ghost-wrapper">
+        <nz-page-header nzTitle="Profit Loss Report" [nzGhost]="false">
+            <nz-page-header-extra>
+                <!-- <app-table-operations key="sakes-filter" [fields]="[
+    { name: 'fromDate', label: 'From Date (B.S)', type: 'date', required: true },
+    { name: 'toDate', label: 'To Date (B.S)', type: 'date', required: true },
+    
+  ]" (filterChange)="onFilterChange($event)" /> -->
+                <lib-table-operations [showSelector1]="false" [showAddButton]="false" [isLocalSearch]="false"
+                    [showSearch]="false" [showFromDate]="true" [showToDate]="true"
+                    [defaultFromDate]="initialFilters().fromDate" [defaultToDate]="initialFilters().toDate"
+                    (search)="onSearch($event)" />
+            </nz-page-header-extra>
+
+        </nz-page-header>
+    </div>
+
+    <div class="pl-container">
+        <nz-table #plTable [nzData]="processedReport()" [nzFrontPagination]="false" [nzShowPagination]="false"
+            nzSize="middle" [nzScroll]="{ x: '400px' }">
+            <thead>
+                <tr>
+                    <th nzWidth="70%">Description</th>
+                    <th nzAlign="right">Amount (NPR)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (item of processedReport(); track item.key) {
+                <tr [class.summary-row]="item.isSummary" [class.child-row]="item.level > 0">
+                    <td [style.padding-left.px]="item.level * 32">
+                        @if (item.level > 0) {
+                        <span class="indent-guide"></span>
+                        }
+                        <span class="item-label">{{ item.key }}</span>
+                    </td>
+                    <td nzAlign="right" [class.negative-amount]="item.value < 0">
+                        {{ item.value | number:'1.2-2' }}
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </nz-table>
+    </div>
+</div>

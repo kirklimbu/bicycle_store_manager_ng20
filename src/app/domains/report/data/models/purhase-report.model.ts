@@ -53,3 +53,26 @@ export interface IClosingStockReport {
   totalAmt: number;
   unitId: number;
 }
+
+export interface IProfitLossReport {
+  key: string;
+  value: number;
+  level: number; // 0 for Parent, 1 for Child
+  isSummary: boolean;
+}
+export interface ISalesReportMonthWise {
+  salesMonth: string;
+  totalInvoice: number;
+  totalAmt: number;
+  taxAmt: number;
+  netAmt: number;
+
+}
+export interface IPurchaseReportMonthWise {
+  purchaseMonth: string;
+  totalInvoice: number;
+  totalAmt: number;
+  taxAmt: number;
+  netAmt: number;
+
+}

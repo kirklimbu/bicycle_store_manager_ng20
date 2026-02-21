@@ -1,0 +1,69 @@
+<!-- <nz-breadcrumb [nzAutoGenerate]="true"></nz-breadcrumb> -->
+<div class="table-container">
+    <div class="site-page-header-ghost-wrapper">
+        <nz-page-header nzTitle="Sales Report | Monthwise" [nzGhost]="false">
+            <nz-page-header-extra>
+                <!-- <app-table-operations key="sakes-filter" [fields]="[
+    { name: 'fromDate', label: 'From Date (B.S)', type: 'date', required: true },
+    { name: 'toDate', label: 'To Date (B.S)', type: 'date', required: true },
+    
+  ]" (filterChange)="onFilterChange($event)" /> -->
+                <lib-table-operations [showSelector1]="true" [selector1Label]="'Fiscal Year'" [selector1Options]=""
+                    [showAddButton]="false" [isLocalSearch]="false" [showSearch]="false" [showFromDate]="false"
+                    [showToDate]="false" (search)="onSearch($event)" />
+            </nz-page-header-extra>
+
+        </nz-page-header>
+    </div>
+
+    <div class="table-container">
+        @if(data$ | async; as data) {
+        <nz-table #nzTable [nzData]="data" [nzBordered]="false" [nzFrontPagination]="false" [nzShowPagination]="false"
+            nzSize="middle" [nzScroll]="{ x: '1000px' }">
+            <thead>
+                <tr>
+                    <th nzLeft nzWidth="60px" nzAlign="center">#</th>
+                    <th nzLeft nzWidth="150px">Fiscal Year/Month</th>
+                    <th nzAlign="right" nzWidth="120px">Invoices</th>
+                    <th nzAlign="right" nzWidth="150px">Tax Amt. (Rs.)</th>
+                    <th nzAlign="right" nzWidth="150px">VAT Amt. (Rs.)</th>
+                    <th nzAlign="right" nzWidth="150px" class="highlight-col">Net Amt. (Rs.)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (item of nzTable.data; track $index) {
+                <tr class="report-row">
+                    <td nzLeft nzAlign="center" class="index-cell">{{ $index + 1 }}</td>
+                    <td nzLeft class="main-cell">
+                        {{ item.salesMonth || 'Current Period' | titlecase }}
+                    </td>
+                    <td nzAlign="right">{{ item.totalInvoice | number }}</td>
+                    <td nzAlign="right" class="numeric-cell">{{ item.totalAmt | number:'1.2-2' }}</td>
+                    <td nzAlign="right" class="numeric-cell tax-text">{{ item.taxAmt | number:'1.2-2' }}</td>
+                    <td nzAlign="right" class="numeric-cell total-text">
+                        {{ item.netAmt | number:'1.2-2' }}
+                    </td>
+                </tr>
+                }
+            </tbody>
+            <!-- @if(data.length > 0) {
+            <tfoot class="table-summary">
+                <tr>
+                    <td nzLeft>Total </td>
+                    <td nzAlign="right">---</td>
+                    <td nzAlign="right">---</td>
+                    <td nzAlign="right">---</td>
+                    <td nzAlign="right">---</td>
+                    <td nzAlign="right" class="grand-total">{{ calculateTotal(data) | number:'1.2-2' }}</td>
+                </tr>
+            </tfoot>
+            } -->
+        </nz-table>
+        } @else {
+        <div class="loading-skeleton">
+            <nz-skeleton [nzActive]="true"></nz-skeleton>
+        </div>
+        }
+    </div>
+
+</div>

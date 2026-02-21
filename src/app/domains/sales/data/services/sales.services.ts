@@ -34,9 +34,11 @@ export class SalesService {
   // })
 
   getSalesList(query: any): Observable<ISales[]> {
-    return this.http.get<ISales[]>(`${this.apiUrl}report/sales/list`, {
-      params: query,
-    });
+    return this.http.get<ISales[]>(
+      `${this.apiUrl}report/sales/stockwise/list`,
+      {
+        params: query
+      });
   }
 
   fetchDefaultForm(

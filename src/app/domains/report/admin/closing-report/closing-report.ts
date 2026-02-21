@@ -77,7 +77,7 @@ export class ClosingReport {
     // if (!query || !this.hasValidQuery(query)) {
     //   return;
     // }
-    this.data$ = this.reportService.getPurchaseReportList(query);
+    this.data$ = this.reportService.getClosingStockReportList();
   }
 
   private hasValidQuery(query: any): boolean {

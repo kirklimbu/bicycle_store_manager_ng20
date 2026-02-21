@@ -20,50 +20,60 @@
         </nz-page-header>
     </div>
 
-    @if(data$|async;as data ){
-    <nz-table [nzFrontPagination]="false" #nzTable [nzBordered]="true" [nzData]="data" [nzScroll]="{ x: '900px' }">
-        <thead>
-            <tr>
-                <th nzAlign="center" nzWidth="5%"># </th>
-                <th nzAlign="center">Stock Name </th>
-                <th nzAlign="center">Save Date </th>
-
-                <th nzAlign="center">Customer Name </th>
-                <th nzAlign="center">Qty. </th>
-                <th nzAlign="center">Net Amount (Rs.) </th>
-
-                <th nzAlign="center">Pay Type </th>
-                <th nzAlign="center">Unit </th>
-                <!-- <th nzAlign="center">Action</th> -->
-
-            </tr>
-        </thead>
-        <tbody>
-            @for (Sales of nzTable.data; track $index) {
-
-            <tr>
-                <td nzAlign="center">{{$index+1}}.</td>
-                <td nzAlign="center">{{Sales.stockName|titlecase}}</td>
-                <td nzAlign="center">{{Sales.saveDate |nepaliDateFormatter}}</td>
-
-                <td nzAlign="center">{{ Sales.customerName |titlecase }}</td>
-
-                <td nzAlign="center">{{Sales.qty|number}}</td>
-                <td nzAlign="center">{{ Sales.netAmt |number }}</td>
-
-                <td nzAlign="center">{{Sales.payType}}</td>
-                <td nzAlign="center">{{Sales.unit}}</td>
-                <!-- <td nzAlign="center">
-                    <lib-table-action-buttons [showEditButton]="true" [showDeleteButton]="false" [showButton4]="true"
-                        [showViewMoreButton]="true" [button3Label]="'Lab'" [button4Label]="'Transaction'"
-                        [button3Icon]="'experiment'" [button4Icon]="'dollar'" (delete)="onDelete(Sales.SalesId)"
-                        (edit)="onEdit(Sales.SalesId)" (viewMore)="onViewMore(Sales.SalesId)"
-                        (buttonAction4)="showTransaction(Sales.SalesId)" />
-                </td> -->
-            </tr>
-            }
-        </tbody>
-    </nz-table>
-    }
+    <div class="report-container">
+        @if(data$ | async; as data) {
+        <nz-table #reportTable [nzData]="data" [nzBordered]="false" [nzFrontPagination]="false" nzSize="middle"
+            [nzScroll]="{ x: '1500px' }">
+            <thead>
+                <tr class="enterprise-row">
+                    <th nzLeft nzWidth="60px" nzAlign="center">#</th>
+                    <th nzLeft nzWidth="120px">Date</th>
+                    <th nzLeft nzWidth="100px">Bill No</th>
+                    <th nzWidth="150px">Customer</th>
+                    <th nzWidth="120px">PAN/VAT</th>
+                    <th nzWidth="200px">Stock Name</th>
+                    <th nzAlign="center" nzWidth="80px">Qty</th>
+                    <th nzWidth="80px">Unit</th>
+                    <th nzAlign="right" nzWidth="120px">Total Amt.</th>
+                    <th nzAlign="right" nzWidth="100px">Tax Amt.</th>
+                    <th nzAlign="right" nzWidth="120px" class="highlight-col">Net Amt</th>
+                    <th nzWidth="100px">Pay Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (item of reportTable.data; track item.salesDetailId) {
+                <tr class="data-row">
+                    <td nzLeft nzAlign="center" class="index-cell">{{ $index + 1 }}</td>
+                    <td nzLeft class="date-cell">{{ item.saveDate | nepaliDateFormatter }}</td>
+                    <td nzLeft class="bill-cell">{{ item.billNo || '-' }}</td>
+                    <td>{{ item.customerName | titlecase }}</td>
+                    <td class="pan-cell">{{ item.pan || '-' }}</td>
+                    <td class="stock-name">{{ item.stockName }}</td>
+                    <td nzAlign="center">{{ item.qty | number }}</td>
+                    <td>{{ item.unit }}</td>
+                    <td nzAlign="right">{{ item.totalAmt | number:'1.2-2' }}</td>
+                    <td nzAlign="right" class="tax-text">{{ item.taxAmt | number:'1.2-2' }}</td>
+                    <td nzAlign="right" class="net-amt-cell">{{ item.netAmt | number:'1.2-2' }}</td>
+                    <td>
+                        <span class="pay-badge" [class.cash]="item.payType === 'Cash'">
+                            {{ item.payType }}
+                        </span>
+                    </td>
+                </tr>
+                }
+            </tbody>
+            <!-- <tfoot class="table-summary">
+                <tr>
+                    <td [nzLeft]="true" [colspan]="3" class="summary-label">Totals</td>
+                    <td colspan="5"></td>
+                    <td nzAlign="right" class="footer-total">{{ calculateSubTotal(data) | number:'1.2-2' }}</td>
+                    <td nzAlign="right" class="footer-total">{{ calculateTaxTotal(data) | number:'1.2-2' }}</td>
+                    <td nzAlign="right" class="footer-grand-total">{{ calculateNetTotal(data) | number:'1.2-2' }}</td>
+                    <td></td>
+                </tr>
+            </tfoot> -->
+        </nz-table>
+        }
+    </div>
 
 </div>

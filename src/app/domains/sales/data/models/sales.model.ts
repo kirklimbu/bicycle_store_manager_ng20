@@ -31,6 +31,7 @@ export interface FilterValues {
   };
   fromDate?: string;
   toDate?: string;
+  fiscalId?: number;
   supplierId?: number;
   customerId?: number;
   paytypeId?: number;

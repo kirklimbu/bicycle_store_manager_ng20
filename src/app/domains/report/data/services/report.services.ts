@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
 
 import { ICustomResponse } from 'src/app/domains/shared/models/CustomResponse.model';
-import { IClosingStockReport, IPurchaseDetailReport, IPurchaseMasterReport, IPurchaseReport, ISalesDetailReport } from '../models/purhase-report.model';
+import { IClosingStockReport, IProfitLossReport, IPurchaseDetailReport, IPurchaseMasterReport, IPurchaseReport, IPurchaseReportMonthWise, ISalesDetailReport, ISalesReportMonthWise } from '../models/purhase-report.model';
 
 @Injectable({
   providedIn: 'root',
@@ -24,9 +24,15 @@ export class ReportService {
     );
   }
 
-  getPurchaseReportList(query: any): Observable<IPurchaseReport[]> {
+  getPurchaseReportStockWiseList(query: any): Observable<IPurchaseReport[]> {
     return this.http.get<IPurchaseReport[]>(
-      `${this.apiUrl}report/purchase/list`,
+      `${this.apiUrl}report/purchase/stockwise/list`,
+      { params: query }
+    );
+  }
+  getPurchaseReportMonthWise(query: any): Observable<IPurchaseReportMonthWise[]> {
+    return this.http.get<IPurchaseReportMonthWise[]>(
+      `${this.apiUrl}report/purchase/monthwise/list`,
       { params: query }
     );
   }
@@ -46,7 +52,7 @@ export class ReportService {
 
   getSalesReportList(query: any): Observable<ISalesDetailReport[]> {
     return this.http.get<ISalesDetailReport[]>(
-      `${this.apiUrl}report/sales/list`,
+      `${this.apiUrl}report/sales/stockwise/list`,
       { params: query }
     );
   }
@@ -70,6 +76,23 @@ export class ReportService {
       `${this.apiUrl}report/closing/stock/list`,
     );
   }
+  getProfitLossReportList(query: any): Observable<IProfitLossReport[]> {
+    return this.http.get<IProfitLossReport[]>(
+      `${this.apiUrl}report/profitloss`,
+      { params: query }
+
+    );
+  }
+  getSalesReportMonthWise(query: any): Observable<ISalesReportMonthWise[]> {
+    return this.http.get<ISalesReportMonthWise[]>(
+      `${this.apiUrl}report/sales/monthwise/list`,
+      { params: query }
+
+    );
+  }
+
+
+
   // transaction section
 
   // fetchTransactionForm(

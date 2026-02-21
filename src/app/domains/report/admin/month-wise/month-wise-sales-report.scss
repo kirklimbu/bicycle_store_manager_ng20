@@ -1,0 +1,70 @@
+.table-container {
+//   background: #ffffff;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+  .ant-table-thead > tr > th {
+    background: #fafafa;
+    color: #595959;
+    font-weight: 600;
+    font-size: 13px;
+    border-bottom: 2px solid #f0f0f0;
+  }
+
+  .report-row {
+    &:hover {
+      background-color: #f6ffed; // Subtle green tint for financial reports
+    }
+
+    td {
+      font-size: 14px;
+      color: #262626;
+      padding: 12px 16px;
+    }
+  }
+
+  .main-cell {
+    font-weight: 500;
+    color: #1890ff; // Brand color for primary identification
+  }
+
+  .numeric-cell {
+    // font-family: 'Roboto Mono', monospace; // Better for aligning numbers
+  }
+
+  .tax-text {
+    color: #8c8c8c;
+    font-size: 13px;
+  }
+
+  .total-text {
+    font-weight: 600;
+    color: #262626;
+  }
+
+  .highlight-col {
+    background-color: #fafafa;
+  }
+
+  .table-summary {
+    td {
+      background: #fafafa;
+      font-weight: 700;
+      border-top: 2px solid #f0f0f0;
+    }
+    .grand-total {
+      color: #1d39c4; // Deep blue for final totals
+      font-size: 16px;
+    }
+  }
+
+  // Responsive adjustments for small mobile
+  @media (max-width: 576px) {
+    padding: 8px;
+    .ant-table-thead > tr > th, .report-row td {
+      padding: 8px 10px;
+      font-size: 12px;
+    }
+  }
+}

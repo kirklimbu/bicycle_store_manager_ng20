@@ -20,45 +20,63 @@
         </nz-page-header>
     </div>
 
-    @if(data$|async;as data ){
-    <nz-table [nzFrontPagination]="false" #nzTable [nzBordered]="true" [nzData]="data" [nzScroll]="{ x: '900px' }">
-        <thead>
-            <tr>
-                <th nzAlign="center" nzWidth="5%"># </th>
-                <th nzAlign="center">Stock Name </th>
-                <th nzAlign="center">Save Date </th>
-                <th nzAlign="center">Supplier Name </th>
-                <th nzAlign="center">Qty. </th>
-                <th nzAlign="center">Net Amount (Rs.) </th>
-                <th nzAlign="center">Pay Type </th>
-                <th nzAlign="center">Unit </th>
-                <!-- <th nzAlign="center">Action</th> -->
+    <div class="enterprise-table-wrapper">
+        @if(data$ | async; as data) {
+        <nz-table #reportTable [nzData]="data" [nzBordered]="false" [nzFrontPagination]="true" nzSize="middle"
+            [nzScroll]="{ x: '1600px' }">
+            <thead>
+                <tr>
+                    <th nzLeft nzWidth="60px" nzAlign="center">#</th>
+                    <th nzLeft nzWidth="120px">Date</th>
+                    <th nzLeft nzWidth="130px">Supplier Bill</th>
+                    <th nzWidth="180px">Supplier Name</th>
+                    <th nzWidth="110px">PAN/VAT</th>
 
-            </tr>
-        </thead>
-        <tbody>
-            @for (Sales of nzTable.data; track $index) {
+                    <th nzWidth="220px">Stock Name</th>
+                    <th nzAlign="center" nzWidth="80px">Qty</th>
+                    <th nzWidth="80px">Unit</th>
+                    <th nzAlign="right" nzWidth="130px">Total Amt.</th>
+                    <th nzAlign="right" nzWidth="110px">Tax Amt.</th>
+                    <th nzAlign="right" nzWidth="120px" class="highlight-col">Net Amt</th>
+                    <th nzWidth="100px" nzRight>Pay Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (item of reportTable.data; track item.purchaseDetailId) {
+                <tr class="enterprise-row">
+                    <td nzLeft nzAlign="center" class="num-mono text-muted">{{ $index + 1 }}</td>
+                    <td nzLeft class="date-text">{{ item.saveDate | nepaliDateFormatter }}</td>
+                    <td nzLeft class="bill-identifier">{{ item.supplierBillNo || 'N/A' }}</td>
+                    <td class="supplier-text">{{ item.supplierName | titlecase }}</td>
+                    <td class="num-mono small-text">{{ item.pan || '-' }}</td>
 
-            <tr>
-                <td nzAlign="center">{{$index+1}}.</td>
-                <td nzAlign="center">{{Sales.stockName|titlecase}}</td>
-                <td nzAlign="center">{{Sales.saveDate |nepaliDateFormatter}}</td>
-                <td nzAlign="center">{{ Sales.supplierName |titlecase }}</td>
-                <td nzAlign="center">{{Sales.qty|number}}</td>
-                <td nzAlign="center">{{ Sales.netAmt |number }}</td>
-                <td nzAlign="center">{{Sales.payType}}</td>
-                <td nzAlign="center">{{Sales.unit}}</td>
-                <!-- <td nzAlign="center">
-                    <lib-table-action-buttons [showEditButton]="true" [showDeleteButton]="false" [showButton4]="true"
-                        [showViewMoreButton]="true" [button3Label]="'Lab'" [button4Label]="'Transaction'"
-                        [button3Icon]="'experiment'" [button4Icon]="'dollar'" (delete)="onDelete(Sales.SalesId)"
-                        (edit)="onEdit(Sales.SalesId)" (viewMore)="onViewMore(Sales.SalesId)"
-                        (buttonAction4)="showTransaction(Sales.SalesId)" />
-                </td> -->
-            </tr>
-            }
-        </tbody>
-    </nz-table>
-    }
-
+                    <td class="stock-text">{{ item.stockName }}</td>
+                    <td nzAlign="center" class="num-mono">{{ item.qty | number }}</td>
+                    <td class="text-muted">{{ item.unit }}</td>
+                    <td nzAlign="right" class="num-mono">{{ item.totalAmt | number:'1.2-2' }}</td>
+                    <td nzAlign="right" class="num-mono tax-color">{{ item.taxAmt | number:'1.2-2' }}</td>
+                    <td nzAlign="right" class="num-mono net-amt-cell">{{ item.netAmt | number:'1.2-2' }}</td>
+                    <td nzRight>
+                        <span class="pay-badge" [class.credit]="item.payType === 'Credit'">
+                            {{ item.payType }}
+                        </span>
+                    </td>
+                </tr>
+                }
+            </tbody>
+            <!-- <tfoot class="enterprise-footer">
+        <tr>
+          <td [nzLeft]="true" [colspan]="3" class="footer-label">Total Purchases</td>
+          <td colspan="5" class="hide-mobile"></td> 
+          <td nzAlign="right" class="footer-val">{{ calculateTotal(data, 'totalAmt') | number:'1.2-2' }}</td>
+          <td nzAlign="right" class="footer-val">{{ calculateTotal(data, 'taxAmt') | number:'1.2-2' }}</td>
+          <td nzAlign="right" class="footer-grand-total">
+             <small>NPR</small> {{ calculateTotal(data, 'netAmt') | number:'1.2-2' }}
+          </td>
+          <td nzRight></td>
+        </tr>
+      </tfoot> -->
+        </nz-table>
+        }
+    </div>
 </div>
