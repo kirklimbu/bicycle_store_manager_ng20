@@ -19,27 +19,11 @@
 
   <!-- @if(data$|async;as data ){ -->
 
-  <nz-table [nzFrontPagination]="false" #nzTable [nzBordered]="true" [nzData]="data" [nzScroll]="{ x: '900px' }">
+  <!-- <nz-table [nzFrontPagination]="false" #nzTable [nzBordered]="true" [nzData]="data" [nzScroll]="{ x: '900px' }">
     <thead>
-      <!-- <tr>
-        <th nzAlign="center" nzWidth="5%">#</th>
-        <th nzAlign="center">Name</th>
-        <th nzAlign="center">Address</th>
-        <th nzAlign="center">refType</th>
-        <th nzAlign="center">Save Date</th>
-        <th
-          nzAlign="center"
-         
-        >
-          Pay Type
-        </th>
-        <th nzAlign="center">Bill No</th>
-        <th nzAlign="center" nzWidth="10%">Discount Amount</th>
-        <th nzAlign="center" nzWidth="10%">Amount</th>
-      </tr> -->
+
       <tr>
-        <!-- [(nzSortOrder)]="column.sortOrder"
-         [nzSortFn]="column.sortFn" -->
+
         @for (column of listOfColumns; track column.name) {
         <th nzAlign="center" [nzFilters]="column.listOfFilter" [nzFilterFn]="column.filterFn">
           {{ column.name }}
@@ -72,6 +56,50 @@
       </tr>
       }
     </tbody>
-  </nz-table>
+  </nz-table> -->
   <!-- } -->
+
+  <div class="enterprise-table-wrapper">
+    @if (data(); as tableData) {
+    <nz-table #nzTable [nzData]="tableData" [nzFrontPagination]="true" [nzPageSize]="10" nzSize="middle"
+      [nzScroll]="{ x: '1200px' }">
+      <thead>
+        <tr>
+          @for (column of listOfColumns; track column.name) {
+          <th [nzLeft]="column.stickyLeft || false" [nzRight]="column.stickyRight || false" [nzWidth]="column.width"
+            [nzAlign]="column.align || 'left'" [nzFilters]="column.listOfFilter || []"
+            [nzFilterFn]="column.filterFn || null">
+            {{ column.name }}
+          </th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @for (purchase of nzTable.data | search: filterCriteria; track purchase.purchaseId; let i = $index) {
+        <tr class="enterprise-row">
+          <td nzLeft nzAlign="center" class="num-mono text-muted">
+            {{ (nzTable.nzPageIndex - 1) * nzTable.nzPageSize + (i + 1) }}
+          </td>
+
+          <td nzLeft class="sticky-col-main">{{ purchase.stockName | titlecase }}</td>
+
+          <td nzAlign="center" class="date-cell">{{ purchase.saveDate | nepaliDateFormatter }}</td>
+          <td nzAlign="right" class="num-mono">{{ purchase.pricePerUnit | number:'1.2-2' }}</td>
+          <td nzAlign="center" class="num-mono qty-text">{{ purchase.qty | number }}</td>
+          <td nzAlign="right" class="num-mono">{{ purchase.taxableAmt | number:'1.2-2' }}</td>
+          <td nzAlign="right" class="num-mono tax-text">{{ purchase.taxAmt | number:'1.2-2' }}</td>
+          <td nzAlign="right" class="num-mono net-amt-cell">{{ purchase.netAmt | number:'1.2-2' }}</td>
+
+          <td nzRight nzAlign="center">
+            <div class="action-bundle">
+              <lib-table-action-buttons [showEditButton]="true" [showDeleteButton]="false" [showButton4]="false"
+                [showViewMoreButton]="false" (edit)="onEdit(purchase)" (delete)="onDelete(purchase.purchaseId)" />
+            </div>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </nz-table>
+    }
+  </div>
 </div>

@@ -28,47 +28,58 @@
             </button>
         </div>
     </div>
-    @if (data$ | async; as table) {
-    <nz-table #borderedTable nzBordered nzTitle="Product List" [nzData]="table" [nzFrontPagination]="false">
-        <thead>
-            <tr>
-                <th>Sn.</th>
-                <th>Photo</th>
-                <th> Name</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @for (
-            data of borderedTable.data;
-            track data.productId;
-            let i = $index
-            ) {
-            <tr>
-                <td>{{ i + 1 }}</td>
-                <td><img nz-image [nzSrc]="data.path" height="50" width="50" alt="Product Image"></td>
-                <td>
-                    {{ data.name | titlecase }}
-                </td>
+    <div class="enterprise-table-wrapper">
+        @if (data$ | async; as table) {
+        <nz-table #borderedTable [nzData]="table" [nzFrontPagination]="true" [nzBordered]="false" nzSize="middle"
+            [nzTitle]="headerTemplate" [nzScroll]="{ x: '800px' }">
+            <thead>
+                <tr>
+                    <th nzLeft nzWidth="60px" nzAlign="center">Sn.</th>
+                    <th nzWidth="100px" nzAlign="center">Photo</th>
+                    <th nzLeft nzWidth="250px">Product Name</th>
+                    <th nzWidth="120px" nzAlign="center">Status</th>
+                    <th nzRight nzWidth="100px" nzAlign="center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (data of borderedTable.data; track data.productId; let i = $index) {
+                <tr class="enterprise-row">
+                    <td nzLeft nzAlign="center" class="num-mono text-muted">
+                        {{ (borderedTable.nzPageIndex - 1) * borderedTable.nzPageSize + (i + 1) }}
+                    </td>
+                    <td nzAlign="center">
+                        <div class="product-img-container">
+                            <img nz-image [nzSrc]="data.path" alt="Product Image" class="product-thumb">
+                        </div>
+                    </td>
+                    <td nzLeft class="sticky-col-main">
+                        {{ data.name | titlecase }}
+                    </td>
+                    <td nzAlign="center">
+                        <span class="status-dot" [class.active]="data.hasActive"></span>
+                        <nz-tag [nzColor]="data.hasActive ? 'success' : 'error'" class="status-tag">
+                            {{ data.hasActive ? 'Active' : 'Inactive' }}
+                        </nz-tag>
+                    </td>
+                    <td nzRight nzAlign="center">
+                        <div class="action-bundle">
+                            <button nz-button nzType="text" nzShape="circle" (click)="onEdit(data.productId)" nz-tooltip
+                                nzTooltipTitle="Edit Product">
+                                <span nz-icon nzType="edit" class="edit-icon"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </nz-table>
+        }
 
-                <td> <nz-tag [nzColor]="(data.hasActive) ? 'green' : 'red'">
-                        {{ data.hasActive? 'Active' : 'Inactive' }}
-                    </nz-tag></td>
-                <td>
-                    <div class="action-buttons">
-                        <button title="Edit" nz-button (click)="onEdit(data.productId)">
-                            <span nz-icon nzType="form"></span>
-                        </button>
-                        <!-- <button title="View Detail" nz-button (click)="onViewDetail(data.productId)">
-                            <span nz-icon nzType="eye"></span>
-                        </button> -->
-
-                    </div>
-                </td>
-            </tr>
-            }
-        </tbody>
-    </nz-table>
-    }
+        <ng-template #headerTemplate>
+            <div class="table-header-ui">
+                <span class="title">Total Items in Inventory: </span>
+                <span class="count">{{ (data$ | async)?.length || 0 }} </span>
+            </div>
+        </ng-template>
+    </div>
 </section>

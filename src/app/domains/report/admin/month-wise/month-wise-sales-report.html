@@ -25,15 +25,18 @@
                     <th nzLeft nzWidth="60px" nzAlign="center">#</th>
                     <th nzLeft nzWidth="150px">Fiscal Year/Month</th>
                     <th nzAlign="right" nzWidth="120px">Invoices</th>
+                    <th nzAlign="right" nzWidth="150px">Total Amt. (Rs.)</th>
                     <th nzAlign="right" nzWidth="150px">Tax Amt. (Rs.)</th>
-                    <th nzAlign="right" nzWidth="150px">VAT Amt. (Rs.)</th>
                     <th nzAlign="right" nzWidth="150px" class="highlight-col">Net Amt. (Rs.)</th>
                 </tr>
             </thead>
             <tbody>
-                @for (item of nzTable.data; track $index) {
+                @for (item of nzTable.data; track $index; let i = $index) {
                 <tr class="report-row">
-                    <td nzLeft nzAlign="center" class="index-cell">{{ $index + 1 }}</td>
+                    <td nzLeft nzAlign="center" class="index-cell">
+                        {{ (nzTable.nzPageIndex - 1) * nzTable.nzPageSize + (i + 1) }}
+
+                    </td>
                     <td nzLeft class="main-cell">
                         {{ item.salesMonth || 'Current Period' | titlecase }}
                     </td>

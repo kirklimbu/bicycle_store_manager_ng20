@@ -169,7 +169,6 @@ export class PurchaseReturnForm {
 
       qty: [qty],
       pricePerUnit: [rate],
-
       totalAmt: [totalAmt],
       disPercent: [disPercent],
       discountAmt: [discountAmt],

@@ -27,7 +27,7 @@ import { TableActionButtonsComponent } from '../../shared/ui-common/table-action
     TableActionButtonsComponent,
   ],
   templateUrl: './suppliers.component.html',
-  styleUrl: './suppliers.component.css',
+  styleUrl: './suppliers.component.scss',
 })
 export class SuppliersComponent {
   data$!: Observable<any[]>;

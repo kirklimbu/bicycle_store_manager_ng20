@@ -12,52 +12,77 @@
         </nz-page-header>
     </div>
 
-    @if(data$|async;as data ){
+    <div class="enterprise-table-wrapper">
+        @if (data$ | async; as data) {
+        <nz-table #nzTable [nzData]="data" [nzFrontPagination]="true" [nzPageSize]="10" nzSize="middle"
+            [nzScroll]="{ x: '1400px' }">
+            <thead>
+                <tr>
+                    <th nzLeft nzWidth="60px" nzAlign="center">Sn.</th>
+                    <th nzLeft nzWidth="200px">Supplier Name</th>
+                    <th nzWidth="200px">Business Name</th>
+                    <th nzWidth="150px">Contact Details</th>
+                    <th nzWidth="150px">Location</th>
+                    <th nzWidth="120px" nzAlign="center">PAN/VAT</th>
+                    <th nzWidth="140px" nzAlign="right">Outstanding (Rs.)</th>
+                    <th nzRight nzWidth="160px" nzAlign="center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (supplier of nzTable.data; track supplier.supplierId; let i = $index) {
+                <tr class="enterprise-row">
+                    <td nzLeft nzAlign="center" class="num-mono text-muted">
+                        {{ (nzTable.nzPageIndex - 1) * nzTable.nzPageSize + (i + 1) }}
+                    </td>
 
-    <nz-table [nzFrontPagination]="false" #nzTable [nzBordered]="true" [nzData]="data" [nzScroll]="{ x: '900px' }">
-        <thead>
-            <tr>
-                <th nzAlign="center" nzWidth="5%">#</th>
-                <th nzWidth="25%" nzAlign="center">Name </th>
-                <th nzAlign="center">Address </th>
-                <th nzAlign="center">Mobile </th>
-                <th nzAlign="center">Business Name </th>
-                <th nzAlign="center">PAN </th>
-                <th nzAlign="center">Outstanding </th>
-                <th nzAlign="center">Action</th>
+                    <td nzLeft class="sticky-col-main">
+                        {{ supplier.name | titlecase }}
+                    </td>
 
-            </tr>
-        </thead>
-        <tbody>
-            @for (supplier of nzTable.data; track $index) {
+                    <td class="business-text">
+                        {{ supplier.businessName | titlecase }}
+                    </td>
 
-            <tr>
-                <td nzAlign="center">{{$index+1}}.</td>
-                <td nzAlign="center">{{ supplier.name |titlecase }}</td>
-                <td nzAlign="center">{{ supplier.location |titlecase }}</td>
-                <td nzAlign="center">
-                    <p>
-                        {{ supplier.mobile1 }}
-                    </p>
-                    <p>
-                        {{ supplier.mobile2 }}
-                    </p>
-                </td>
-                <td nzAlign="center">{{ supplier.businessName |titlecase }}</td>
-                <td nzAlign="center">{{ supplier.pan}}</td>
+                    <td>
+                        <div class="contact-stack">
+                            <span class="primary-phone"><span nz-icon nzType="phone"></span> {{ supplier.mobile1
+                                }}</span>
+                            @if(supplier.mobile2) {
+                            <span class="secondary-phone">{{ supplier.mobile2 }}</span>
+                            }
+                        </div>
+                    </td>
 
-                <td nzAlign="center">{{supplier.balance|number}}</td>
-                <td nzAlign="center">
-                    <lib-table-action-buttons [showDeleteButton]="true" [showViewMoreButton]="true" [showButton4]="true"
-                        [button3Icon]="'transaction'" [button4Icon]="'dollar'" [button3Label]="'Purchase'"
-                        [button4Label]="'Make Payment'" (delete)="onDelete(supplier.supplierId)"
-                        (edit)="onEdit(supplier.supplierId)" (viewMore)="onViewMore(supplier.supplierId)"
-                        (buttonAction4)="onPayment(supplier.supplierId)" />
-                </td>
-            </tr>
-            }
-        </tbody>
-    </nz-table>
-    }
+                    <td>
+                        <span class="location-tag">
+                            <span nz-icon nzType="environment"></span> {{ supplier.location | titlecase }}
+                        </span>
+                    </td>
+
+                    <td nzAlign="center" class="num-mono pan-text">
+                        {{ supplier.pan || '-' }}
+                    </td>
+
+                    <td nzAlign="right" class="num-mono balance-cell" [class.debt]="supplier.balance > 0"
+                        [class.cleared]="supplier.balance <= 0">
+                        {{ supplier.balance | number:'1.2-2' }}
+                    </td>
+
+                    <td nzRight nzAlign="center">
+                        <div class="action-bundle">
+                            <lib-table-action-buttons [showDeleteButton]="true" [showViewMoreButton]="true"
+                                [showButton4]="true" [button3Icon]="'transaction'" [button4Icon]="'dollar'"
+                                [button3Label]="'Purchase'" [button4Label]="'Pay'"
+                                (delete)="onDelete(supplier.supplierId)" (edit)="onEdit(supplier.supplierId)"
+                                (viewMore)="onViewMore(supplier.supplierId)"
+                                (buttonAction4)="onPayment(supplier.supplierId)" />
+                        </div>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </nz-table>
+        }
+    </div>
 
 </div>

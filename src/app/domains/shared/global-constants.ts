@@ -17,7 +17,7 @@ export class GlobalConstants {
   public static googleMap =
     'https://www.google.com/maps/search/Valley+Multi+Education+Network+Consultancy+Pvt.Ltd./@27.7179373,85.3399136,14z/data=!3m1!4b1?entry=ttu&g_ep=EgoyMDI0MDkxNi4wIKXMDSoASAFQAw%3D%3D';
   public static dateFormat = 'yyyy/MM/dd';
-  public static APP_VERSION = '1.10.1_bickram';
+  public static APP_VERSION = '1.10.3_neeraj';
 
   /**
    * {

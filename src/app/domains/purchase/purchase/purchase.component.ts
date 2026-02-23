@@ -52,40 +52,31 @@ export class PurchaseComponent {
     status: '',
   };
 
-  data: IPurchaseTransaction1Dto[] = [];
+  // data: IPurchaseTransaction1Dto[] = [];
+  data = signal<any[]>([]);
   filterSignal = signal<FilterValues>({});
   showExportSignal = signal<boolean>(false);
 
   listOfColumns: any[] = [
-    {
-      name: '#',
-    },
-    {
-      name: 'Item',
-    },
-    {
-      name: 'Save Date',
-    },
-    {
-      name: 'Rate',
-    },
-    {
-      name: 'Qty.',
-    },
-
-    {
-      name: 'Taxable Amt.',
-    },
-    {
-      name: 'Tax Amt.',
-    },
-    {
-      name: 'Net Amt.',
-    },
-    {
-      name: 'Table Actions',
-    },
+    { name: '#', width: '60px', align: 'center', stickyLeft: true },
+    { name: 'Item', width: '200px', align: 'left', stickyLeft: true },
+    { name: 'Save Date', width: '120px', align: 'center' },
+    { name: 'Rate', width: '100px', align: 'right' },
+    { name: 'Qty.', width: '80px', align: 'center' },
+    { name: 'Taxable Amt.', width: '120px', align: 'right' },
+    { name: 'Tax Amt.', width: '100px', align: 'right' },
+    { name: 'Net Amt.', width: '130px', align: 'right' },
+    { name: 'Table Actions', width: '120px', align: 'center', stickyRight: true },
   ];
+  constructor(private service: PurchaseService) {
+    // this.purchseService
+    //   .getPurchaseList(this.initialFilters())
+    //   // this.service.getPurchaseData()   
+    //   .pipe(takeUntilDestroyed(this.destroyRef$))
+    //   .subscribe(res => {
+    //     this.data.set(res); // Update the signal
+    //   });
+  }
 
   private readonly router = inject(Router);
   private readonly destroyRef$ = inject(DestroyRef);
@@ -110,14 +101,6 @@ export class PurchaseComponent {
     const queryParamMap = this.queryParamMapSignal();
     return queryParamMap ? Number(queryParamMap.get('supplierId')) : 0;
   });
-  constructor() {
-    // effect(() => {
-    //   const filters = this.filterSignal();
-    //   if (Object.keys(filters).length > 0) {
-    //     this.fetchPatientList(filters); // You can call your API here
-    //   }
-    // });
-  }
 
   ngOnInit(): void {
     this.onSearch(this.initialFilters());
@@ -140,7 +123,8 @@ export class PurchaseComponent {
       .pipe(takeUntilDestroyed(this.destroyRef$))
       .subscribe((res: any) => {
         console.log('data', res);
-        this.data = [...res];
+        // this.data = [...res];
+        this.data.set(res)
         res.length === 0
           ? this.showExportSignal.update(() => false)
           : this.showExportSignal.update(() => true);
@@ -180,49 +164,49 @@ export class PurchaseComponent {
   onExportToExcel(data: any): void {
     console.log('data for export', data);
     // Map your data to match Excel columns and headers
-    const exportData = this.data.map((item: any) => ({
-      'Supplier Name': item.supplierName,
-      'Supplier Address': item.supplierAddress,
-      'Ref Type': item.refType, // Keep as number for Excel formatting
-      'Save Date': item.saveDate,
-      'Bill No.': item.billNo,
-      'Discount Amt.': item.disAmount,
-      'Amount.': item.amount,
-    }));
+    // const exportData = this.data.map((item: any) => ({
+    //   'Supplier Name': item.supplierName,
+    //   'Supplier Address': item.supplierAddress,
+    //   'Ref Type': item.refType, // Keep as number for Excel formatting
+    //   'Save Date': item.saveDate,
+    //   'Bill No.': item.billNo,
+    //   'Discount Amt.': item.disAmount,
+    //   'Amount.': item.amount,
+    // }));
 
     // Create worksheet from JSON
-    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(exportData, {
-      header: [
-        'Supplier Name',
-        'Supplier Address',
-        'Ref Type',
-        'Save Date',
-        'Bill No.',
-        'Discount Amt.',
-        'Amount.',
-      ],
-      skipHeader: false, // Include headers
-    });
+    // const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(exportData, {
+    //   header: [
+    //     'Supplier Name',
+    //     'Supplier Address',
+    //     'Ref Type',
+    //     'Save Date',
+    //     'Bill No.',
+    //     'Discount Amt.',
+    //     'Amount.',
+    //   ],
+    //   skipHeader: false, // Include headers
+    // });
 
     // Optionally, set column widths for better readability
-    ws['!cols'] = [
-      { wch: 30 }, // Product Name width
-      { wch: 20 }, // Category width
-      { wch: 10 }, // Price width
-      { wch: 10 }, // Quantity width
-      { wch: 15 }, // Status width
-    ];
+    // ws['!cols'] = [
+    //   { wch: 30 }, // Product Name width
+    //   { wch: 20 }, // Category width
+    //   { wch: 10 }, // Price width
+    //   { wch: 10 }, // Quantity width
+    //   { wch: 15 }, // Status width
+    // ];
 
     // Create workbook and append worksheet
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Purchase Report');
+    // const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    // XLSX.utils.book_append_sheet(wb, ws, 'Purchase Report');
 
-    // Write workbook and save file
-    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-    const blob = new Blob([wbout], {
-      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    });
-    saveAs(blob, 'purchase_report.xlsx');
+    // // Write workbook and save file
+    // const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    // const blob = new Blob([wbout], {
+    //   type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    // });
+    // saveAs(blob, 'purchase_report.xlsx');
   }
 
   onPurchase() {

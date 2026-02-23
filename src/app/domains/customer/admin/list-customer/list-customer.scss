@@ -53,3 +53,74 @@ td.neutral {
     color: gray;
     font-weight: 500;
 }
+
+
+.enterprise-table-wrapper {
+    background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #f0f0f0;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.06);
+  margin-bottom: 24px;
+    // Identity Styling
+    .sticky-col-main {
+        font-weight: 600;
+        color: #1890ff;
+    }
+
+    .business-text {
+        color: #595959;
+        font-size: 13px;
+    }
+
+    // Financial Alignment
+    .balance-cell {
+        font-weight: 700;
+        &.positive { color: #52c41a; } // Receivables
+        &.negative { 
+            color: #f5222d; 
+            &::before { content: '-'; } // Clear negative indication
+        }
+    }
+
+    // Combined Column Layout
+    .contact-info {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        
+        .email-text {
+            font-size: 12px;
+            color: #8c8c8c;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 180px;
+        }
+        
+        .phone-text {
+            font-size: 13px;
+            color: #262626;
+            font-weight: 500;
+        }
+
+        .anticon {
+            font-size: 11px;
+            margin-right: 4px;
+        }
+    }
+
+    .location-tag {
+        font-size: 13px;
+        color: #595959;
+        background: #f5f5f5;
+        padding: 2px 8px;
+        border-radius: 4px;
+    }
+
+    .pan-text {
+        color: #bfbfbf;
+        font-size: 12px;
+    }
+
+    .text-blue { color: #1890ff; }
+}

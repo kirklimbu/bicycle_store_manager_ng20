@@ -10,91 +10,85 @@
         </nz-page-header>
     </div>
 
-    @if (data$ | async; as table) {
-    <nz-table #borderedTable nzBordered nzTitle="Stock List" [nzData]="table" [nzFrontPagination]="false"
-        [nzScroll]="{ x: '1100px' }">
-        <thead>
-            <tr>
-                <th nzWidth="5%">Sn.</th>
-                <th>Photo</th>
-                <th>Name</th>
-                <th>Unit</th>
-                <th>MRP</th>
-                <th>Price/Unit (Rs.)</th>
-                <th>Margin%</th>
-                <th>Price/Unit2 (Rs.)</th>
-                <th>Margin%2</th>
-                <th>Margin Qty2</th>
-                <th> Stock</th>
-                <th>Alert</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @for (
-            data of borderedTable.data ;
-            track data.stockMasterId;
-            let i = $index
-            ) {
-            <tr>
-                <td>{{ i + 1 }}</td>
-                <td><img nz-image [nzSrc]="data.path" height="50" width="50" alt="Profile pic"></td>
-                <td>
-                    {{ data.name | titlecase }}
-                </td>
-                <td>
-                    {{ data.unit }}
-                </td>
-                <td>
-                    {{ data.mrp }}
-                </td>
+    <div class="enterprise-table-wrapper">
+        @if (data$ | async; as table) {
+        <nz-table #borderedTable [nzData]="table" [nzFrontPagination]="true" [nzPageSize]="10" nzSize="middle"
+            [nzScroll]="{ x: '1600px' }">
+            <thead>
+                <tr>
+                    <th nzLeft nzWidth="60px" nzAlign="center">Sn.</th>
+                    <th nzWidth="80px" nzAlign="center">Photo</th>
+                    <th nzLeft nzWidth="200px">Stock Name</th>
+                    <th nzWidth="80px">Unit</th>
+                    <th nzWidth="100px" nzAlign="right">MRP</th>
+                    <th nzWidth="120px" nzAlign="right">Price/Unit</th>
+                    <th nzWidth="100px" nzAlign="center">Margin</th>
+                    <!-- <th nzWidth="120px" nzAlign="right">Price/U2</th>
+                    <th nzWidth="100px" nzAlign="center">Margin2</th> -->
+                    <!-- <th nzWidth="100px" nzAlign="center">M.Qty2</th> -->
+                    <th nzWidth="120px" nzAlign="right">Current Stock</th>
+                    <th nzWidth="100px" nzAlign="center">Alert</th>
+                    <th nzWidth="100px" nzAlign="center">Status</th>
+                    <th nzRight nzWidth="140px" nzAlign="center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (data of borderedTable.data; track data.stockMasterId; let i = $index) {
+                <tr class="enterprise-row">
+                    <td nzLeft nzAlign="center" class="num-mono text-muted">
+                        {{ (borderedTable.nzPageIndex - 1) * borderedTable.nzPageSize + (i + 1) }}
+                    </td>
+                    <td nzAlign="center">
+                        <div class="product-img-container">
+                            <img nz-image [nzSrc]="data.path" alt="Stock Image" class="product-thumb">
+                        </div>
+                    </td>
+                    <td nzLeft class="sticky-col-main">{{ data.name | titlecase }}</td>
+                    <td class="text-muted">{{ data.unit }}</td>
+                    <td nzAlign="right" class="num-mono">{{ data.mrp | number:'1.2-2' }}</td>
 
-                <td>
-                    {{ data.pricePerUnit }}
-                </td>
-                <td>
-                    {{ data.marginPercent }}
-                </td>
-                <td>
-                    {{ data.pricePerUnit2 }}
-                </td>
-                <td>
-                    {{ data.marginPercent2 }}
-                </td>
-                <td>
-                    {{ data.marginQty2 |number}}
-                </td>
-                <td>
-                    {{ data.remaining|number }}
-                </td>
-                <td>
-                    {{ data.minNotification|number }}
-                </td>
+                    <td nzAlign="right" class="num-mono price-highlight">{{ data.pricePerUnit | number:'1.2-2' }}</td>
+                    <td nzAlign="center">
+                        <span class="margin-badge">{{ data.marginPercent }}%</span>
+                    </td>
 
-                <td>
-                    <nz-tag [nzColor]="(data.hasActive) ? 'green' : 'red'">
-                        {{ data.hasActive? 'Active' : 'Inactive' }}
-                    </nz-tag>
-                </td>
+                    <!-- <td nzAlign="right" class="num-mono price-highlight2">{{ data.pricePerUnit2 | number:'1.2-2' }}</td> -->
+                    <!-- <td nzAlign="center" class="text-muted">{{ data.marginPercent2 }}%</td> -->
+                    <!-- <td nzAlign="center" class="num-mono">{{ data.marginQty2 | number }}</td> -->
 
-                <td>
-                    <div class="action-buttons">
-                        <button title="Edit" nz-button (click)="onEdit(data.stockMasterId)">
-                            <span nz-icon nzType="form"></span>
-                        </button>
-                        <button title="View Detail" nz-button (click)="onViewDetail(data.stockMasterId)">
-                            <span nz-icon nzType="eye"></span>
-                        </button>
-                        <button title="Edit 2" nz-button (click)="onEdit2(data.stockMasterId)">
-                            <span nz-icon nzType="form"></span>
-                        </button>
+                    <td nzAlign="right">
+                        <span class="stock-level" [class.low-stock]="data.remaining <= data.minNotification">
+                            {{ data.remaining | number }}
+                        </span>
+                    </td>
+                    <td nzAlign="center" class="num-mono text-orange">{{ data.minNotification | number }}</td>
 
-                    </div>
-                </td>
-            </tr>
-            }
-        </tbody>
-    </nz-table>
-    }
+                    <td nzAlign="center">
+                        <nz-tag [nzColor]="data.hasActive ? 'success' : 'error'">
+                            {{ data.hasActive ? 'Active' : 'Inactive' }}
+                        </nz-tag>
+                    </td>
+
+                    <td nzRight nzAlign="center">
+                        <div class="action-bundle">
+                            <button title=" Edit" nz-button nzType="text" (click)="onEdit2(data.stockMasterId)"
+                                nz-tooltip>
+                                <span nz-icon nzType="edit"></span>
+                            </button>
+                            <button nz-button nzType="text" (click)="onViewDetail(data.stockMasterId)" nz-tooltip
+                                nzTooltipTitle="View Details">
+                                <span nz-icon nzType="eye"></span>
+                            </button>
+                            <!-- <button title="Secondary Edit" nz-button nzType="text" (click)="onEdit2(data.stockMasterId)"
+                                nz-tooltip nzTooltipTitle="Secondary Edit">
+                                <span nz-icon nzType="setting" class="text-blue"></span>
+                            </button> -->
+                        </div>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </nz-table>
+        }
+    </div>
 </div>

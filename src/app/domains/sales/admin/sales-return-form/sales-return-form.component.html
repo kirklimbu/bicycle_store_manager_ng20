@@ -81,8 +81,8 @@
                         <div nz-col nzXs="24" nzMd="8" nzLg="6">
                             <nz-form-item>
                                 <nz-form-label>Item</nz-form-label>
-                                <nz-select [nzDisabled]="true" nz-input nzShowSearch placeholder="Select product"
-                                    formControlName="medicine">
+                                <nz-select nzShowSearch placeholder="Select product" formControlName="medicine"
+                                    (ngModelChange)="onProductSelect(i)">
                                     @for (item of inventoryListSignal(); track item.stockMasterId) {
                                     <nz-option [nzValue]="item" [nzLabel]="item.name"></nz-option>
                                     }

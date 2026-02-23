@@ -28,50 +28,63 @@
             </button> -->
         </div>
     </div>
-    @if (data$ | async; as table) {
-    <nz-table #borderedTable nzBordered nzTitle="Order List" [nzData]="table" [nzFrontPagination]="false">
-        <thead>
-            <tr>
-                <th>Sn.</th>
-                <th>Customer Name</th>
-                <th>Business Name</th>
-                <th>Ordered By</th>
-                <th>Qty.</th>
-                <th>Order Date</th>
+    <div class="enterprise-table-wrapper">
+        @if (data$ | async; as table) {
+        <nz-table #borderedTable [nzData]="table" [nzFrontPagination]="true" [nzPageSize]="10" nzSize="middle"
+            [nzScroll]="{ x: '1100px' }">
+            <thead>
+                <tr>
+                    <th nzLeft nzWidth="60px" nzAlign="center">Sn.</th>
+                    <th nzLeft nzWidth="200px">Customer Name</th>
+                    <th nzWidth="200px">Business Name</th>
+                    <th nzWidth="150px">Ordered By</th>
+                    <th nzWidth="100px" nzAlign="center">Qty.</th>
+                    <th nzWidth="150px">Order Date</th>
+                    <th nzRight nzWidth="100px" nzAlign="center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (data of borderedTable.data; track data.orderId; let i = $index) {
+                <tr class="enterprise-row">
+                    <td nzLeft nzAlign="center" class="num-mono text-muted">
+                        {{ (borderedTable.nzPageIndex - 1) * borderedTable.nzPageSize + (i + 1) }}
+                    </td>
 
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @for (
-            data of borderedTable.data;
-            track data.orderId;
-            let i = $index
-            ) {
-            <tr>
-                <td>{{ i + 1 }}</td>
-                <td>
-                    {{ data.customerName | titlecase }}
-                </td>
-                <td>
-                    {{ data.businessName | titlecase }}
-                </td>
-                <td>
-                    {{ data.orderByName | titlecase }}
-                </td>
-                <td>{{data.qty}}</td>
-                <td>{{data.orderDate}}</td>
-                <td>
-                    <div class="action-buttons">
-                        <button title="View more" nz-tooltip nz-button (click)="onViewDetails(data.customerId,data.orderById)">
-                            <span nz-icon nzType="eye"></span>
-                        </button>
+                    <td nzLeft class="sticky-col-main">
+                        {{ data.customerName | titlecase }}
+                    </td>
 
-                    </div>
-                </td>
-            </tr>
-            }
-        </tbody>
-    </nz-table>
-    }
+                    <td>
+                        <span class="business-text">{{ data.businessName | titlecase }}</span>
+                    </td>
+
+                    <td>
+                        <div class="ordered-by-tag">
+                            <span nz-icon nzType="user"></span>
+                            {{ data.orderByName | titlecase }}
+                        </div>
+                    </td>
+
+                    <td nzAlign="center">
+                        <span class="qty-badge">{{ data.qty | number }}</span>
+                    </td>
+
+                    <td class="num-mono date-cell">
+                        {{ data.orderDate }}
+                    </td>
+
+                    <td nzRight nzAlign="center">
+                        <div class="action-bundle">
+                            <button nz-button nzType="text" (click)="onViewDetails(data.customerId, data.orderById)"
+                                nz-tooltip nzTooltipTitle="View Order Details">
+                                <span nz-icon nzType="eye" class="view-icon"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </nz-table>
+        }
+    </div>
 </section>

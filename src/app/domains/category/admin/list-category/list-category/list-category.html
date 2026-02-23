@@ -28,47 +28,54 @@
             </button>
         </div>
     </div>
-    @if (data$ | async; as table) {
-    <nz-table #borderedTable nzBordered nzTitle="Category List" [nzData]="table" [nzFrontPagination]="false"
-        [nzScroll]="{ x: '1100px' }">
-        <thead>
-            <tr>
-                <th nzWidth="5%">Sn.</th>
-                <th nzWidth="15%">Photo</th>
-                <th nzWidth="25%">Category</th>
-                <th nzWidth="10%">Is Active</th>
+    <div class="enterprise-table-wrapper">
+        @if (data$ | async; as table) {
+        <nz-table #borderedTable [nzData]="table" [nzFrontPagination]="true" [nzPageSize]="10" nzSize="middle"
+            [nzScroll]="{ x: '800px' }">
+            <thead>
+                <tr>
+                    <th nzLeft nzWidth="70px" nzAlign="center">Sn.</th>
+                    <th nzWidth="120px" nzAlign="center">Preview</th>
+                    <th nzLeft nzWidth="300px">Category Name</th>
+                    <th nzWidth="150px" nzAlign="center">Status</th>
+                    <th nzRight nzWidth="120px" nzAlign="center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (item of borderedTable.data; track item.categoryId; let i = $index) {
+                <tr class="enterprise-row">
+                    <td nzLeft nzAlign="center" class="num-mono text-muted">
+                        {{ (borderedTable.nzPageIndex - 1) * borderedTable.nzPageSize + (i + 1) }}
+                    </td>
 
-                <th nzWidth="10%">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @for (
-            data of borderedTable.data;
-            track data.categoryId;
-            let i = $index
-            ) {
-            <tr>
-                <td>{{ i + 1 }}</td>
-                <td><img nz-image [nzSrc]="data.path" alt="Category pic" height="50" width="50"></td>
-                <td>
-                    {{ data.name | titlecase }}
-                </td>
-                <td>
-                    <nz-tag [nzColor]="(data.hasActive) ? 'green' : 'red'">
-                        {{ data.hasActive? 'Active' : 'Inactive' }}
-                    </nz-tag>
-                </td>
-                <td>
-                    <div class="action-buttons">
-                        <button nzTooltipTitle="Edit" nz-tooltip nz-button (click)="onEdit(data.categoryId)">
-                            <span nz-icon nzType="form"></span>
-                        </button>
+                    <td nzAlign="center">
+                        <div class="category-img-frame">
+                            <img nz-image [nzSrc]="item.path" alt="Category" class="category-thumb">
+                        </div>
+                    </td>
 
-                    </div>
-                </td>
-            </tr>
-            }
-        </tbody>
-    </nz-table>
-    }
+                    <td nzLeft class="sticky-col-main">
+                        {{ item.name | titlecase }}
+                    </td>
+
+                    <td nzAlign="center">
+                        <nz-tag [nzColor]="item.hasActive ? 'success' : 'error'" class="status-pill">
+                            {{ item.hasActive ? 'Active' : 'Inactive' }}
+                        </nz-tag>
+                    </td>
+
+                    <td nzRight nzAlign="center">
+                        <div class="action-bundle">
+                            <button nz-button nzType="text" (click)="onEdit(item.categoryId)" nz-tooltip
+                                nzTooltipTitle="Edit Category">
+                                <span nz-icon nzType="edit" class="edit-icon"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </nz-table>
+        }
+    </div>
 </section>

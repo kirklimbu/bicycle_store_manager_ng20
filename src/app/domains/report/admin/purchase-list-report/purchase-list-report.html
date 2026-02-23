@@ -42,9 +42,11 @@
                 </tr>
             </thead>
             <tbody>
-                @for (item of reportTable.data; track item.purchaseDetailId) {
+                @for (item of reportTable.data; track item.purchaseDetailId; let i = $index) {
                 <tr class="enterprise-row">
-                    <td nzLeft nzAlign="center" class="num-mono text-muted">{{ $index + 1 }}</td>
+                    <td nzLeft nzAlign="center" class="num-mono text-muted">
+                        {{ (reportTable.nzPageIndex - 1) * reportTable.nzPageSize + (i + 1) }}
+                    </td>
                     <td nzLeft class="date-text">{{ item.saveDate | nepaliDateFormatter }}</td>
                     <td nzLeft class="bill-identifier">{{ item.supplierBillNo || 'N/A' }}</td>
                     <td class="supplier-text">{{ item.supplierName | titlecase }}</td>

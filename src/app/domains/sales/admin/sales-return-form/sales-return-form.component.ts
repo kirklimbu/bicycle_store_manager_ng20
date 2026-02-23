@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import {
   FormArray,
   FormGroup,
@@ -20,11 +21,9 @@ import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { NzTableModule } from 'ng-zorro-antd/table';
-import { useQueryParamsSignal } from 'src/app/domains/shared/util-common/router/use-query-params-signal';
-import { SalesService } from '../../data/services/sales.services';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { ISalesReturnFormDtoWrapper } from '../../data/models/sales.model';
 import { TableActionButtonsComponent } from '../../../shared/ui-common/table-action-buttons/table-action-buttons.component';
+import { ISalesReturnFormDtoWrapper } from '../../data/models/sales.model';
+import { SalesService } from '../../data/services/sales.services';
 
 @Component({
   selector: 'app-sales-return-form',
@@ -436,6 +435,30 @@ export class SalesReturnFormComponent {
     this.form.reset();
     this.resetInventoryList();
     this.selectedItemsListSignal.set([]);
+  }
+
+  onProductSelect(index: number): void {
+    const row = this.inventoryList.at(index) as FormGroup;
+    const selectedItem = row.get('medicine')?.value;
+
+    if (selectedItem) {
+      row.patchValue({
+        pricePerUnit: selectedItem.pricePerUnit || 0,
+        taxRate: selectedItem.taxRate || 0,
+        unit: selectedItem.unit,
+        stockMasterId: selectedItem.stockMasterId
+      });
+
+      // Handle conditional enabling of the price field
+      const priceCtrl = row.get('pricePerUnit');
+      if (selectedItem.hasAllowCostEdit) {
+        priceCtrl?.enable();
+      } else {
+        priceCtrl?.disable();
+      }
+
+      this.recalcRow(index);
+    }
   }
 
   private recalcRow(index: number): void {

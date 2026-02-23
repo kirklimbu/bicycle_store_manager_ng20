@@ -95,7 +95,7 @@
           </li> -->
           <li nz-submenu nzTitle="Purchase Report">
             <ul>
-              <li nz-menu-item [routerLink]="['/auth/report-purchase-master']">Purchase Master</li>
+              <li nz-menu-item [routerLink]="['/auth/report-purchase-master']">Purchase Bill</li>
               <li nz-submenu nzTitle="VAT Report">
                 <ul>
                   <li nz-menu-item [routerLink]="['/auth/report-purchase-month-wise']">
@@ -111,7 +111,7 @@
 
           <li nz-submenu nzTitle="Sales Report">
             <ul>
-              <li nz-menu-item [routerLink]="['/auth/report-sales-master']">Sales Master</li>
+              <li nz-menu-item [routerLink]="['/auth/report-sales-master']">Sales Bill</li>
               <li nz-submenu nzTitle="VAT Report">
                 <ul>
                   <li nz-menu-item [routerLink]="['/auth/report-sales-month-wise']">
@@ -131,9 +131,21 @@
             </ul>
           </li>
 
-          <li nz-submenu nzTitle="Profit-Loss Report">
+          <li nz-submenu nzTitle="Profit/Loss Report">
             <ul>
               <li nz-menu-item [routerLink]="['/auth/report-profit-loss']">Profit Loss</li>
+            </ul>
+          </li>
+          <li nz-submenu nzTitle="Ledger Report">
+            <ul>
+              <li nz-menu-item [routerLink]="['/auth/report-general-ledger']">General Ledger</li>
+              <li nz-menu-item [routerLink]="['/auth/report-cash-book']">Stock Ledger</li>
+            </ul>
+          </li>
+          <li nz-submenu nzTitle="Ageing Report">
+            <ul>
+              <li nz-menu-item [routerLink]="['/auth/report-general-ledger']">Purchase Ageing</li>
+              <li nz-menu-item [routerLink]="['/auth/report-cash-book']">Sales Ageing</li>
             </ul>
           </li>
         </ul>

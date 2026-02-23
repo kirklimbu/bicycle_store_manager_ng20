@@ -28,64 +28,72 @@
             </button>
         </div>
     </div>
-    @if (data$ | async; as table) {
-    <nz-table #borderedTable nzBordered nzTitle="Customer List" [nzData]="table" [nzFrontPagination]="false"
-        [nzScroll]="{ x: '1100px' }">
-        <thead>
-            <tr>
-                <th nzWidth="5%">Sn.</th>
-                <th nzWidth="15%">Name</th>
-                <th nzWidth="15%">Business Name</th>
-                <th nzWidth="10%">Balance (Rs.)</th>
-                <th>Email</th>
-                <th>Contact No.</th>
-                <th nzWidth="10%">Location</th>
-                <th nzWidth="10%">PAN</th>
-                <th nzWidth="10%">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @for (
-            data of borderedTable.data | search: searchValue;
-            track data.regId;
-            let i = $index
-            ) {
-            <tr>
-                <td>{{ i + 1 }}</td>
-                <td>
-                    {{ data.name | titlecase }}
-                </td>
+    <div class="enterprise-table-wrapper">
+        @if (data$ | async; as table) {
+        <nz-table #borderedTable [nzData]="table" [nzFrontPagination]="true" [nzPageSize]="10" nzSize="middle"
+            [nzScroll]="{ x: '1300px' }">
+            <thead>
+                <tr>
+                    <th nzLeft nzWidth="60px" nzAlign="center">Sn.</th>
+                    <th nzLeft nzWidth="180px">Customer Name</th>
+                    <th nzWidth="200px">Business Name</th>
+                    <th nzWidth="140px" nzAlign="right">Balance (Rs.)</th>
+                    <th nzWidth="200px">Contact Info</th>
+                    <th nzWidth="150px">Location</th>
+                    <th nzWidth="120px">PAN/VAT</th>
+                    <th nzRight nzWidth="120px" nzAlign="center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (data of borderedTable.data; track data.customerId; let i = $index) {
+                <tr class="enterprise-row">
+                    <td nzLeft nzAlign="center" class="num-mono text-muted">
+                        {{ (borderedTable.nzPageIndex - 1) * borderedTable.nzPageSize + (i + 1) }}
+                    </td>
 
-                <td>
-                    {{ data.businessName | titlecase }}
-                </td>
-                <td [ngClass]="{
-      'positive': data.balance > 0,
-      'negative': data.balance < 0,
-      'neutral': data.balance === 0
-    }">{{ data.balance |number}}</td>
-                <td>{{ data.email }}</td>
-                <td>
-                    <p>{{ data.mobile1 }}</p>
-                    <p>{{ data.mobile2 }}</p>
-                </td>
-                <td>{{ data.location }}</td>
-                <td>{{ data.pan }}</td>
+                    <td nzLeft class="sticky-col-main">
+                        {{ data.name | titlecase }}
+                    </td>
 
-                <td>
-                    <div class="action-buttons">
-                        <button nzTooltipTitle="Edit" nz-tooltip nz-button (click)="onEdit(data.customerId)">
-                            <span nz-icon nzType="form"></span>
-                        </button>
-                        <button nzTooltipTitle=" Sales" nz-tooltip nz-button (click)="onShowSales(data.customerId)">
-                            <span nz-icon nzType="line-chart"></span>
-                        </button>
+                    <td>
+                        <span class="business-text">{{ data.businessName | titlecase }}</span>
+                    </td>
 
-                    </div>
-                </td>
-            </tr>
-            }
-        </tbody>
-    </nz-table>
-    }
+                    <td nzAlign="right" class="num-mono balance-cell" [class.positive]="data.balance > 0"
+                        [class.negative]="data.balance < 0">
+                        {{ data.balance | number:'1.2-2' }}
+                    </td>
+
+                    <td>
+                        <div class="contact-info">
+                            <span class="email-text"><span nz-icon nzType="mail"></span> {{ data.email || 'No Email'
+                                }}</span>
+                            <span class="phone-text"><span nz-icon nzType="phone"></span> {{ data.mobile1 }}</span>
+                        </div>
+                    </td>
+
+                    <td>
+                        <span class="location-tag"><span nz-icon nzType="environment"></span> {{ data.location }}</span>
+                    </td>
+
+                    <td class="num-mono pan-text">{{ data.pan || '-' }}</td>
+
+                    <td nzRight nzAlign="center">
+                        <div class="action-bundle">
+                            <button nz-button nzType="text" (click)="onEdit(data.customerId)" nz-tooltip
+                                nzTooltipTitle="Edit Profile">
+                                <span nz-icon nzType="edit"></span>
+                            </button>
+                            <button nz-button nzType="text" (click)="onShowSales(data.customerId)" nz-tooltip
+                                nzTooltipTitle="View Sales History">
+                                <span nz-icon nzType="line-chart" class="text-blue"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </nz-table>
+        }
+    </div>
 </section>

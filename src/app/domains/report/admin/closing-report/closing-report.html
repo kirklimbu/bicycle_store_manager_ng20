@@ -14,42 +14,63 @@
         </nz-page-header>
     </div>
 
-    @if(data$|async;as data ){
-    <nz-table [nzFrontPagination]="false" #nzTable [nzBordered]="true" [nzData]="data" [nzScroll]="{ x: '900px' }">
-        <thead>
-            <tr>
-                <th nzAlign="center" nzWidth="5%"># </th>
-                <th nzAlign="center">Stock Name </th>
-                <th nzAlign="center">Batch </th>
-                <th nzAlign="center">Closing Qty </th>
-                <th nzAlign="center">Rate. </th>
-                <th nzAlign="center">Net Amt. (Rs.) </th>
+    <div class="enterprise-table-wrapper">
+        @if (data$ | async; as data) {
+        <nz-table #nzTable [nzData]="data" [nzFrontPagination]="true" [nzPageSize]="10" nzSize="middle"
+            [nzScroll]="{ x: '1000px' }">
+            <thead>
+                <tr>
+                    <th nzLeft nzWidth="60px" nzAlign="center">#</th>
+                    <th nzLeft nzWidth="250px">Stock Name</th>
+                    <th nzWidth="150px" nzAlign="center">Batch / Lot</th>
+                    <th nzWidth="120px" nzAlign="center">Closing Qty</th>
+                    <th nzWidth="150px" nzAlign="right">Unit Rate (Rs.)</th>
+                    <th nzWidth="180px" nzAlign="right" class="highlight-header">Total Valuation (Rs.)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (item of nzTable.data; track item.stockMasterId; let i = $index) {
+                <tr class="enterprise-row">
+                    <td nzLeft nzAlign="center" class="num-mono text-muted">
+                        {{ (nzTable.nzPageIndex - 1) * nzTable.nzPageSize + (i + 1) }}
+                    </td>
 
-                <!-- <th nzAlign="center">Action</th> -->
+                    <td nzLeft class="sticky-col-main">
+                        {{ item.stockName | titlecase }}
+                    </td>
 
-            </tr>
-        </thead>
-        <tbody>
-            @for (Sales of nzTable.data; track Sales.stockMasterId) {
+                    <td nzAlign="center">
+                        <span class="batch-badge">{{ item.batch || 'No Batch' }}</span>
+                    </td>
 
-            <tr>
-                <td nzAlign="center">{{$index+1}}.</td>
-                <td nzAlign="center">{{Sales.stockName|titlecase}}</td>
-                <td nzAlign="center">{{Sales.batch}}</td>
-                <td nzAlign="center">{{ Sales.closingQty |number }}</td>
-                <td nzAlign="center">{{Sales.costPerUnit|number}}</td>
-                <td nzAlign="center">{{ Sales.totalAmt |number }}</td>
-                <!-- <td nzAlign="center">
-                    <lib-table-action-buttons [showEditButton]="true" [showDeleteButton]="false" [showButton4]="true"
-                        [showViewMoreButton]="true" [button3Label]="'Lab'" [button4Label]="'Transaction'"
-                        [button3Icon]="'experiment'" [button4Icon]="'dollar'" (delete)="onDelete(Sales.SalesId)"
-                        (edit)="onEdit(Sales.SalesId)" (viewMore)="onViewMore(Sales.SalesId)"
-                        (buttonAction4)="showTransaction(Sales.SalesId)" />
-                </td> -->
-            </tr>
-            }
-        </tbody>
-    </nz-table>
-    }
+                    <td nzAlign="center" class="num-mono">
+                        <span class="qty-text" [class.low-stock]="item.closingQty <= 0">
+                            {{ item.closingQty | number }}
+                        </span>
+                    </td>
+
+                    <td nzAlign="right" class="num-mono text-muted">
+                        {{ item.costPerUnit | number:'1.2-2' }}
+                    </td>
+
+                    <td nzAlign="right" class="num-mono valuation-cell">
+                        {{ item.totalAmt | number:'1.2-2' }}
+                    </td>
+                </tr>
+                }
+            </tbody>
+
+            <!-- <tfoot class="enterprise-footer">
+                <tr>
+                    <td [nzLeft]="true" [colspan]="2">Inventory Summary</td>
+                    <td colspan="3" class="hide-mobile"></td>
+                    <td nzAlign="right" class="footer-grand-total">
+                        <small>Total Value:</small> {{ calculateTotal(data) | number:'1.2-2' }}
+                    </td>
+                </tr>
+            </tfoot> -->
+        </nz-table>
+        }
+    </div>
 
 </div>

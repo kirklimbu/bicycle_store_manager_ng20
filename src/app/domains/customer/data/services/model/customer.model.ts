@@ -8,4 +8,5 @@ export interface ICustomer {
   hasActive: true;
   pan: number;
   location: string;
+  businessName: string;
 }

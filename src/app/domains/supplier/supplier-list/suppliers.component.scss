@@ -1,0 +1,81 @@
+.ant-page-header {
+  padding: 1rem 0;
+}
+.enterprise-table-wrapper {
+     background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #f0f0f0;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.06);
+  margin-bottom: 24px;
+    // Identity Styling
+    .sticky-col-main {
+        font-weight: 600;
+        color: #1890ff;
+        background-color: #fafafa;
+    }
+
+    .business-text {
+        font-size: 13px;
+        color: #595959;
+    }
+
+    // Contact Formatting
+    .contact-stack {
+        display: flex;
+        flex-direction: column;
+        
+        .primary-phone {
+            font-weight: 500;
+            color: #262626;
+            font-size: 13px;
+        }
+        
+        .secondary-phone {
+            font-size: 11px;
+            color: #8c8c8c;
+            margin-left: 15px; // Align under the number, skip the icon space
+        }
+
+        .anticon {
+            font-size: 11px;
+            color: #bfbfbf;
+            margin-right: 4px;
+        }
+    }
+
+    // Outstanding Balance Colors
+    .balance-cell {
+        font-weight: 700;
+        &.debt { 
+            color: #cf1322; // Red for money you owe
+            background-color: #fff1f0;
+        }
+        &.cleared { 
+            color: #52c41a; // Green for zero or credit balance
+        }
+    }
+
+    .pan-text {
+        color: #8c8c8c;
+        font-size: 12px;
+    }
+
+    .location-tag {
+        font-size: 12px;
+        color: #595959;
+        background: #f5f5f5;
+        padding: 2px 8px;
+        border-radius: 4px;
+        border: 1px solid #e8e8e8;
+    }
+
+    // Library Action Buttons Fix
+    .action-bundle {
+        ::ng-deep .ant-btn {
+            border: none;
+            background: transparent;
+            box-shadow: none;
+            &:hover { color: #1890ff; }
+        }
+    }
+}

@@ -32,6 +32,7 @@ import { NzTableModule } from 'ng-zorro-antd/table';
 import { PurchaseService } from '../data/services/purchase.services';
 import { TableActionButtonsComponent } from '../../shared/ui-common/table-action-buttons/table-action-buttons.component';
 import { BsDateInputDirective } from '../../shared/directives/bsdate/bs-date-input.directive';
+import { NzCardModule } from 'ng-zorro-antd/card';
 
 @Component({
   selector: 'app-purchase-form',
@@ -52,20 +53,21 @@ import { BsDateInputDirective } from '../../shared/directives/bsdate/bs-date-inp
     NzTableModule,
     NzDividerModule,
     NzInputNumberModule,
+    NzCardModule,
     // project
     TableActionButtonsComponent,
     BsDateInputDirective,
   ],
 
   templateUrl: './purchase-form.component.html',
-  // styleUrl: './puchase-form.component.scss',
+  styleUrl: './purchase-form.component.scss',
 })
 export class PurchaseFormComponent implements OnInit {
   // props
   mode = 'add';
   form!: FormGroup;
   localDetailId = -1;
-
+  isSaving = signal<boolean>(false);
   payTypeSignal = signal<IPaytype[]>([]);
   inventoryListSignal = signal<any[]>([]);
   supplierListSignal = signal<ISupplier[]>([]);
@@ -108,6 +110,17 @@ export class PurchaseFormComponent implements OnInit {
     // round to 2 decimal places
     return Math.round(total * 100) / 100;
   });
+
+  // 1. Create a signal from your form array value changes
+  // private stockItems = toSignal(this.form.controls?.selectedStockList.valueChanges, {
+  //   initialValue: []
+  // });
+
+
+
+  // taxTotalSignal = computed(() => {
+  //   return this.stockItems().reduce((acc, item) => acc + (Number(item.taxAmt) || 0), 0);
+  // });
 
   ngOnInit(): void {
     this.initForm();
@@ -246,12 +259,13 @@ export class PurchaseFormComponent implements OnInit {
     this.recalcRow(index);
   }
 
-  onEnterKeyPress(index: number): void {
+  onEnterKeyPress(index?: number): void {
 
     event?.preventDefault();
 
     const rowCtrl = this.inventoryList.at(index) as FormGroup;
     if (!rowCtrl) return;
+
 
     const qty = Number(rowCtrl.get('qty')?.value ?? 0);
     const rate = Number(rowCtrl.get('pricePerUnit')?.value ?? 0);
@@ -305,6 +319,7 @@ export class PurchaseFormComponent implements OnInit {
 
 
   onSave() {
+    this.isSaving.set(true); // Start loading ⏳
     const payload = {
       ...this.form.value,
       selectedStockList: this.selectedItemsListSignal(), // ✅ send table data
@@ -315,7 +330,7 @@ export class PurchaseFormComponent implements OnInit {
       .subscribe({
         next: (res: any) => {
           this.createNotification('success', res.message);
-
+          this.isSaving.set(false);
           this.form.reset();
           this.resetInventoryList();
           this.selectedItemsListSignal.set([]);
@@ -324,6 +339,7 @@ export class PurchaseFormComponent implements OnInit {
           });
         },
         error: () => {
+          this.isSaving.set(false);
           // ❌ DO NOTHING
           // keep user data intact
         },
@@ -456,5 +472,24 @@ export class PurchaseFormComponent implements OnInit {
       netAmt: parseFloat(netAmt.toFixed(2)),
       transAmount: netAmt
     }, { emitEvent: false });
+  }
+
+  pushToTable() {
+    const currentItem = this.form.get('currentEntry')?.value; // Assuming a temporary entry group
+    // if (this.isEntryValid(currentItem)) {
+    //   // Update the signal with the new item
+    //   this.selectedItemsListSignal.update(list => [...list, currentItem]);
+
+    //   // Reset entry fields and focus back to Product
+    //   this.resetEntryRow();
+    //   this.productSelect.focus();
+    // }
+  }
+  focusElement(element: any) {
+    if (element) {
+      // If it's a standard HTML input, it has a focus() method
+      // If it's an NZ-Zorro component, it usually exposes a focus() method too
+      element.focus();
+    }
   }
 }

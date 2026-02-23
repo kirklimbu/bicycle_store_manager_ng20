@@ -5,3 +5,46 @@
 :host ::ng-deep .ant-page-header {
   padding: 1rem 0;
 }
+
+.enterprise-table-wrapper {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #f0f0f0;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.06);
+  margin-bottom: 24px;
+    // Financial text should always be high contrast
+
+  .num-mono {
+    // font-family: 'Roboto Mono', monospace;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.5px;
+  }
+
+  .qty-text {
+    color: #8c8c8c;
+    font-weight: 500;
+  }
+
+  .tax-text {
+    color: #fa8c16; // Orange for tax auditing
+    font-size: 12px;
+  }
+
+  .net-amt-cell {
+    font-weight: 700;
+    color: #1d39c4; // Deep blue for the "Final" value
+    background-color: rgba(240, 245, 255, 0.5); // Subtle column tint
+  }
+
+  .date-cell {
+    color: #595959;
+    font-size: 13px;
+  }
+
+  // Sticky right shadow for actions
+  .ant-table-cell-fix-right-first {
+    &::after {
+      box-shadow: inset -10px 0 8px -8px rgba(0, 0, 0, 0.15);
+    }
+  }
+}

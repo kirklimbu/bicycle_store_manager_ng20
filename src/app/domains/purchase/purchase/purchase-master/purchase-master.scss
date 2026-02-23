@@ -1,0 +1,88 @@
+.enterprise-table-wrapper {
+     background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f0f0f0;
+  // Financial text should always be high contrast
+  .num-mono {
+    // font-family: 'Roboto Mono', monospace;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.5px;
+  }
+
+  .qty-text {
+    color: #8c8c8c;
+    font-weight: 500;
+  }
+
+  .tax-text {
+    color: #fa8c16; // Orange for tax auditing
+    font-size: 12px;
+  }
+
+  .net-amt-cell {
+    font-weight: 700;
+    color: #1d39c4; // Deep blue for the "Final" value
+    background-color: rgba(240, 245, 255, 0.5); // Subtle column tint
+  }
+
+  .date-cell {
+    color: #595959;
+    font-size: 13px;
+  }
+
+  // Sticky right shadow for actions
+  // .ant-table-cell-fix-right-first {
+  //   &::after {
+  //     box-shadow: inset -10px 0 8px -8px rgba(0, 0, 0, 0.15);
+  //   }
+  // }
+}
+.enterprise-table-wrapper {
+    .bill-cell {
+        font-weight: 700;
+        color: #1890ff;
+    }
+
+    .supplier-bill-cell {
+        color: #595959;
+        font-weight: 500;
+        font-style: italic;
+    }
+
+    .num-mono {
+        // font-family: 'Roboto Mono', monospace;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .net-amt-cell {
+        background-color: #fafafa;
+        font-weight: 600;
+    }
+
+    .total-amt-cell {
+        color: #1d39c4;
+        font-weight: 700;
+        background-color: #f0f5ff;
+    }
+
+    .discount-text {
+        color: #52c41a; // Green for discounts/savings
+    }
+
+    .tax-text {
+        color: #fa8c16; // Warning gold for tax
+    }
+
+    .pay-type-tag {
+        padding: 2px 8px;
+        border-radius: 4px;
+        background: #f5f5f5;
+        font-size: 12px;
+        &.credit {
+            background: #fff1f0;
+            color: #f5222d;
+            border: 1px solid #ffa39e;
+        }
+    }
+}

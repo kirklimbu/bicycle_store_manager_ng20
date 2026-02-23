@@ -53,49 +53,18 @@ export class PurchaseMaster implements OnInit {
     status: '',
   };
   listOfColumns: any[] = [
-    {
-      name: '#',
-    },
-    {
-      name: 'BillNo',
-    },
-    {
-      name: 'Save Date',
-    },
-    {
-      name: 'Supplier BillNo',
-    },
-    {
-      name: 'Supplier Save Date',
-    },
-    // {
-    //   name: 'Rate',
-    // },
-    // {
-    //   name: 'Qty.',
-    // },
-
-    {
-      name: 'Taxable Amt.',
-    },
-    {
-      name: 'Tax Amt.',
-    },
-    {
-      name: 'Net Amt.',
-    },
-    {
-      name: 'discount Amt.',
-    },
-    {
-      name: 'Total Amt.',
-    },
-    {
-      name: 'Pay Type.',
-    },
-    {
-      name: 'Table Actions',
-    },
+    { name: '#', width: '60px', stickyLeft: false },
+    { name: 'Bill No', width: '150px', stickyLeft: false, align: 'left' },
+    { name: 'Save Date', width: '130px' },
+    { name: 'Supplier Bill', width: '150px', align: 'left' },
+    { name: 'Supplier Date', width: '130px' },
+    { name: 'Taxable Amt.', width: '120px', align: 'right' },
+    { name: 'Tax Amt.', width: '100px', align: 'right' },
+    { name: 'Net Amt.', width: '120px', align: 'right' },
+    { name: 'Discount', width: '100px', align: 'right' },
+    { name: 'Total Amt.', width: '130px', align: 'right' },
+    { name: 'Pay Type', width: '100px' },
+    { name: 'Actions', width: '120px', stickyRight: true }
   ];
 
   data: IPurchaseTransaction1Dto[] = [];
