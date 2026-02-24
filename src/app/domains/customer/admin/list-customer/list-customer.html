@@ -1,32 +1,16 @@
-<section>
-    <div>
-        <div class="table-operations">
-            <!-- <nz-input-group [nzSuffix]="suffixIconSearch">
-                <input [(ngModel)]="searchValue" type="text" nz-input placeholder="Search staff... " />
-            </nz-input-group>
-            <ng-template #suffixIconSearch>
-                <span nz-icon nzType="search"></span>
-            </ng-template> -->
-            <!-- <button nz-button nzType="default" (click)="onSearch()">
-        <span nz-icon nzType="search"></span>
-        Search
-      </button> -->
-            <!-- @if (setList$ | async; as set) {
-        } -->
-            <!-- <button
-        class="action-button"
-        nzDanger
-        nz-button
-        nzType="primary"
-        routerLinkActive
-        (click)="onAdd()"
-      >
-        Add
-      </button> -->
-            <button class="action-button" nz-button nzType="primary" (click)="onAdd()">
-                Add
-            </button>
-        </div>
+<nz-breadcrumb [nzAutoGenerate]="true"></nz-breadcrumb>
+<div class="table-container">
+
+
+    <div class="site-page-header-ghost-wrapper">
+        <nz-page-header nzTitle="Customer List" [nzGhost]="false">
+            <nz-page-header-extra>
+                <lib-table-operations [showAddButton]="true" [showSelector1]="false" [isLocalSearch]="false"
+                    (add)="onAdd()" />
+
+            </nz-page-header-extra>
+
+        </nz-page-header>
     </div>
     <div class="enterprise-table-wrapper">
         @if (data$ | async; as table) {
@@ -73,7 +57,8 @@
                     </td>
 
                     <td>
-                        <span class="location-tag"><span nz-icon nzType="environment"></span> {{ data.location }}</span>
+                        <span class="location-tag"><span nz-icon nzType="environment"></span> {{ data.location
+                            }}</span>
                     </td>
 
                     <td class="num-mono pan-text">{{ data.pan || '-' }}</td>
@@ -96,4 +81,4 @@
         </nz-table>
         }
     </div>
-</section>
+</div>

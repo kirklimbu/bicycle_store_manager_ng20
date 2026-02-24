@@ -139,6 +139,7 @@ export class TableOperationsComponent implements OnInit {
   // search = output<ICategory1Dto>(); //make search api call
   add = output<number>(); //make search api call
   showExportButton = input<boolean>(false);
+  showSearchButton = input<boolean>(false);
   exportButtonIcon = input<string>('file-excel');
   exportButtonLabel = input<string>('Export Excel');
   export = output<any>();
@@ -155,7 +156,10 @@ export class TableOperationsComponent implements OnInit {
       this.showFromDate() ||
       this.showToDate() ||
       this.showAddButton() ||
-      this.showExportButton()
+      this.showExportButton() ||
+      this.showSecondaryButton() ||
+      this.showTertiaryButton() ||
+      this.showSearchButton()
   );
 
   private readonly destroy$ = inject(DestroyRef);

@@ -9,6 +9,8 @@ export const FEATURE_CUSTOMER_ROUTES: Routes = [
     canActivate: [hasRoleGuard],
     data: {
       roles: [Role.USER, Role.ADMIN],
+      breadcrumb: 'Customer List',
+
     },
     path: 'list-customer',
     component: ListCustomer,
@@ -17,6 +19,8 @@ export const FEATURE_CUSTOMER_ROUTES: Routes = [
     canActivate: [hasRoleGuard],
     data: {
       roles: [Role.USER, Role.ADMIN],
+      breadcrumb: 'Add Customer',
+
     },
     path: 'add-customer',
     component: AddCustomer,

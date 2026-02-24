@@ -5,7 +5,8 @@
     <div class="site-page-header-ghost-wrapper">
         <nz-page-header nzTitle="Suppplier List" [nzGhost]="false">
             <nz-page-header-extra>
-                <lib-table-operations [showSelector1]="false" [isLocalSearch]="false" (add)="onAdd()" />
+                <lib-table-operations [showAddButton]="true" [showSelector1]="false" [isLocalSearch]="false"
+                    (add)="onAdd()" />
 
             </nz-page-header-extra>
 

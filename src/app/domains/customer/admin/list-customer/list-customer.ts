@@ -6,10 +6,14 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzTableModule } from 'ng-zorro-antd/table';
-import { SearchPipe } from 'src/app/domains/shared/pipes/search.pipe';
-import { ICustomer } from '../../data/services/model/customer.model';
 import { Observable } from 'rxjs';
+import { SearchPipe } from 'src/app/domains/shared/pipes/search.pipe';
 import { CustomerService } from '../../data/services/customer-service';
+import { ICustomer } from '../../data/services/model/customer.model';
+import { TableActionButtonsComponent } from '../../../shared/ui-common/table-action-buttons/table-action-buttons.component';
+import { TableOperationsComponent } from '../../../shared/ui-common/table-operations/table-operations.component';
+import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
+import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 
 @Component({
   selector: 'app-list-customer',
@@ -17,11 +21,17 @@ import { CustomerService } from '../../data/services/customer-service';
     CommonModule,
     RouterModule,
     ReactiveFormsModule,
+    // third-party
+    NzPageHeaderModule,
+    NzBreadCrumbModule,
     NzButtonModule,
     NzTableModule,
     NzInputModule,
     NzIconModule,
+    // project
     SearchPipe,
+    TableOperationsComponent,
+    TableActionButtonsComponent,
   ],
 
   templateUrl: './list-customer.html',
@@ -55,14 +65,7 @@ export class ListCustomer implements OnInit {
   onAdd(): void {
     this.router.navigate(['/auth/add-customer']);
   }
-  onAddSales(id: number): void {
-    this.router.navigate(['/auth/add-sales'], {
-      queryParams: {
-        customerId: id,
-        salesMasterId: 0,
-      },
-    });
-  }
+
   onShowSales(id: number): void {
     this.router.navigate(['/auth/list-sales'], {
       queryParams: {

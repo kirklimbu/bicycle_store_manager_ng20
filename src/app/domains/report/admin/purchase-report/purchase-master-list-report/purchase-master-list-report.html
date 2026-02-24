@@ -1,62 +1,51 @@
-<!-- <nz-breadcrumb [nzAutoGenerate]="true"></nz-breadcrumb> -->
 <div class="table-container">
-    <div class="site-page-header-ghost-wrapper">
-        <nz-page-header nzTitle="Purchase Master  Report" [nzGhost]="false">
-            <nz-page-header-extra>
-                <!-- <app-table-operations key="sakes-filter" [fields]="[
-    { name: 'fromDate', label: 'From Date (B.S)', type: 'date', required: true },
-    { name: 'toDate', label: 'To Date (B.S)', type: 'date', required: true },
-    
-  ]" (filterChange)="onFilterChange($event)" /> -->
-                <lib-table-operations [showSelector1]="true" [selector1Label]="'Pay Type'" [selector1Key]="'payType'"
-                    [selector1Options]="manualSelectorOptions" [showAddButton]="false" [isLocalSearch]="false"
-                    [showSearch]="false" [showFromDate]="true" [showToDate]="true"
-                    [showSecondaryButton]="isCustomerMode()" [showTertiaryButton]="isCustomerMode()"
-                    [secondaryButtonLabel]="'Sales'" [tertiaryButtonLabel]="'Sales Return'" (search)="onSearch($event)"
-                    (secondaryButtonClick)="onSales()" (tertiaryButtonClick)="onSalesReturn()" />
-            </nz-page-header-extra>
+    <nz-page-header nzTitle="Purchase Master Report" [nzGhost]="false" class="site-page-header">
+        <nz-page-header-extra>
+            <lib-table-operations [showSelector1]="true" [selector1Label]="'Pay Type'" [selector1Key]="'payType'"
+                [selector1Options]="manualSelectorOptions" [showFromDate]="true" [showToDate]="true"
+                [showSearchButton]="true" (search)="onSearch($event)" />
+        </nz-page-header-extra>
+    </nz-page-header>
 
-        </nz-page-header>
-    </div>
-
-    @if(data$|async;as data ){
-    <nz-table [nzFrontPagination]="false" #nzTable [nzBordered]="true" [nzData]="data" [nzScroll]="{ x: '900px' }">
+    @if(data$ | async; as data) {
+    <nz-table #nzTable [nzData]="data" nzSize="middle" class="enterprise-table"
+        [nzScroll]="{ x: '1000px', y: 'calc(100vh - 300px)' }">
         <thead>
             <tr>
-                <th nzAlign="center" nzWidth="5%"># </th>
-                <th nzAlign="center">Bill No </th>
-                <th nzAlign="center">Save Date </th>
-                <th nzAlign="center">Supplier </th>
-                <th nzAlign="center">Bill No (Supplier) </th>
-
-                <th nzAlign="center">Save Date </th>
-                <th nzAlign="center">Net Amount (Rs.) </th>
-                <th nzAlign="center">Pay Type </th>
-                <th nzAlign="center">Action</th>
+                <th nzWidth="50px" nzAlign="center">#</th>
+                <th nzWidth="120px">Bill No</th>
+                <th nzWidth="150px">Supplier</th>
+                <th nzWidth="120px">Date</th>
+                <th nzWidth="120px">Sup. Bill No</th>
+                <th nzAlign="right" nzWidth="140px">Net Amount</th>
+                <th nzAlign="center" nzWidth="100px">Pay Type</th>
+                <th nzWidth="80px" nzRight nzAlign="center">Action</th>
             </tr>
         </thead>
         <tbody>
-            @for (Sales of nzTable.data; track $index) {
-
+            @for (item of nzTable.data; track item.purchaseMasterId; let i = $index) {
             <tr>
-                <td nzAlign="center">{{$index+1}}.</td>
-                <td nzAlign="center">{{Sales.billNo}}</td>
-                <td nzAlign="center">{{Sales.saveDate| nepaliDateFormatter}}</td>
-                <td nzAlign="center">{{ Sales.supplierName |titlecase }}</td>
-                <td nzAlign="center">{{ Sales.supplierBillNo }}</td>
-
-                <td nzAlign="center">{{ Sales.supplierSaveDate}}</td>
-                <td nzAlign="center">{{ Sales.netAmt |number }}</td>
-                <td nzAlign="center">{{Sales.payType}}</td>
+                <td nzAlign="center" class="text-muted">
+                    {{ (nzTable.nzPageIndex - 1) * nzTable.nzPageSize + (i + 1) }}
+                </td>
+                <td style="font-weight: 600; color: #1890ff;">{{ item.billNo }}</td>
+                <td>{{ item.supplierName | titlecase }}</td>
+                <td>{{ item.saveDate | nepaliDateFormatter }}</td>
+                <td class="text-muted">{{ item.supplierBillNo }}</td>
+                <td nzAlign="right" class="num-mono amount-cell">
+                    {{ item.netAmt | number:'1.2-2' }}
+                </td>
                 <td nzAlign="center">
+                    <span class="status-tag" [class.credit]="item.payType === 'Credit'">{{ item.payType }}</span>
+                </td>
+                <td nzAlign="center" nzRight>
                     <lib-table-action-buttons [showEditButton]="false" [showDeleteButton]="false" [showButton4]="false"
-                        [showViewMoreButton]="true" (delete)="onDelete(Sales.purchaseMasterId)"
-                        (viewMore)="onViewMore(Sales.purchaseMasterId)" />
+                        [showViewMoreButton]="true" (delete)="onDelete(item.purchaseMasterId)"
+                        (viewMore)="onViewMore(item.purchaseMasterId)" />
                 </td>
             </tr>
             }
         </tbody>
     </nz-table>
     }
-
 </div>

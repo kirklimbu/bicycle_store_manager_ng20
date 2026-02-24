@@ -40,7 +40,11 @@
                     </td>
 
                     <td nzAlign="center">
-                        <span class="batch-badge">{{ item.batch || 'No Batch' }}</span>
+                        @if(item.batch) {
+                        <span class="batch-badge">{{ item.batch }}</span>
+                        }@else{
+                        <span class="text-muted">-</span>
+                        }
                     </td>
 
                     <td nzAlign="center" class="num-mono">

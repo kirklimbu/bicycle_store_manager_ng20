@@ -5,7 +5,7 @@
             <nz-page-header-extra>
                 <lib-table-operations [showSelector1]="false" [selector1Options]="manualSelectorOptions"
                     [showAddButton]="false" [isLocalSearch]="false" [showSearch]="false" [showFromDate]="true"
-                    [showToDate]="true" [defaultFromDate]="initialFilters().fromDate"
+                    [showToDate]="true" [defaultFromDate]="initialFilters().fromDate" [showSearchButton]="true"
                     [defaultToDate]="initialFilters().toDate" [showExportButton]="false" [showAddButton]="true"
                     (search)="onSearch($event)" (add)="onAdd()" />
             </nz-page-header-extra>

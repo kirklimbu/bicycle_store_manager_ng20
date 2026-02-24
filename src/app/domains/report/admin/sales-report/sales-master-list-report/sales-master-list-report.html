@@ -12,48 +12,56 @@
                     [selector1Options]="manualSelectorOptions" [showAddButton]="false" [isLocalSearch]="false"
                     [showSearch]="false" [showFromDate]="true" [showToDate]="true"
                     [defaultFromDate]="initialFilters().fromDate" [defaultToDate]="initialFilters().toDate"
-                    [showSecondaryButton]="isCustomerMode()" [showTertiaryButton]="isCustomerMode()"
-                    [secondaryButtonLabel]="'Sales'" [tertiaryButtonLabel]="'Sales Return'" (search)="onSearch($event)"
-                    (secondaryButtonClick)="onSales()" (tertiaryButtonClick)="onSalesReturn()" />
+                    [showSearchButton]="true" [showSecondaryButton]="isCustomerMode()"
+                    [showTertiaryButton]="isCustomerMode()" [secondaryButtonLabel]="'item'"
+                    [tertiaryButtonLabel]="'item Return'" (search)="onSearch($event)" (secondaryButtonClick)="onSales()"
+                    (tertiaryButtonClick)="onSalesReturn()" />
             </nz-page-header-extra>
 
         </nz-page-header>
     </div>
+    <div class="enterprise-table-wrapper">
+        @if(data$|async;as data ){
+        <nz-table [nzFrontPagination]="false" #nzTable [nzBordered]="false" [nzData]="data" [nzScroll]="{ x: '900px' }">
+            <thead>
+                <tr>
+                    <th nzWidth="50px" nzAlign="center">#</th>
+                    <th nzAlign="right" nzWidth="120px">Bill No</th>
+                    <th nzAlign="right" nzWidth="120px">Date</th>
+                    <th nzAlign="right" nzWidth="120px">Customer</th>
 
-    @if(data$|async;as data ){
-    <nz-table [nzFrontPagination]="false" #nzTable [nzBordered]="true" [nzData]="data" [nzScroll]="{ x: '900px' }">
-        <thead>
-            <tr>
-                <th nzAlign="center" nzWidth="5%"># </th>
-                <th nzAlign="center">Bill No </th>
-                <th nzAlign="center">Save Date </th>
-                <th nzAlign="center">Customer </th>
+                    <th nzAlign="right" nzWidth="140px">Net Amount</th>
+                    <th nzAlign="right" nzWidth="100px">Pay Type</th>
+                    <th nzWidth="80px" nzRight nzAlign="center">Action</th>
 
-                <th nzAlign="center">Net Amount (Rs.) </th>
-                <th nzAlign="center">Pay Type </th>
-                <th nzAlign="center">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @for (Sales of nzTable.data; track $index) {
+                </tr>
+            </thead>
+            <tbody>
+                @for (item of nzTable.data; track item.itemMasterId; let i = $index) {
 
-            <tr>
-                <td nzAlign="center">{{$index+1}}.</td>
-                <td nzAlign="center">{{Sales.billNo}}</td>
-                <td nzAlign="center">{{Sales.saveDate | nepaliDateFormatter}}</td>
-                <td nzAlign="center">{{ Sales.customerName |titlecase }}</td>
+                <tr class="enterprise-row">
+                    <td nzAlign="center">
+                        {{ (nzTable.nzPageIndex - 1) * nzTable.nzPageSize + (i + 1) }}
+                    </td>
+                    <td style="font-weight: 600; color: #1890ff;" nzAlign="center">{{item.billNo}}</td>
+                    <td nzAlign="right">{{item.saveDate | nepaliDateFormatter}}</td>
+                    <td class="text-muted" nzAlign="right">{{ item.customerName |titlecase }}</td>
 
-                <td nzAlign="center">{{ Sales.netAmt |number }}</td>
-                <td nzAlign="center">{{Sales.payType}}</td>
-                <td nzAlign="center">
-                    <lib-table-action-buttons [showEditButton]="false" [showDeleteButton]="false" [showButton4]="false"
-                        [showViewMoreButton]="true" (delete)="onDelete(Sales.salesMasterId)"
-                        (viewMore)="onViewMore(Sales.salesMasterId)" />
-                </td>
-            </tr>
-            }
-        </tbody>
-    </nz-table>
-    }
+                    <td nzAlign="right">{{ item.netAmt |number }}</td>
+                    <td nzAlign="right">
+                        <span class="status-tag" [class.credit]="item.payType === 'Credit'">{{ item.payType }}</span>
 
+                    </td>
+                    <td nzAlign="center" nzRight>
+                        <lib-table-action-buttons [showEditButton]="false" [showDeleteButton]="false"
+                            [showButton4]="false" [showViewMoreButton]="true" (delete)="onDelete(item.itemMasterId)"
+                            (viewMore)="onViewMore(item.itemMasterId)" />
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </nz-table>
+        }
+
+    </div>
 </div>

@@ -65,8 +65,7 @@ export class SupplierFormComponent {
   form!: FormGroup;
   mode = 'add';
 
-  vatTypeListSignal = signal<string[]>([]);
-
+  isSubmitting = signal(false);
   private readonly supplierService = inject(SupplierService);
   private notification = inject(NzNotificationService);
   private readonly destroy$ = inject(DestroyRef);
@@ -91,24 +90,25 @@ export class SupplierFormComponent {
     this.form = this.fb.group({
       name: [''],
       supplierId: [0],
-      address: [''],
-      mobile: [''],
-      phone: [''],
-      vatNo: [],
-      vatType: [],
+      location: [''],
+      mobile1: [''],
+      mobile2: [''],
+      pan: [],
       email: [''],
-      outStanding: [],
+      businessName: [''],
+      hasActive: [''],
     });
   }
 
   private fetchDefaultForm() {
+    this.isSubmitting.set(true);
     this.supplierService
       .getDefaultForm(this.idsSignal().supplierId)
       .pipe(takeUntilDestroyed(this.destroy$))
       .subscribe((res: ISupplierFormDto) => {
         console.log('res:', res);
-        this.form.patchValue(res.form);
-        this.vatTypeListSignal.update(() => res.vatTypeList);
+        this.form.patchValue(res);
+        this.isSubmitting.set(false);
       });
   }
 
@@ -119,20 +119,23 @@ export class SupplierFormComponent {
       this.notification.error('Error', 'Please fill all the required fields');
       return;
     }
+    this.isSubmitting.set(true);
 
     this.supplierService
       .saveSupplier(this.form.value)
       .pipe(takeUntilDestroyed(this.destroy$))
       .subscribe({
         next: (res: ICustomResponse) => {
+          this.isSubmitting.set(false);
+
           this.notification.success('Success', res.message);
           this.form.reset();
-          this.router.navigate(['supplier']);
+          this.router.navigate(['auth/list-supplier']);
         },
       });
   }
 
   onCancel() {
-    this.router.navigate(['supplier']);
+    this.router.navigate(['auth/list-supplier']);
   }
 }

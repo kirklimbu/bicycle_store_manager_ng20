@@ -74,7 +74,7 @@
 
                 <div class="actions-group">
                     <nz-space [nzSize]="6">
-                        @if (showButtons()) {
+                        @if (showSearchButton()) {
                         <button *nzSpaceItem type="button" nz-button nzType="primary" (click)="emitFilters()">
                             <span nz-icon nzType="search"></span> Search
                         </button>

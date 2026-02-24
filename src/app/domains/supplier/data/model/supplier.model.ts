@@ -8,7 +8,7 @@ export interface ISupplier1Dto {
   email: string;
   mobile1: string;
   mobile2: string;
-  balance: number;
+  balance?: number;
   hasActive: boolean;
   location: string;
   pan: string;

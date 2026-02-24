@@ -6,10 +6,10 @@
         <lib-table-operations [showSelector1]="false" [selector1Options]="manualSelectorOptions" [showAddButton]="false"
           [isLocalSearch]="false" [showSearch]="false" [showFromDate]="true" [showToDate]="true"
           [defaultFromDate]="initialFilters().fromDate" [defaultToDate]="initialFilters().toDate"
-          [showExportButton]="false" [showSecondaryButton]="true" [secondaryButtonLabel]="'Purchase'"
-          [secondaryButtonIcon]="''" [tertiaryButtonIcon]="''" [showTertiaryButton]="true"
-          [tertiaryButtonLabel]="'Purchase Return'" (search)="onSearch($event)" (secondaryButtonClick)="onPurchase()"
-          (tertiaryButtonClick)="onPurchaseReturn()" />
+          [showSearchButton]="true" [showExportButton]="false" [showSecondaryButton]="true"
+          [secondaryButtonLabel]="'Purchase'" [secondaryButtonIcon]="''" [tertiaryButtonIcon]="''"
+          [showTertiaryButton]="true" [tertiaryButtonLabel]="'Purchase Return'" (search)="onSearch($event)"
+          (secondaryButtonClick)="onPurchase()" (tertiaryButtonClick)="onPurchaseReturn()" />
       </nz-page-header-extra>
     </nz-page-header>
 

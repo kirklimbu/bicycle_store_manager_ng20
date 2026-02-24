@@ -12,12 +12,22 @@
                 <!-- AMOUNT -->
                 <nz-col [nzSpan]="24" [nzMd]="6">
                     <nz-form-item>
-                        <nz-form-label nzRequired nzFor="Name">
+                        <nz-form-label nzFor="Name">
                             <span nz-icon nzType="user" nzTheme="outline"></span>
                             Name
                         </nz-form-label>
                         <nz-form-control nzErrorTip="Required">
-                            <input type="string" nz-input placeholder="Name" formControlName="name" />
+                            <input type="string" nz-input placeholder="Ravi Sankhar" formControlName="name" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </nz-col> <nz-col [nzSpan]="24" [nzMd]="6">
+                    <nz-form-item>
+                        <nz-form-label nzFor="Name">
+                            <span nz-icon nzType="shop" nzTheme="outline"></span>
+                            Business
+                        </nz-form-label>
+                        <nz-form-control nzErrorTip="Required">
+                            <input type="string" nz-input placeholder="Rabi Store" formControlName="businessName" />
                         </nz-form-control>
                     </nz-form-item>
                 </nz-col>
@@ -25,12 +35,12 @@
                 <!-- DATE -->
                 <nz-col [nzSpan]="24" [nzMd]="6">
                     <nz-form-item>
-                        <nz-form-label nzRequired>
+                        <nz-form-label>
                             <span nz-icon nzType="environment" nzTheme="outline"></span>
-                            Address
+                            Location
                         </nz-form-label>
                         <nz-form-control>
-                            <input nz-input placeholder="Address" formControlName="address" />
+                            <input nz-input placeholder="Damak, Jhapa" formControlName="location" />
                         </nz-form-control>
                     </nz-form-item>
                 </nz-col>
@@ -53,11 +63,11 @@
                 <nz-col [nzSpan]="24" [nzMd]="6">
                     <nz-form-item>
                         <nz-form-label>
-                            <span nz-icon nzType="audit" nzTheme="outline"></span>
+                            <span nz-icon nzType="mobile" nzTheme="outline"></span>
                             Mobile
                         </nz-form-label>
                         <nz-form-control>
-                            <input nz-input formControlName="mobile" placeholder="Mobile ">
+                            <input nz-input formControlName="mobile1" placeholder="98xxxxxxxx ">
 
                         </nz-form-control>
                     </nz-form-item>
@@ -65,20 +75,56 @@
                 <nz-col [nzSpan]="24" [nzMd]="6">
                     <nz-form-item>
                         <nz-form-label>
-                            <span nz-icon nzType="audit" nzTheme="outline"></span>
-                            Phone No.
+                            <span nz-icon nzType="phone" nzTheme="outline"></span>
+                            Mobile2.
                         </nz-form-label>
                         <nz-form-control>
-                            <input nz-input formControlName="phone" placeholder="Phone number ">
+                            <input nz-input formControlName="mobile2" placeholder="98xxxxxxxx ">
 
                         </nz-form-control>
                     </nz-form-item>
                 </nz-col>
+                <nz-col [nzSpan]="24" [nzMd]="6">
+                    <nz-form-item>
+                        <nz-form-label>
+                            <span nz-icon nzType="calendar" nzTheme="outline"></span>
+                            <Var></Var>PAN/VAT
+                        </nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="pan" placeholder="********">
+                        </nz-form-control>
+                    </nz-form-item>
+
+                </nz-col>
+                <!-- AMOUNT -->
+                <nz-col [nzSpan]="24" [nzMd]="6">
+                    <nz-form-item>
+                        <nz-form-label>
+                            <span nz-icon nzType="mail" nzTheme="outline"></span>
+                            <Var></Var>Email
+                        </nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="email" placeholder="ravi@gmail.com">
+                        </nz-form-control>
+                    </nz-form-item>
+
+                </nz-col>
+
+                <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="6">
+                    <nz-form-item>
+                        <nz-form-label>Status</nz-form-label>
+                        <nz-form-control>
+                            <nz-switch formControlName="hasActive" [nzCheckedChildren]="checkedTemplate"
+                                [nzUnCheckedChildren]="unCheckedTemplate"></nz-switch>
+                            <ng-template #checkedTemplate>Active</ng-template>
+                            <ng-template #unCheckedTemplate>Not Active</ng-template>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
             </nz-row>
 
-            <nz-row [nzGutter]="[24, { xs: 8, sm: 16, md: 24 }]">
 
-                <nz-col [nzSpan]="24" [nzMd]="6">
+            <!-- <nz-col [nzSpan]="24" [nzMd]="6">
                     <nz-form-item>
                         <nz-form-label>
                             <span nz-icon nzType="file-protect" nzTheme="outline"></span>
@@ -94,37 +140,10 @@
                         </nz-form-control>
                     </nz-form-item>
 
-                </nz-col>
-                <!-- vat no -->
-                <nz-col [nzSpan]="24" [nzMd]="6">
-                    <nz-form-item>
-                        <nz-form-label>
-                            <span nz-icon nzType="calendar" nzTheme="outline"></span>
-                            <Var></Var>Vat No.
-                        </nz-form-label>
-                        <nz-form-control>
-                            <input nz-input formControlName="vatNo" placeholder="Vat No">
-                        </nz-form-control>
-                    </nz-form-item>
+                </nz-col> -->
+            <!-- vat no -->
 
-                </nz-col>
-            </nz-row>
-            <nz-row [nzGutter]="[24, { xs: 8, sm: 16, md: 24 }]">
-                <!-- AMOUNT -->
-                <nz-col [nzSpan]="24" [nzMd]="6">
-                    <nz-form-item>
-                        <nz-form-label>
-                            <span nz-icon nzType="" nzTheme="outline"></span>
-                            <Var></Var>Email
-                        </nz-form-label>
-                        <nz-form-control>
-                            <input nz-input formControlName="email" placeholder="Email">
-                        </nz-form-control>
-                    </nz-form-item>
 
-                </nz-col>
-
-            </nz-row>
             <nz-divider></nz-divider>
 
             <div nz-row nzType="flex" nzJustify="end" nzAlign="middle">
@@ -132,7 +151,7 @@
                     <button *nzSpaceItem nz-button nzType="default" (click)="onCancel()">
                         Cancel
                     </button>
-                    <button *nzSpaceItem nz-button nzType="primary" (click)="onSave()">
+                    <button [nzLoading]="isSubmitting()" *nzSpaceItem nz-button nzType="primary" (click)="onSave()">
                         <span nz-icon nzType="save" nzTheme="outline"></span>
                         Save
                     </button>

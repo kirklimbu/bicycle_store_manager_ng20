@@ -30,8 +30,8 @@
                     <th nzAlign="right">0-30 Days</th>
                     <th nzAlign="right">31-60 Days</th>
                     <th nzAlign="right">61-90 Days</th>
-                    <th nzAlign="right">90+Days</th>
-                    <th nzWidth="150px" nzAlign="right" nzRight class="balance-cell">Balance</th>
+                    <th nzAlign="right">90<sup>+</sup> Days</th>
+                    <!-- <th nzWidth="150px" nzAlign="right" nzRight class="balance-cell">Balance</th> -->
                 </tr>
             </thead>
 
@@ -49,9 +49,9 @@
                     <td nzAlign="right" class="num-mono">{{ item.upto90 | number:'1.2-2' }}</td>
                     <td nzAlign="right" class="num-mono over-90-alert">{{ item.greaterThan90 | number:'1.2-2' }}</td>
 
-                    <td nzAlign="right" nzRight class="num-mono balance-cell">
+                    <!-- <td nzAlign="right" nzRight class="num-mono balance-cell">
                         {{ item.balance | number:'1.2-2' }}
-                    </td>
+                    </td> -->
                 </tr>
                 }
             </tbody>

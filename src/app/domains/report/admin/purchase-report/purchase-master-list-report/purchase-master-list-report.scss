@@ -1,0 +1,46 @@
+.table-container {
+  padding: 16px;
+  background: #fdfdfd;
+
+  .enterprise-table {
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #f0f0f0;
+
+    .ant-table-thead > tr > th {
+      background: #fafafa;
+      font-weight: 600;
+      color: #262626;
+      font-size: 13px;
+      border-bottom: 2px solid #f0f0f0;
+    }
+
+    .num-mono {
+      font-family: 'Roboto Mono', monospace;
+      font-variant-numeric: tabular-nums;
+      font-weight: 500;
+    }
+
+    .amount-cell {
+      background-color: #f9f9f9;
+      font-weight: 700;
+      color: #000;
+    }
+
+    // Highlighting the Pay Type for quick recognition
+    .status-tag {
+      padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    background: #f6ffed;
+      color: #52c41a;
+      border: 1px solid #b7eb8f;   
+      &.credit {
+      background: #fff2f0;
+      color: #cf1322;
+      border: 1px solid #ffccc7;
+    }
+    } 
+  }
+}

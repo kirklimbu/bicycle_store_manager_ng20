@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, linkedSignal, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
@@ -12,6 +12,8 @@ import { NepaliDateFormatterPipe } from '../../../../shared/pipes/nepali-date-fo
 import { TableOperationsComponent } from '../../../../shared/ui-common/table-operations/table-operations.component';
 import { ReportService } from '../../../data/services/report.services';
 import { TableActionButtonsComponent } from '../../../../shared/ui-common/table-action-buttons/table-action-buttons.component';
+import { DayendStore } from '../../../../shared/services/dayendstore.service';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'app-purchase-master-list-report',
@@ -22,6 +24,7 @@ import { TableActionButtonsComponent } from '../../../../shared/ui-common/table-
     NzSpaceModule,
     NzBreadCrumbModule,
     NzPageHeaderModule,
+    NzIconModule,
     // project
 
     NepaliDateFormatterPipe,
@@ -45,7 +48,15 @@ export class PurchaseMasterListReport {
   private readonly router = inject(Router);
   private readonly reportService = inject(ReportService);
   private readonly route = inject(ActivatedRoute);
+  private dayendStore = inject(DayendStore);
 
+  initialFilters = linkedSignal(() => {
+    const range = this.dayendStore.getInitialRange();
+    return {
+      fromDate: range.from,
+      toDate: range.to
+    };
+  });
 
   private readonly queryParamMap = toSignal(this.route.queryParamMap);
   readonly isCustomerMode = computed(() => {
@@ -56,7 +67,10 @@ export class PurchaseMasterListReport {
   // 3. Optional: If you need the ID specifically for your methods
   readonly customerId = computed(() => Number(this.queryParamMap()?.get('customerId')) || 0);
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.onSearch(this.initialFilters());
+
+  }
 
   onSearch(query?: any) {
 

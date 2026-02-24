@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, computed, inject } from '@angular/core';
+import { Component, DestroyRef, computed, inject, linkedSignal } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
@@ -14,6 +14,7 @@ import { IPurchaseTransaction1Dto } from '../../../../purchase/data/models/purha
 import { PurchaseService } from '../../../../purchase/data/services/purchase.services';
 import { FilterValues } from '../../../data/models/sales.model';
 import { SalesService } from '../../../data/services/sales.services';
+import { DayendStore } from '../../../../shared/services/dayendstore.service';
 
 @Component({
   selector: 'app-sales-master',
@@ -98,7 +99,15 @@ export class SalesMaster {
   private readonly destroyRef$ = inject(DestroyRef);
   private readonly route = inject(ActivatedRoute);
   private readonly salesService = inject(SalesService);
+  private dayendStore = inject(DayendStore);
 
+  initialFilters = linkedSignal(() => {
+    const range = this.dayendStore.getInitialRange();
+    return {
+      fromDate: range.from,
+      toDate: range.to
+    };
+  });
   queryParamMapSignal = toSignal(this.route.queryParamMap, {
     initialValue: this.route.snapshot.queryParamMap,
   });

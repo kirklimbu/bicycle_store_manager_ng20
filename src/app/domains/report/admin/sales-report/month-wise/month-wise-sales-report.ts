@@ -1,17 +1,19 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, linkedSignal, signal } from '@angular/core';
+import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { Observable } from 'rxjs';
+import { IFiscalDto } from '../../../../dayend';
+import { DayendService } from '../../../../dayend/data/services/dayend.service';
 import { FilterValues } from '../../../../sales/data/models/sales.model';
 import { NepaliDateFormatterPipe } from '../../../../shared/pipes/nepali-date-formatter.pipe';
 import { TableOperationsComponent } from '../../../../shared/ui-common/table-operations/table-operations.component';
-import { Router, ActivatedRoute } from '@angular/router';
-import { DayendStore } from '../../../../shared/services/dayendstore.service';
+import { ISalesReportMonthWise } from '../../../data/models/purhase-report.model';
 import { ReportService } from '../../../data/services/report.services';
-import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 
 @Component({
   selector: 'app-month-wise-sales-report',
@@ -33,20 +35,25 @@ import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 })
 export class MonthWiseSalesReport {
   filterSignal = signal<FilterValues>({
-    fiscalId: 1
+    fiscalId: 0
   });
-  data$!: Observable<any[]>;
+  data$!: Observable<ISalesReportMonthWise[]>;
+  fiscalYearListSignal = signal<IFiscalDto[]>([]);
 
 
-  private readonly router = inject(Router);
   private readonly reportService = inject(ReportService);
-  private readonly route = inject(ActivatedRoute);
-  private dayendStore = inject(DayendStore);
-
+  private dayendService = inject(DayendService);
+  private destroyRef = inject(DestroyRef);
 
 
 
   ngOnInit(): void {
+    this.dayendService.getFiscalList()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(fiscalYears => {
+        this.fiscalYearListSignal.set(fiscalYears);
+      });
+
     this.onSearch(this.filterSignal());
   }
 

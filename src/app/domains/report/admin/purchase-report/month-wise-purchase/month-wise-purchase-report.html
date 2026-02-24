@@ -9,7 +9,7 @@
     
   ]" (filterChange)="onFilterChange($event)" /> -->
                 <lib-table-operations [showSelector2]="true" [selector2Label]="'Fiscal Year'"
-                    [selector2Key]="'fiscalId'" [selector2Options]="fiscalYearListSignal()"
+                    [selector2Key]="'fiscalId'" [selector2Options]="fiscalYearListSignal()" [showSearchButton]="true"
                     [option2LabelKey]="'shortName'" [option2ValueKey]="'fiscalId'" [showAddButton]="false"
                     [isLocalSearch]="false" [showSearch]="false" [showFromDate]="false" [showToDate]="false"
                     (search)="onSearch($event)" />

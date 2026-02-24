@@ -8,9 +8,11 @@
     { name: 'toDate', label: 'To Date (B.S)', type: 'date', required: true },
     
   ]" (filterChange)="onFilterChange($event)" /> -->
-                <lib-table-operations [showSelector1]="true" [selector1Label]="'Fiscal Year'" [selector1Options]=""
-                    [showAddButton]="false" [isLocalSearch]="false" [showSearch]="false" [showFromDate]="false"
-                    [showToDate]="false" (search)="onSearch($event)" />
+                <lib-table-operations [showSelector2]="true" [selector2Label]="'Fiscal Year'"
+                    [selector2Key]="'fiscalId'" [selector2Options]="fiscalYearListSignal()" [showSearchButton]="true"
+                    [option2LabelKey]="'shortName'" [option2ValueKey]="'fiscalId'" [showAddButton]="false"
+                    [isLocalSearch]="false" [showSearch]="false" [showFromDate]="false" [showToDate]="false"
+                    [showSearchButton]="true" (search)="onSearch($event)" />
             </nz-page-header-extra>
 
         </nz-page-header>

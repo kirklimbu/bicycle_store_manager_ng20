@@ -13,7 +13,20 @@ export interface IGeneralLedgerReport {
 
 export interface LedgerFilter {
     fiscalId: number | null;
-    accountId: number | null;
+    accountId?: number | null;
+    productId?: number | null;
     fromDate: string;
     toDate: string;
+}
+
+export interface IStockLedgerReport {
+    stockDetailId: number;
+    saveDate: string;
+    payType: string;
+    name: string;
+    billNo: string;
+    txnType: string;
+    drItem: number;
+    crItem: number;
+    balanceQty: number;
 }
