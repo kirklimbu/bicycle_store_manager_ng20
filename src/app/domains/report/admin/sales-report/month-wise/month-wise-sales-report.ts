@@ -5,12 +5,12 @@ import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { Observable } from 'rxjs';
-import { FilterValues } from '../../../sales/data/models/sales.model';
-import { NepaliDateFormatterPipe } from '../../../shared/pipes/nepali-date-formatter.pipe';
-import { TableOperationsComponent } from '../../../shared/ui-common/table-operations/table-operations.component';
+import { FilterValues } from '../../../../sales/data/models/sales.model';
+import { NepaliDateFormatterPipe } from '../../../../shared/pipes/nepali-date-formatter.pipe';
+import { TableOperationsComponent } from '../../../../shared/ui-common/table-operations/table-operations.component';
 import { Router, ActivatedRoute } from '@angular/router';
-import { DayendStore } from '../../../shared/services/dayendstore.service';
-import { ReportService } from '../../data/services/report.services';
+import { DayendStore } from '../../../../shared/services/dayendstore.service';
+import { ReportService } from '../../../data/services/report.services';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 
 @Component({

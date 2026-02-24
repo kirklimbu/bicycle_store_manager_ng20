@@ -5,14 +5,14 @@ import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { NzTableModule } from 'ng-zorro-antd/table';
-import { NepaliDateFormatterPipe } from '../../../shared/pipes/nepali-date-formatter.pipe';
-import { TableOperationsComponent } from '../../../shared/ui-common/table-operations/table-operations.component';
+import { NepaliDateFormatterPipe } from '../../../../shared/pipes/nepali-date-formatter.pipe';
+import { TableOperationsComponent } from '../../../../shared/ui-common/table-operations/table-operations.component';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { FilterValues } from '../../../sales/data/models/sales.model';
-import { DayendStore } from '../../../shared/services/dayendstore.service';
-import { ReportService } from '../../data/services/report.services';
-import { IPurchaseReportMonthWise } from '../../data/models/purhase-report.model';
+import { FilterValues } from '../../../../sales/data/models/sales.model';
+import { DayendStore } from '../../../../shared/services/dayendstore.service';
+import { ReportService } from '../../../data/services/report.services';
+import { IPurchaseReportMonthWise } from '../../../data/models/purhase-report.model';
 
 @Component({
   selector: 'app-month-wise-purchase-report',

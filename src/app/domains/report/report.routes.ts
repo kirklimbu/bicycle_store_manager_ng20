@@ -1,16 +1,18 @@
 import { Routes } from '@angular/router';
 import { hasRoleGuard } from '../shared/util-auth/guards/hasRole.guard';
 import { Role } from '../shared/util-auth/models/user.model';
-import { PurchaseListReport } from './admin/purchase-list-report/purchase-list-report';
-import { PurchaseMasterListReport } from './admin/purchase-master-list-report/purchase-master-list-report';
-import { PurchaseDetailListReport } from './admin/purchase-detail-list-report/purchase-detail-list-report';
-import { SalesMasterListReport } from './admin/sales-master-list-report/sales-master-list-report';
-import { SalesDetailListReport } from './admin/sales-detail-list-report/sales-detail-list-report';
+import { PurchaseListReport } from './admin/purchase-report/purchase-list-report/purchase-list-report';
+import { PurchaseMasterListReport } from './admin/purchase-report/purchase-master-list-report/purchase-master-list-report';
+import { PurchaseDetailListReport } from './admin/purchase-report/purchase-detail-list-report/purchase-detail-list-report';
+import { SalesMasterListReport } from './admin/sales-report/sales-master-list-report/sales-master-list-report';
+import { SalesDetailListReport } from './admin/sales-report/sales-detail-list-report/sales-detail-list-report';
 import { ClosingReport } from './admin/closing-report/closing-report';
 import { ProfitLossReport } from './admin/profitLoss-report/profitLoss-report';
-import { MonthWiseSalesReport } from './admin/month-wise/month-wise-sales-report';
+import { MonthWiseSalesReport } from './admin/sales-report/month-wise/month-wise-sales-report';
 import { SalesComponent } from '../sales/admin/sales/sales.component';
-import { MonthWisePurchaseReport } from './admin/month-wise-purchase/month-wise-purchase-report';
+import { MonthWisePurchaseReport } from './admin/purchase-report/month-wise-purchase/month-wise-purchase-report';
+import { GeneralLedgerReport } from './admin/ledger-report/general/general-ledger-report';
+import { StockLedgerReport } from './admin/ledger-report/stock-ledger/stock-ledger-report';
 
 export const FEATURE_REPORT_ROUTES: Routes = [
   {
@@ -74,5 +76,19 @@ export const FEATURE_REPORT_ROUTES: Routes = [
     component: ProfitLossReport,
     canActivate: [hasRoleGuard],
     data: { roles: [Role.ADMIN], breadcrumb: 'Profit Loss Report' }
+  }
+  // ledger reports 
+  ,
+  {
+    path: 'report-ledger-general',
+    component: GeneralLedgerReport,
+    canActivate: [hasRoleGuard],
+    data: { roles: [Role.ADMIN], breadcrumb: 'General Ledger Report' }
+  },
+  {
+    path: 'report-ledger-stock',
+    component: StockLedgerReport,
+    canActivate: [hasRoleGuard],
+    data: { roles: [Role.ADMIN], breadcrumb: 'Stock Ledger Report' }
   }
 ];

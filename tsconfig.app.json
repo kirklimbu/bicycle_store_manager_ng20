@@ -4,7 +4,7 @@
     "outDir": "./dist/out-tsc",
     "types": []
   },
-  "include": ["src/**/*.ts", "src/app/domains/shared/util-common/generateDeviceIdts"],
+  "include": ["src/**/*.ts", "src/app/domains/shared/util-common/generateDeviceIdts", "src/app/domains/report/data/models/ledger-report.modelts"],
   "exclude": [
     "jest.config.ts",
     "src/test-setup.ts",

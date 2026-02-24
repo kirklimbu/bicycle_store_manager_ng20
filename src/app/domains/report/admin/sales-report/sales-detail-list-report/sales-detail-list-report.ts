@@ -3,12 +3,12 @@ import { Component, computed, inject } from '@angular/core';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { NzTableModule } from 'ng-zorro-antd/table';
-import { NepaliDateFormatterPipe } from '../../../shared/pipes/nepali-date-formatter.pipe';
-import { TableOperationsComponent } from '../../../shared/ui-common/table-operations/table-operations.component';
+import { NepaliDateFormatterPipe } from '../../../../shared/pipes/nepali-date-formatter.pipe';
+import { TableOperationsComponent } from '../../../../shared/ui-common/table-operations/table-operations.component';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { ReportService } from '../../data/services/report.services';
+import { ReportService } from '../../../data/services/report.services';
 
 @Component({
   selector: 'app-sales-detail-list-report',

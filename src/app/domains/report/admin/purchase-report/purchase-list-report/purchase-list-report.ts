@@ -1,22 +1,21 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, signal } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { Router, ActivatedRoute, RouterModule } from '@angular/router';
+import { Component, computed, inject, linkedSignal, signal } from '@angular/core';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { NzTableModule } from 'ng-zorro-antd/table';
+import { NepaliDateFormatterPipe } from '../../../../shared/pipes/nepali-date-formatter.pipe';
+import { TableOperationsComponent } from '../../../../shared/ui-common/table-operations/table-operations.component';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { FilterValues } from '../../../sales/data/models/sales.model';
-import { NepaliDateFormatterPipe } from '../../../shared/pipes/nepali-date-formatter.pipe';
-import { TableOperationsComponent } from '../../../shared/ui-common/table-operations/table-operations.component';
-import { ReportService } from '../../data/services/report.services';
-import { TableActionButtonsComponent } from '../../../shared/ui-common/table-action-buttons/table-action-buttons.component';
+import { FilterValues } from '../../../../sales/data/models/sales.model';
+import { ReportService } from '../../../data/services/report.services';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { DayendStore } from '../../../../shared/services/dayendstore.service';
 
 @Component({
-  selector: 'app-purchase-master-list-report',
+  selector: 'app-purchase-list-report',
   imports: [
-    RouterModule,
     CommonModule,
     NzTableModule,
     NzSpaceModule,
@@ -27,17 +26,17 @@ import { TableActionButtonsComponent } from '../../../shared/ui-common/table-act
     NepaliDateFormatterPipe,
     // TableOperations,
     TableOperationsComponent,
-    TableActionButtonsComponent
   ],
-  templateUrl: './purchase-master-list-report.html',
-  styleUrl: './purchase-master-list-report.scss',
+  templateUrl: './purchase-list-report.html',
+  styleUrl: './purchase-list-report.scss',
 })
-export class PurchaseMasterListReport {
-
+// stockwise purchase list report
+export class PurchaseListReport {
   // props
-  manualSelectorOptions = [
-    { id: '1', name: 'cash' },
-    { id: '2', name: 'credit' },
+  manualSelectorOptions: { categoryId: string; name: string }[] = [
+    { categoryId: '1', name: 'CASH' },
+    { categoryId: '2', name: 'CREDIT' },
+    { categoryId: '3', name: 'BANK' },
   ];
   filterSignal = signal<FilterValues>({});
   data$!: Observable<any[]>;
@@ -45,7 +44,15 @@ export class PurchaseMasterListReport {
   private readonly router = inject(Router);
   private readonly reportService = inject(ReportService);
   private readonly route = inject(ActivatedRoute);
+  private dayendStore = inject(DayendStore);
 
+  initialFilters = linkedSignal(() => {
+    const range = this.dayendStore.getInitialRange();
+    return {
+      fromDate: range.from,
+      toDate: range.to
+    };
+  });
 
   private readonly queryParamMap = toSignal(this.route.queryParamMap);
   readonly isCustomerMode = computed(() => {
@@ -56,14 +63,19 @@ export class PurchaseMasterListReport {
   // 3. Optional: If you need the ID specifically for your methods
   readonly customerId = computed(() => Number(this.queryParamMap()?.get('customerId')) || 0);
 
-  ngOnInit(): void { }
+
+
+  ngOnInit(): void {
+    this.onSearch(this.initialFilters());
+  }
 
   onSearch(query?: any) {
+    console.log('search', query);
 
     // if (!query || !this.hasValidQuery(query)) {
     //   return;
     // }
-    this.data$ = this.reportService.getPurchaseMasterReportList(query);
+    this.data$ = this.reportService.getPurchaseReportStockWiseList(query);
   }
 
   private hasValidQuery(query: any): boolean {
@@ -90,17 +102,26 @@ export class PurchaseMasterListReport {
   }
 
   onViewMore(id: number) {
-    this.router.navigate(['/auth/report-purchase-detail'], { queryParams: { id: id } });
+    console.log('view mofre');
+    this.router.navigate(['/master'], { queryParams: { patientId: id } });
   }
 
+  showTransaction(id: number) {
+    console.log('show ', id);
 
+    this.router.navigate(['/patient/patient-transaction'], {
+      queryParams: { customerId: id },
+    });
+  }
 
   onFilterChange(filter: any) {
-
+    console.log('Applied filter:', filter);
+    // Apply filter to your table data here
     this.onSearch(filter);
   }
 
   onSales() {
+    console.log('purchae click');
 
     this.router.navigate(['auth/sales-master'], {
       queryParams: { customerId: this.customerId() },

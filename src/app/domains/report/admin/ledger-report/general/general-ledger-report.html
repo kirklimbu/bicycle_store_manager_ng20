@@ -1,0 +1,80 @@
+<!-- <nz-breadcrumb [nzAutoGenerate]="true"></nz-breadcrumb> -->
+<div class="table-container">
+    <div class="site-page-header-ghost-wrapper">
+        <nz-page-header nzTitle="General Ledger List" [nzGhost]="false">
+            <nz-page-header-extra>
+                <!-- <app-table-operations key="sakes-filter" [fields]="[
+    { name: 'fromDate', label: 'From Date (B.S)', type: 'date', required: true },
+    { name: 'toDate', label: 'To Date (B.S)', type: 'date', required: true },
+    
+  ]" (filterChange)="onFilterChange($event)" /> -->
+                <lib-table-operations [showSelector1]="true" [selector1Options]="manualSelectorOptions"
+                    [showAddButton]="false" [isLocalSearch]="false" [showSearch]="false" [showFromDate]="true"
+                    [showToDate]="true" [defaultFromDate]="initialFilters().fromDate"
+                    [defaultToDate]="initialFilters().toDate" [tertiaryButtonLabel]="'Sales Return'"
+                    (search)="onSearch($event)" />
+            </nz-page-header-extra>
+
+        </nz-page-header>
+    </div>
+
+    <div class="report-container">
+        @if(data$ | async; as data) {
+        <nz-table #reportTable [nzData]="data" [nzBordered]="false" [nzFrontPagination]="false" nzSize="middle"
+            [nzScroll]="{ x: '1500px' }">
+            <thead>
+                <tr class="enterprise-row">
+                    <th nzLeft nzWidth="60px" nzAlign="center">#</th>
+                    <th nzLeft nzWidth="120px">Date</th>
+                    <th nzLeft nzWidth="100px">Bill No</th>
+                    <th nzWidth="150px">Customer</th>
+                    <th nzWidth="120px">PAN/VAT</th>
+                    <th nzWidth="200px">Stock Name</th>
+                    <th nzAlign="center" nzWidth="80px">Qty</th>
+                    <th nzWidth="80px">Unit</th>
+                    <th nzAlign="right" nzWidth="120px">Total Amt.</th>
+                    <th nzAlign="right" nzWidth="100px">Tax Amt.</th>
+                    <th nzAlign="right" nzWidth="120px" class="highlight-col">Net Amt</th>
+                    <th nzWidth="100px">Pay Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (item of reportTable.data; track item.salesDetailId; let i = $index) {
+                <tr class="data-row">
+                    <td nzLeft nzAlign="center" class="index-cell">
+                        {{ (reportTable.nzPageIndex - 1) * reportTable.nzPageSize + (i + 1) }}
+
+                    </td>
+                    <td nzLeft class="date-cell">{{ item.saveDate | nepaliDateFormatter }}</td>
+                    <td nzLeft class="bill-cell">{{ item.billNo || '-' }}</td>
+                    <td>{{ item.customerName | titlecase }}</td>
+                    <td class="pan-cell">{{ item.pan || '-' }}</td>
+                    <td class="stock-name">{{ item.stockName }}</td>
+                    <td nzAlign="center">{{ item.qty | number }}</td>
+                    <td>{{ item.unit }}</td>
+                    <td nzAlign="right">{{ item.totalAmt | number:'1.2-2' }}</td>
+                    <td nzAlign="right" class="tax-text">{{ item.taxAmt | number:'1.2-2' }}</td>
+                    <td nzAlign="right" class="net-amt-cell">{{ item.netAmt | number:'1.2-2' }}</td>
+                    <td>
+                        <span class="pay-badge" [class.cash]="item.payType === 'Cash'">
+                            {{ item.payType }}
+                        </span>
+                    </td>
+                </tr>
+                }
+            </tbody>
+            <!-- <tfoot class="table-summary">
+                <tr>
+                    <td [nzLeft]="true" [colspan]="3" class="summary-label">Totals</td>
+                    <td colspan="5"></td>
+                    <td nzAlign="right" class="footer-total">{{ calculateSubTotal(data) | number:'1.2-2' }}</td>
+                    <td nzAlign="right" class="footer-total">{{ calculateTaxTotal(data) | number:'1.2-2' }}</td>
+                    <td nzAlign="right" class="footer-grand-total">{{ calculateNetTotal(data) | number:'1.2-2' }}</td>
+                    <td></td>
+                </tr>
+            </tfoot> -->
+        </nz-table>
+        }
+    </div>
+
+</div>

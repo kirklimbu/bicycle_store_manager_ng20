@@ -5,14 +5,14 @@ import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { NzTableModule } from 'ng-zorro-antd/table';
-import { NepaliDateFormatterPipe } from '../../../shared/pipes/nepali-date-formatter.pipe';
-import { TableActionButtonsComponent } from '../../../shared/ui-common/table-action-buttons/table-action-buttons.component';
-import { TableOperationsComponent } from '../../../shared/ui-common/table-operations/table-operations.component';
+import { NepaliDateFormatterPipe } from '../../../../shared/pipes/nepali-date-formatter.pipe';
+import { TableActionButtonsComponent } from '../../../../shared/ui-common/table-action-buttons/table-action-buttons.component';
+import { TableOperationsComponent } from '../../../../shared/ui-common/table-operations/table-operations.component';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Observable } from 'rxjs';
-import { FilterValues } from '../../../sales/data/models/sales.model';
-import { ReportService } from '../../data/services/report.services';
-import { DayendStore } from '../../../shared/services/dayendstore.service';
+import { FilterValues } from '../../../../sales/data/models/sales.model';
+import { ReportService } from '../../../data/services/report.services';
+import { DayendStore } from '../../../../shared/services/dayendstore.service';
 
 @Component({
   selector: 'app-sales-master-list-report',
