@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ICustomResponse } from 'src/app/domains/shared/models/CustomResponse.model';
 import { environment } from 'src/environments/environment';
-import { IDayend2Dto, IDayendDto } from '../model/dayend';
+import { IAccTreeDto, IDayend2Dto, IDayendDto, IFiscalDto } from '../model/dayend';
 
 @Injectable({
   providedIn: 'root',
@@ -27,5 +27,13 @@ export class DayendService {
     console.log('get current dayend service');
 
     return this.http.get<IDayend2Dto>(`${this.apiUrl}auth/current/dayend`);
+  }
+
+  getFiscalList(): Observable<IFiscalDto[]> {
+    return this.http.get<IFiscalDto[]>(`${this.apiUrl}auth/fiscal/list`);
+  }
+
+  getAccTreeList(): Observable<IAccTreeDto[]> {
+    return this.http.get<IAccTreeDto[]>(`${this.apiUrl}auth/acctree/list`);
   }
 }

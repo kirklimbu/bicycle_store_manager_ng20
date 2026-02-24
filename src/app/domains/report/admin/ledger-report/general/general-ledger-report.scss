@@ -72,3 +72,53 @@
   .data-row:hover td {
         background: #f6ffed !important; // Success tint for financial rows
     }
+
+   .filter-container {
+  width: 100%;
+  padding: 0 16px   24px 16px;
+}
+
+.filter-grid {
+  display: grid;
+  gap: 12px;
+  align-items: flex-end; // 📏 Aligns button with the input boxes
+
+  // 💻 Desktop & Tablet view
+  @media (min-width: 992px) {
+    /* Column logic:
+       Fiscal: 100px (Small)
+       Account: 1.5fr (Large/Expanding)
+       Dates: 120px each (Small/Fixed)
+       Search: auto (Tight to button)
+    */
+    grid-template-columns: 100px 240px 140px 140px auto;
+    
+    nz-form-item {
+      margin-bottom: 0; // Removes extra spacing for the horizontal look
+    }
+
+    .search-action button {
+      width: 150px; 
+    }
+  }
+
+  // 📱 Mobile view (Standard stacking)
+  @media (max-width: 991px) {
+    grid-template-columns: 1fr;
+    
+    .search-action button {
+      width: 100%; // Big touch target for mobile
+    }
+  }
+}
+
+nz-form-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #595959;
+}
+
+// Custom tweak for the date input text alignment
+// input[appBsDateInput] {
+//   text-align: center;
+// }

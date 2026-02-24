@@ -10,3 +10,10 @@ export interface IGeneralLedgerReport {
     absBalance: number;
     balanceType: string;
 }
+
+export interface LedgerFilter {
+    fiscalId: number | null;
+    accountId: number | null;
+    fromDate: string;
+    toDate: string;
+}

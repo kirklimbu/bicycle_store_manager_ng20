@@ -22,11 +22,26 @@
                         <nz-form-item>
                             <nz-form-label>{{ selector1Label() }}</nz-form-label>
                             <nz-form-control>
-                                <nz-select [formControlName]="selectorKey()" [nzPlaceHolder]="selectorLabel()"
+                                <nz-select [formControlName]="selector1Key()" [nzPlaceHolder]="selector1Label()"
                                     nzAllowClear nzShowSearch>
-                                    @for (option of selector1Options(); track option.id) {
-                                    <nz-option [nzValue]="option[optionLabelKey()]"
-                                        [nzLabel]="option[optionLabelKey()]"></nz-option>
+                                    @for (option of selector1Options(); track option[option1ValueKey()]) { <nz-option
+                                        [nzValue]="option[option1LabelKey()]"
+                                        [nzLabel]="option[option1LabelKey()]"></nz-option>
+                                    }
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    }@if (showSelector2()) {
+                    <div class="field-item">
+                        <nz-form-item>
+                            <nz-form-label>{{ selector2Label() }}</nz-form-label>
+                            <nz-form-control>
+                                <nz-select [formControlName]="selector2Key()" [nzPlaceHolder]="selector2Label()"
+                                    nzAllowClear nzShowSearch>
+                                    @for (option of selector2Options(); track option[option2ValueKey()]) { <nz-option
+                                        [nzValue]="option[option2ValueKey()]"
+                                        [nzLabel]="option[option2LabelKey()]"></nz-option>
                                     }
                                 </nz-select>
                             </nz-form-control>

@@ -1,12 +1,13 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable, WritableSignal, inject, signal } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { Observable } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
 
 import { ICustomResponse } from 'src/app/domains/shared/models/CustomResponse.model';
 import { IClosingStockReport, IProfitLossReport, IPurchaseDetailReport, IPurchaseMasterReport, IPurchaseReport, IPurchaseReportMonthWise, ISalesDetailReport, ISalesReportMonthWise } from '../models/purhase-report.model';
-
+import { IGeneralLedgerReport } from '../models/ledger-report.model';
+import { IPurchaseAgingReport, ISalesAgingReport } from '../models/ageing-report.model';
 @Injectable({
   providedIn: 'root',
 })
@@ -91,8 +92,29 @@ export class ReportService {
     );
   }
 
+  // ledger
+  getGeneralLedgerReport(query: any): Observable<IGeneralLedgerReport[]> {
+    return this.http.get<IGeneralLedgerReport[]>(
+      `${this.apiUrl}report/ledger/list`,
+      { params: query }
 
+    );
+  }
+  // ageing report
+  getSalesAgeingReport(query: any): Observable<ISalesAgingReport[]> {
+    return this.http.get<ISalesAgingReport[]>(
+      `${this.apiUrl}report/sales/ageing/list`,
+      { params: query }
 
+    );
+  }
+  getPurchaseAgeingReport(query: any): Observable<IPurchaseAgingReport[]> {
+    return this.http.get<IPurchaseAgingReport[]>(
+      `${this.apiUrl}report/purchase/ageing/list`,
+      { params: query }
+
+    );
+  }
   // transaction section
 
   // fetchTransactionForm(

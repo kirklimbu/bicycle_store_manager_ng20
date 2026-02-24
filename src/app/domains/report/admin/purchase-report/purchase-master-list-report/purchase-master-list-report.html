@@ -8,7 +8,7 @@
     { name: 'toDate', label: 'To Date (B.S)', type: 'date', required: true },
     
   ]" (filterChange)="onFilterChange($event)" /> -->
-                <lib-table-operations [showSelector1]="true" [selector1Label]="'Pay Type'" [selectorKey]="'payType'"
+                <lib-table-operations [showSelector1]="true" [selector1Label]="'Pay Type'" [selector1Key]="'payType'"
                     [selector1Options]="manualSelectorOptions" [showAddButton]="false" [isLocalSearch]="false"
                     [showSearch]="false" [showFromDate]="true" [showToDate]="true"
                     [showSecondaryButton]="isCustomerMode()" [showTertiaryButton]="isCustomerMode()"

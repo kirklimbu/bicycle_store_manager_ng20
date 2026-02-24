@@ -1,0 +1,39 @@
+.enterprise-table-wrapper {
+  background: #ffffff;
+  border: 1px solid #f0f0f0;
+  border-radius: 4px;
+
+  // 1. Header: Clean and Flat
+  .ant-table-thead > tr > th {
+    background: #fafafa;
+    color: #262626;
+    font-weight: 600;
+    font-size: 13px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  // 2. Numbers: Precision and Alignment
+  .num-mono {
+    // font-family: 'Roboto Mono', monospace;
+    // font-variant-numeric: tabular-nums;
+    font-size: 13px;
+    font-weight: 700;
+    color: #262626;
+  }
+
+  // 3. Risk Indicator: Use color for "Over 90 Days"
+  .over-90-alert {
+    color: #cf1322; // Deep red
+    font-weight: 600;
+  }
+
+  // 4. Primary Info: High contrast for the Balance
+  .balance-cell {
+    background-color: #f9f9f9;
+    font-weight: 700;
+  }
+
+  .text-muted {
+    color: #8c8c8c;
+  }
+}

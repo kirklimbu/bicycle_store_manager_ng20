@@ -13,6 +13,8 @@ import { SalesComponent } from '../sales/admin/sales/sales.component';
 import { MonthWisePurchaseReport } from './admin/purchase-report/month-wise-purchase/month-wise-purchase-report';
 import { GeneralLedgerReport } from './admin/ledger-report/general/general-ledger-report';
 import { StockLedgerReport } from './admin/ledger-report/stock-ledger/stock-ledger-report';
+import { SalesAgeingReport } from './admin/ageing-report/sales-ageing/sales-ageing-report';
+import { PurchaseAgeingReport } from './admin/ageing-report/purchase-ageing/purchase-ageing-report';
 
 export const FEATURE_REPORT_ROUTES: Routes = [
   {
@@ -90,5 +92,17 @@ export const FEATURE_REPORT_ROUTES: Routes = [
     component: StockLedgerReport,
     canActivate: [hasRoleGuard],
     data: { roles: [Role.ADMIN], breadcrumb: 'Stock Ledger Report' }
+  }
+  // ageing reports
+  , {
+    path: 'report-ageing-sales',
+    component: SalesAgeingReport,
+    canActivate: [hasRoleGuard],
+    data: { roles: [Role.ADMIN], breadcrumb: 'Sales Ageing Report' }
+  }, {
+    path: 'report-ageing-purchase',
+    component: PurchaseAgeingReport,
+    canActivate: [hasRoleGuard],
+    data: { roles: [Role.ADMIN], breadcrumb: 'Purchase Ageing Report' }
   }
 ];

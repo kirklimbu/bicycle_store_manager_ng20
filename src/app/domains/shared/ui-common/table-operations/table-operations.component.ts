@@ -41,7 +41,6 @@ import { FilterValues } from 'src/app/domains/sales/data/models/sales.model';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    FormsModule,
     // third-party
     NzIconModule,
     NzSpaceModule,
@@ -73,7 +72,26 @@ export class TableOperationsComponent implements OnInit {
   placeholder = input<string>('Search...');
   searchValue = model<number>(0);
   isLocalSearch = input<boolean>(false);
+
+
+  // selector 
+  // Dynamic Configuration 
+  // first selector
   showSelector1 = input<boolean>(false);
+  selector1Label = input<string>('Select Option');
+  selector1Options = input<any[]>([]);
+  option1LabelKey = input<string>('name'); // Property to show in UI
+  option1ValueKey = input<string>('id');   // Property to use as value
+  selector1Key = input<string>('selector'); // The key sent to the API (e.g., 'payType')
+
+  // second selector (if needed)
+  showSelector2 = input<boolean>(false);
+  selector2Label = input<string>('Select Option');
+  selector2Options = input<any[]>([]);
+  option2LabelKey = input<string>('name'); // Property to show in UI
+  option2ValueKey = input<string>('id');   // Property to use as value
+  selector2Key = input<string>('selector'); // The key sent to the API (e.g., 'payType')
+
   showFromDate = input<boolean>(false);
   showToDate = input<boolean>(false);
   showSearch = input<boolean>(false);
@@ -94,7 +112,7 @@ export class TableOperationsComponent implements OnInit {
   fetchSelector1Data = input<boolean>(false); // Observable for
 
   // selector1 data
-  selector1Options = input<any[]>([]);
+
   selectedOption1!: any[];
   selectedCategory = model<any>({
     categoryId: 1,
@@ -120,7 +138,6 @@ export class TableOperationsComponent implements OnInit {
   routeTo = output<string>();
   // search = output<ICategory1Dto>(); //make search api call
   add = output<number>(); //make search api call
-  selector1Label = input<string>('Category');
   showExportButton = input<boolean>(false);
   exportButtonIcon = input<string>('file-excel');
   exportButtonLabel = input<string>('Export Excel');
@@ -128,18 +145,13 @@ export class TableOperationsComponent implements OnInit {
   tertiaryButtonClick = output<any>();
 
 
-  // selector 
-  // Dynamic Configuration ⚙️
-  selectorKey = input<string>('selector'); // The key sent to the API (e.g., 'payType')
-  selectorLabel = input<string>('Select Option');
-  selectorOptions = input<any[]>([]); // The data array
-  optionLabelKey = input<string>('name'); // Property to show in UI
-  optionValueKey = input<string>('id');   // Property to use as value
+
 
   readonly showButtons = computed(
     () =>
       this.showSearch() ||
       this.showSelector1() ||
+      this.showSelector2() ||
       this.showFromDate() ||
       this.showToDate() ||
       this.showAddButton() ||
@@ -185,7 +197,9 @@ export class TableOperationsComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.showSelector1()) {
-      this.form.addControl(this.selectorKey(), this.fb.control(null));
+      this.form.addControl(this.selector1Key(), this.fb.control(null));
+    } if (this.showSelector2()) {
+      this.form.addControl(this.selector2Key(), this.fb.control(null));
     }
   }
 
@@ -225,9 +239,14 @@ export class TableOperationsComponent implements OnInit {
     if (this.showToDate() && formValues.toDate) filters.toDate = formValues.toDate;
 
     // Dynamic Selector Filter 🎯
-    const key = this.selectorKey();
+    const key = this.selector1Key();
     if (this.showSelector1() && formValues[key]) {
       filters[key] = formValues[key];
+    }
+
+    const key2 = this.selector2Key();
+    if (this.showSelector2() && formValues[key2]) {
+      filters[key2] = formValues[key2];
     }
 
     this.search.emit(filters);

@@ -1,1 +1,65 @@
-<p>purchase-ageing-report works!</p>
+<!-- <nz-breadcrumb [nzAutoGenerate]="true"></nz-breadcrumb> -->
+<div class="table-container">
+    <div class="site-page-header-ghost-wrapper">
+        <nz-page-header nzTitle="Purchase Ageing  Report" [nzGhost]="false">
+            <nz-page-header-extra>
+                <!-- <app-table-operations key="sakes-filter" [fields]="[
+    { name: 'fromDate', label: 'From Date (B.S)', type: 'date', required: true },
+    { name: 'toDate', label: 'To Date (B.S)', type: 'date', required: true },
+    
+  ]" (filterChange)="onFilterChange($event)" /> -->
+                <lib-table-operations [showSelector1]="false" [showAddButton]="false" [isLocalSearch]="false"
+                    [showSearch]="false" [showFromDate]="true" [showToDate]="true"
+                    [defaultFromDate]="initialFilters().fromDate" [defaultToDate]="initialFilters().toDate"
+                    (search)="onSearch($event)" />
+            </nz-page-header-extra>
+
+        </nz-page-header>
+    </div>
+
+    <div class="enterprise-table-wrapper">
+        @if(data$ | async; as data) {
+        <nz-table #reportTable [nzData]="data" [nzFrontPagination]="true" nzSize="small" [nzScroll]="{ x: '1000px' }">
+            <thead>
+                <tr>
+                    <th nzWidth="50px" nzAlign="center">#</th>
+                    <th nzWidth="120px"> Bill</th>
+                    <th nzWidth="120px">Date</th>
+                    <th nzWidth="120px"> Bill(Supplier)</th>
+                    <th nzWidth="120px">Date(Supplier)</th>
+
+                    <th nzWidth="80px" nzAlign="center">Days</th>
+                    <th nzAlign="right">0-30 Days</th>
+                    <th nzAlign="right">31-60 Days</th>
+                    <th nzAlign="right">61-90 Days</th>
+                    <th nzAlign="right">90+Days</th>
+                    <th nzWidth="120px" nzAlign="right" nzRight class="balance-cell">Balance</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @for (item of reportTable.data; track item.billNo; let i = $index) {
+                <tr>
+                    <td nzAlign="center" class="text-muted">{{ i + 1 }}</td>
+                    <td style="font-weight: 500;">{{ item.billNo }}</td>
+                    <td>{{ item.saveDate }}</td>
+                    <td style="font-weight: 500;">{{ item.supplierBillNo }}</td>
+                    <td>{{ item.supplierSaveDate }}</td>
+
+                    <td nzAlign="center">{{ item.days }}</td>
+
+                    <td nzAlign="right" class="num-mono">{{ item.upto30 | number:'1.2-2' }}</td>
+                    <td nzAlign="right" class="num-mono">{{ item.upto60 | number:'1.2-2' }}</td>
+                    <td nzAlign="right" class="num-mono">{{ item.upto90 | number:'1.2-2' }}</td>
+                    <td nzAlign="right" class="num-mono over-90-alert">{{ item.greaterThan90 | number:'1.2-2' }}</td>
+
+                    <td nzAlign="right" nzRight class="num-mono balance-cell">
+                        {{ item.balance | number:'1.2-2' }}
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </nz-table>
+        }
+    </div>
+</div>

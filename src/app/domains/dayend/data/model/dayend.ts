@@ -9,3 +9,23 @@ export interface IDayendDto {
   hasMonthEnd: boolean;
   hasYearEnd: boolean;
 }
+export interface IFiscalDto {
+  fiscalId: number;
+  startDate: string;
+  shortName: string;
+  endDate: string;
+
+}
+export interface IFiscalDto {
+  fiscalId: number;
+  startDate: string;
+  shortName: string;
+  endDate: string;
+
+}
+export interface IAccTreeDto {
+  id: number;
+  parentId: string;
+  name: string;
+  lf: string;
+}
