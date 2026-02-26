@@ -3,6 +3,7 @@
         <nz-page-header-extra>
             <lib-table-operations [showSelector1]="true" [selector1Label]="'Pay Type'" [selector1Key]="'payType'"
                 [selector1Options]="manualSelectorOptions" [showFromDate]="true" [showToDate]="true"
+                [defaultFromDate]="initialFilters().fromDate" [defaultToDate]="initialFilters().toDate"
                 [showSearchButton]="true" (search)="onSearch($event)" />
         </nz-page-header-extra>
     </nz-page-header>

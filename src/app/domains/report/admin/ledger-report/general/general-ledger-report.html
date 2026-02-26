@@ -64,7 +64,7 @@
             </div>
         </form>
 
-        <div class="report-container">
+        <div class="enterprise-table-wrapper">
             <!-- @if(data$ | async; as data) { -->
             @if(data$() ; as data) {
             <nz-table #reportTable [nzData]="data" [nzFrontPagination]="false" [nzScroll]="{ x: '800px' }">
@@ -81,7 +81,7 @@
                 <tbody>
                     @for (item of data; track item.voucherId; let i = $index) {
                     <tr class="data-row">
-                        <td nzLeft nzAlign="center" class="index-cell">
+                        <td nzLeft nzAlign="left" class="index-cell">
                             {{ (reportTable.nzPageIndex - 1) * reportTable.nzPageSize + (i + 1) }}
                         </td>
                         <td nzLeft class="date-cell">{{ item.saveDate | nepaliDateFormatter }}</td>

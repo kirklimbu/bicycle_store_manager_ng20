@@ -1,0 +1,185 @@
+.enterprise-table-wrapper {
+  /* ... shared styles from your global theme ... */
+  background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f0f0f0;
+
+    .ant-table-thead > tr > th {
+        background: #f8f9fb;
+        color: #595959;
+        font-weight: 600;
+        border-bottom: 2px solid #f0f0f0;
+    }
+
+    .enterprise-row:hover td {
+        background: #f6ffed !important; // Success tint for financial rows
+    }
+
+    .sticky-col-main {
+        font-weight: 600;
+        color: #1890ff;
+    }
+
+    // .num-mono {
+    //     font-family: 'Roboto Mono', monospace;
+    //     font-variant-numeric: tabular-nums;
+    // }
+
+    .highlight-val {
+        color: #262626;
+        background-color: #fafafa;
+    }
+
+    .status-badge {
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 11px;
+        background: #f0f0f0;
+        &.cash {
+            background: #f6ffed;
+      color: #52c41a;
+      border: 1px solid #b7eb8f;
+        }
+    }
+  .txn-type-tag {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    font-weight: 600;
+    
+    &.purchase { background: #e6f7ff; color: #1890ff; }
+    &.sales { background: #f6ffed; color: #52c41a; }
+  }
+
+  .col-amount {
+    font-family: 'Roboto Mono', monospace;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.report-container {
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+
+  // Column Specifics
+  .date-cell, .bill-cell {
+    font-weight: 600;
+    color: #1890ff;
+    background-color: #f0f5ff; 
+  }
+
+  .stock-name {
+    font-size: 13px;
+    color: #262626;
+    line-height: 1.2;
+  }
+
+  .pan-cell {
+    font-family: 'Roboto Mono', monospace;
+    color: #8c8c8c;
+    font-size: 12px;
+  }
+
+  .net-amt-cell {
+    font-weight: 700;
+    background-color: #fafafa;
+  }
+
+  .tax-text {
+    // color: #ff7a45; // Subtle orange for tax
+  }
+
+  // Status Badge
+  .pay-badge {
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+     background: #fff2f0;
+      color: #cf1322;
+      border: 1px solid #ffccc7;
+    &.cash {
+      background: #f6ffed;
+      color: #52c41a;
+      border: 1px solid #b7eb8f;
+    }
+   
+  }
+
+
+  // Summary Footer
+  .table-summary {
+    td {
+      background: #fdfdfd;
+      border-top: 2px solid #f0f0f0;
+      font-weight: 700;
+    }
+    .footer-grand-total {
+      color: #1d39c4;
+      font-size: 15px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 8px;
+  }
+}
+
+
+  .data-row:hover td {
+        background: #f6ffed !important; // Success tint for financial rows
+    }
+
+   .filter-container {
+  width: 100%;
+  padding: 0 16px   24px 16px;
+}
+
+.filter-grid {
+  display: grid;
+  gap: 12px;
+  align-items: flex-end; // 📏 Aligns button with the input boxes
+
+  // 💻 Desktop & Tablet view
+  @media (min-width: 992px) {
+    /* Column logic:
+       Fiscal: 100px (Small)
+       Account: 1.5fr (Large/Expanding)
+       Dates: 120px each (Small/Fixed)
+       Search: auto (Tight to button)
+    */
+    grid-template-columns: 100px 240px 140px 140px auto;
+    
+    nz-form-item {
+      margin-bottom: 0; // Removes extra spacing for the horizontal look
+    }
+
+    .search-action button {
+      width: 150px; 
+    }
+  }
+
+  // 📱 Mobile view (Standard stacking)
+  @media (max-width: 991px) {
+    grid-template-columns: 1fr;
+    
+    .search-action button {
+      width: 100%; // Big touch target for mobile
+    }
+  }
+}
+
+nz-form-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #595959;
+}
+
+// Custom tweak for the date input text alignment
+// input[appBsDateInput] {
+//   text-align: center;
+// }

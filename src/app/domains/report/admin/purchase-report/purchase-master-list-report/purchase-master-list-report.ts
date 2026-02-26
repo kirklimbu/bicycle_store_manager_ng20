@@ -68,6 +68,8 @@ export class PurchaseMasterListReport {
   readonly customerId = computed(() => Number(this.queryParamMap()?.get('customerId')) || 0);
 
   ngOnInit(): void {
+    console.log('filter', this.initialFilters());
+
     this.onSearch(this.initialFilters());
 
   }

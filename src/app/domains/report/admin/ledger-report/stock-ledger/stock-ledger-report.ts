@@ -1,9 +1,146 @@
-import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, DestroyRef, inject, linkedSignal, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzFlexModule } from 'ng-zorro-antd/flex';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzTagModule } from 'ng-zorro-antd/tag';
+import { IFiscalDto } from '../../../../dayend';
+import { DayendService } from '../../../../dayend/data/services/dayend.service';
+import { FilterValues } from '../../../../sales/data/models/sales.model';
+import { BsDateInputDirective } from '../../../../shared/directives/bsdate/bs-date-input.directive';
+import { NepaliDateFormatterPipe } from '../../../../shared/pipes/nepali-date-formatter.pipe';
+import { DayendStore } from '../../../../shared/services/dayendstore.service';
+import { FilterStoreService } from '../../../../shared/services/table-filter-store.service';
+import { TableActionButtonsComponent } from '../../../../shared/ui-common/table-action-buttons/table-action-buttons.component';
+import { TableOperationsComponent } from '../../../../shared/ui-common/table-operations/table-operations.component';
+import { StockService } from '../../../../stock/data/services/stock.service';
+import { IStockLedgerReport } from '../../../data/models/ledger-report.model';
+import { ReportService } from '../../../data/services/report.services';
+import { IStock } from '../../../../stock/data/model/stock';
 
 @Component({
   selector: 'app-stock-ledger-report',
-  imports: [],
+  imports: [
+    RouterModule,
+    CommonModule,
+    ReactiveFormsModule,
+    // third party
+    NzTableModule,
+    NzSpaceModule,
+    NzBreadCrumbModule,
+    NzPageHeaderModule,
+    NzTagModule,
+    NzSpaceModule,
+    NzIconModule,
+    NzInputModule,
+    NzPageHeaderModule,
+    NzSelectModule,
+    NzButtonModule,
+    NzFlexModule,
+    NzGridModule,
+    NzFormModule,
+    // project
+    BsDateInputDirective,
+    NepaliDateFormatterPipe,
+    // TableOperations,
+    TableOperationsComponent,
+    TableActionButtonsComponent
+  ],
   templateUrl: './stock-ledger-report.html',
   styleUrl: './stock-ledger-report.scss',
+  providers: [FilterStoreService]
+
 })
-export class StockLedgerReport {}
+export class StockLedgerReport {
+
+  filterSignal = signal<FilterValues>({});
+  fiscalYearListSignal = signal<IFiscalDto[]>([]);
+  productListSignal = signal<IStock[]>([]);
+  // data$!: Observable<IGeneralLedgerReport[]>;
+  data$ = signal<IStockLedgerReport[]>([]);
+  private readonly router = inject(Router);
+  private readonly reportService = inject(ReportService);
+  private readonly route = inject(ActivatedRoute);
+  private destroyRef = inject(DestroyRef);
+  private dayendStore = inject(DayendStore);
+  private dayendService = inject(DayendService);
+  private stockService = inject(StockService);
+  private fb = inject(NonNullableFormBuilder);
+  private filterStore = inject(FilterStoreService);
+
+  initialFilters = linkedSignal(() => {
+    const range = this.dayendStore.getInitialRange();
+    return {
+      fiscalId: 0,
+      productId: 0,
+      fromDate: range.from,
+      toDate: range.to
+    };
+  });
+
+  filterForm = this.fb.group({
+    fiscalId: [null as number | null],
+    productId: [null as number | null],
+    fromDate: [this.initialFilters().fromDate],
+    toDate: [this.initialFilters().toDate]
+  });
+
+
+  ngOnInit(): void {
+    this.dayendService.getFiscalList()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(fiscalYears => {
+        this.fiscalYearListSignal.set(fiscalYears);
+      });
+    this.stockService.getStockList()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(products => {
+        this.productListSignal.set(products);
+      });
+  }
+
+  applyFilters() {
+    this.filterStore.updateFilters(this.filterForm.getRawValue());
+    this.reportService.getStockLedgerReport(this.filterForm.getRawValue())
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(reportData => {
+        this.data$.set(reportData);
+      });
+  }
+
+  resetFilters() {
+    this.filterForm.reset();
+    this.filterStore.reset();
+  }
+
+
+  onSearch(query?: any) {
+
+    // if (!query || !this.hasValidQuery(query)) {
+    //   return;
+    // }
+    this.reportService.getStockLedgerReport(query)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(reportData => {
+        this.data$.set(reportData);
+      });
+
+  }
+
+  onFilterChange(filter: any) {
+
+    this.onSearch(filter);
+  }
+
+}

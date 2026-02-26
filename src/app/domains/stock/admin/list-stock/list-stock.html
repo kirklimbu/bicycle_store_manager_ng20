@@ -2,7 +2,8 @@
     <div class="site-page-header-ghost-wrapper">
         <nz-page-header nzTitle="Stock List" [nzGhost]="false">
             <nz-page-header-extra>
-                <lib-table-operations [showSelector1]="false" [showAddButton]="false" [showSecondaryButton]="true"
+                <lib-table-operations [isLocalSearch]="true" (localSearch)="onLocalSearch($event)"
+                    [showSelector1]="false" [showAddButton]="false" [showSecondaryButton]="true"
                     [secondaryButtonLabel]="'ADD 2'" [secondaryButtonIcon]="''" [tertiaryButtonIcon]="''"
                     [showTertiaryButton]="true" [tertiaryButtonLabel]="'ADD'" (secondaryButtonClick)="onAdd2()"
                     (tertiaryButtonClick)="onAdd()" />
@@ -12,7 +13,7 @@
 
     <div class="enterprise-table-wrapper">
         @if (data$ | async; as table) {
-        <nz-table #borderedTable [nzData]="table" [nzFrontPagination]="true" [nzPageSize]="10" nzSize="middle"
+        <nz-table #borderedTable [nzData]="filteredData()" [nzFrontPagination]="true" [nzPageSize]="10" nzSize="middle"
             [nzScroll]="{ x: '1600px' }">
             <thead>
                 <tr>

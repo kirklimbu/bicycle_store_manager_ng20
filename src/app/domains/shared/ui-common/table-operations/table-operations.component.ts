@@ -31,6 +31,7 @@ import { RtcNepaliDatePickerModule } from '@rishovt/angular-nepali-datepicker';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { BsDateInputDirective } from '../../directives/bsdate/bs-date-input.directive';
 import { FilterValues } from 'src/app/domains/sales/data/models/sales.model';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 // libs/utils/src/lib/pipes/nepali-date-formatter.pipe.ts
 // project
@@ -71,7 +72,6 @@ export class TableOperationsComponent implements OnInit {
   label = input<string>('Search');
   placeholder = input<string>('Search...');
   searchValue = model<number>(0);
-  isLocalSearch = input<boolean>(false);
 
 
   // selector 
@@ -123,11 +123,12 @@ export class TableOperationsComponent implements OnInit {
     totalSelectedTests: 0,
     itemList: [],
   });
-  // selectorOptions = signal<{ categoryId: string; name: string }[]>([]);
 
-  // filtersChanged = output<FilterValues>();
-  filters = signal<FilterValues>({});
-  search = output<FilterValues>();
+  // local search
+  isLocalSearch = input<boolean>(false);
+  localSearchTerm = signal<string>('');
+
+
 
   // Internal form state
   searchTerm = signal<string>('');
@@ -136,21 +137,23 @@ export class TableOperationsComponent implements OnInit {
   toDate = signal<string | undefined>(undefined);
 
   routeTo = output<string>();
-  // search = output<ICategory1Dto>(); //make search api call
-  add = output<number>(); //make search api call
+  add = output<number>();
+  // export button
   showExportButton = input<boolean>(false);
   showSearchButton = input<boolean>(false);
   exportButtonIcon = input<string>('file-excel');
   exportButtonLabel = input<string>('Export Excel');
   export = output<any>();
+
   tertiaryButtonClick = output<any>();
-
-
-
+  localSearch = output<string>()
+  filters = signal<FilterValues>({});
+  search = output<FilterValues>();
 
   readonly showButtons = computed(
     () =>
       this.showSearch() ||
+      this.isLocalSearch() ||
       this.showSelector1() ||
       this.showSelector2() ||
       this.showFromDate() ||
@@ -167,6 +170,7 @@ export class TableOperationsComponent implements OnInit {
 
   form: FormGroup = this.fb.group({
     search: [''],
+    localSearch: [''],
     // selector: [''],
     fromDate: [''],
     toDate: [''],
@@ -204,6 +208,13 @@ export class TableOperationsComponent implements OnInit {
       this.form.addControl(this.selector1Key(), this.fb.control(null));
     } if (this.showSelector2()) {
       this.form.addControl(this.selector2Key(), this.fb.control(null));
+    }
+    if (this.isLocalSearch()) {
+      this.form.get('localSearch')?.valueChanges
+        .pipe(takeUntilDestroyed(this.destroy$))
+        .subscribe(value => {
+          this.localSearch.emit(value || '');
+        });
     }
   }
 

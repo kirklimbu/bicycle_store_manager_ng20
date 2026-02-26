@@ -24,6 +24,8 @@ import { ISupplier, IPaytype } from '../../../purchase/data/models/purhase.model
 import { ICustomResponse } from '../../../shared/models/CustomResponse.model';
 import { IPaymentFormDtoWrapper } from '../../data/models/payment.model';
 import { PaymentService } from '../../data/services/payment.services';
+import { ISupplier1Dto } from '../../../supplier/data/model/supplier.model';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-payment-entry-form',
@@ -55,8 +57,9 @@ export class PaymentEntryForm {
   form!: FormGroup;
   mode = 'add';
   loading = false;
-
-  supplierListSignal = signal<ISupplier | null>(null);
+  isSubmitting = signal(false);
+  supplierData = signal<any | null>(null);
+  supplierListSignal = signal<ISupplier1Dto | null>(null);
   payTypeListSignal = signal<IPaytype[]>([]);
 
   private readonly paymentService = inject(PaymentService);
@@ -91,14 +94,18 @@ export class PaymentEntryForm {
   }
 
   private fetchDefaultForm() {
+    this.isSubmitting.set(true);
     const { transactionId, supplierId } = this.idsSignal();
     this.paymentService
       .fetchDefaultForm(transactionId, supplierId)
-      .pipe(takeUntilDestroyed(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroy$),
+        finalize(() => this.isSubmitting.set(false))
+      )
       .subscribe((res: IPaymentFormDtoWrapper) => {
         console.log('res:', res);
+        this.isSubmitting.set(false);
         this.form.patchValue(res.form);
-        this.supplierListSignal.set(res.supplier);
+        this.supplierData.set(res.supplier);
         this.payTypeListSignal.set(res.payTypeList);
       });
   }
@@ -106,11 +113,14 @@ export class PaymentEntryForm {
   onSave() {
     console.log('form:', this.form.value);
 
+    this.isSubmitting.set(true);
     this.paymentService
       .savePayment(this.form.value)
-      .pipe(takeUntilDestroyed(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroy$),
+        finalize(() => this.isSubmitting.set(false)))
       .subscribe({
         next: (res: ICustomResponse) => {
+          this.isSubmitting.set(false);
           this.notification.success('Success', res.message);
           this.form.reset();
           this.router.navigate(['auth/list-payment'], {
@@ -120,5 +130,13 @@ export class PaymentEntryForm {
           });
         },
       });
+  }
+
+  onCancel() {
+    this.router.navigate(['auth/list-payment'], {
+      queryParams: {
+        supplierId: this.idsSignal().supplierId,
+      },
+    });
   }
 }

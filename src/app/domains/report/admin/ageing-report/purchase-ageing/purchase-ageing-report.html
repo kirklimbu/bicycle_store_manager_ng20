@@ -11,7 +11,7 @@
                 <lib-table-operations [showSelector1]="false" [showAddButton]="false" [isLocalSearch]="false"
                     [showSearch]="false" [showFromDate]="true" [showToDate]="true"
                     [defaultFromDate]="initialFilters().fromDate" [defaultToDate]="initialFilters().toDate"
-                    (search)="onSearch($event)" />
+                    [showSearchButton]="true" (search)="onSearch($event)" />
             </nz-page-header-extra>
 
         </nz-page-header>

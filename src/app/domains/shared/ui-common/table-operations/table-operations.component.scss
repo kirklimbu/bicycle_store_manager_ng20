@@ -78,3 +78,46 @@
     }
   }
 }
+
+.enterprise-search-field {
+  .modern-search-group {
+    background: #f9f9f9; // Subtle off-white background
+    border: 1px solid #e0e0e0;
+    border-radius: 2px; // Softer rounded corners
+    transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    padding: 4px 12px;
+
+    // When the user clicks inside
+    &:focus-within {
+      background: #ffffff;
+      border-color: #1890ff; // Your primary brand color
+      box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.1), 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .modern-input {
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      font-size: 14px;
+      
+      &:focus {
+        box-shadow: none;
+      }
+    }
+
+    .search-icon-muted {
+      color: #bfbfbf;
+      font-size: 16px;
+    }
+
+    .ant-input-clear-icon {
+      color: #bfbfbf;
+      cursor: pointer;
+      transition: color 0.3s;
+
+      &:hover {
+        color: #8c8c8c;
+      }
+    }
+  }
+}

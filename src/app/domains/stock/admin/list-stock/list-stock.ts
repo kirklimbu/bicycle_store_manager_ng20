@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -15,6 +15,7 @@ import { TableActionButtonsComponent } from '../../../shared/ui-common/table-act
 import { TableOperationsComponent } from '../../../shared/ui-common/table-operations/table-operations.component';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-list-stock',
@@ -42,10 +43,26 @@ import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 })
 export class ListStock {
   // props
+  searchTerm = signal<string>('');
   data$!: Observable<IStock[]>;
 
   private router = inject(Router);
   private stockService = inject(StockService);
+  private rawData = toSignal(this.stockService.getStockList(), { initialValue: [] });
+
+  filteredData = computed(() => {
+    const data = this.rawData();
+    const term = this.searchTerm().trim();
+
+    if (!term) return data;
+
+    // Local search logic (similar to your matchValue in the pipe)
+    const regex = new RegExp(term, 'gi');
+    return data.filter(item =>
+      Object.values(item).some(val => regex.test(String(val)))
+    );
+  });
+
 
   ngOnInit(): void {
     this.fetchstaffList();
@@ -99,5 +116,10 @@ export class ListStock {
     //     purchaseReturnMasterId: 0,
     //   },
     // });
+  }
+
+  // local search
+  onLocalSearch(value: string): void {
+    this.searchTerm.set(value);
   }
 }

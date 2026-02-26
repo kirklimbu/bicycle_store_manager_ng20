@@ -1,1 +1,99 @@
-<p>stock-ledger-report works!</p>
+<!-- <nz-breadcrumb [nzAutoGenerate]="true"></nz-breadcrumb> -->
+
+
+<div class="table-container">
+    <div class="site-page-header-ghost-wrapper">
+        <nz-page-header nzTitle="Stock Ledger List" [nzGhost]="false">
+        </nz-page-header>
+        <form nz-form nzLayout="vertical" [formGroup]="filterForm" class="filter-container">
+            <div class="filter-grid">
+
+                <nz-form-item class="fiscal-field">
+                    <nz-form-label>Fiscal</nz-form-label>
+                    <nz-form-control>
+                        <nz-select nzAllowClear formControlName="fiscalId" nzPlaceHolder="Year">
+                            @for (option of fiscalYearListSignal(); track option.fiscalId) {
+                            <nz-option [nzValue]="option.fiscalId" [nzLabel]="option.shortName"></nz-option>
+                            }
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item class="account-field">
+                    <nz-form-label>Product</nz-form-label>
+                    <nz-form-control>
+                        <nz-select nzAllowClear formControlName="productId" nzShowSearch nzPlaceHolder="Select Product">
+                            @for (option of productListSignal(); track option.stockMasterId) {
+                            <nz-option [nzValue]="option.stockMasterId" [nzLabel]="option.name"></nz-option>
+                            }
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item class="date-field">
+                    <nz-form-label>From Date</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input formControlName="fromDate" appBsDateInput placeholder="YYYY/MM/DD" />
+                    </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item class="date-field">
+                    <nz-form-label>To Date</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input formControlName="toDate" appBsDateInput placeholder="YYYY/MM/DD" />
+                    </nz-form-control>
+                </nz-form-item>
+
+                <div class="search-action">
+                    <button nz-button nzType="primary" (click)="applyFilters()" [disabled]="!filterForm.valid">
+                        Search <span nz-icon nzType="search"> </span>
+                    </button>
+                </div>
+
+            </div>
+        </form>
+        <div class="enterprise-table-wrapper">
+            @if(data$() ; as data) {
+
+            <nz-table #nzTable [nzData]="data" [nzFrontPagination]="false" [nzScroll]="{ x: '800px' }">
+                <thead>
+                    <tr>
+                        <th nzWidth="60px" nzAlign="center">Sn.</th>
+                        <th nzLeft nzWidth="150px">Bill & Date</th>
+                        <th>Item Name</th>
+                        <th nzAlign="center">Type</th>
+                        <th nzAlign="center">Pay Mode</th>
+                        <th nzAlign="right" nzWidth="150px">Balance Qty</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (item of nzTable.data; track item.stockDetailId; let i = $index) {
+                    <tr>
+                        <td nzAlign="center" class="text-muted num-mono">
+                            {{ (nzTable.nzPageIndex - 1) * nzTable.nzPageSize + (i + 1) }}
+
+                        </td>
+                        <td nzLeft>
+                            <div style="font-weight: 600; color: #1890ff;">{{ item.billNo }}</div>
+                            <small class="text-muted">{{ item.saveDate | nepaliDateFormatter }}</small>
+                        </td>
+                        <td>{{ item.name }}</td>
+                        <td nzAlign="center">
+                            <span class="txn-type-tag" [class]="item.txnType.toLowerCase()">
+                                {{ item.txnType }}
+                            </span>
+                        </td>
+                        <td nzAlign="center">
+                            <span class="status-tag">{{ item.payType }}</span>
+                        </td>
+                        <td nzAlign="right" class="col-amount" style="font-weight: 700;">
+                            {{ item.balanceQty | number:'1.2-2' }}
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </nz-table>
+            }
+        </div>
+    </div>
+</div>

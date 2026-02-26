@@ -1,3 +1,64 @@
+.enterprise-table-wrapper {
+  /* ... shared styles from your global theme ... */
+  background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f0f0f0;
+
+    .ant-table-thead > tr > th {
+        background: #f8f9fb;
+        color: #595959;
+        font-weight: 600;
+        border-bottom: 2px solid #f0f0f0;
+    }
+
+    .enterprise-row:hover td {
+        background: #f6ffed !important; // Success tint for financial rows
+    }
+
+    .sticky-col-main {
+        font-weight: 600;
+        color: #1890ff;
+    }
+
+    // .num-mono {
+    //     font-family: 'Roboto Mono', monospace;
+    //     font-variant-numeric: tabular-nums;
+    // }
+
+    .highlight-val {
+        color: #262626;
+        background-color: #fafafa;
+    }
+
+    .status-badge {
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 11px;
+        background: #f0f0f0;
+        &.cash {
+            background: #f6ffed;
+      color: #52c41a;
+      border: 1px solid #b7eb8f;
+        }
+    }
+  .txn-type-tag {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    font-weight: 600;
+    
+    &.purchase { background: #e6f7ff; color: #1890ff; }
+    &.sales { background: #f6ffed; color: #52c41a; }
+  }
+
+  .col-amount {
+    font-family: 'Roboto Mono', monospace;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
 .report-container {
   background: #ffffff;
   padding: 16px;

@@ -8,8 +8,10 @@ import {
 import {
   ApplicationConfig,
   importProvidersFrom,
+  inject,
   isDevMode,
-  provideZoneChangeDetection,
+  provideAppInitializer,
+  provideZoneChangeDetection
 } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
@@ -22,6 +24,7 @@ import { en_US, provideNzI18n } from 'ng-zorro-antd/i18n';
 import { appRoutes } from './app.routes';
 import { errorInterceptor } from './domains/shared/util-auth/guards/interceptors/error-interceptor.interceptor';
 
+import { ConfigService } from './domains/shared/services/config.service';
 import { httpTokenInterceptor } from './domains/shared/util-auth/guards/interceptors/http-token-interceptor';
 const icons: IconDefinition[] = Object.values(AllIcons);
 
@@ -45,34 +48,78 @@ export function tokenGetter(): string | null {
 }
 
 registerLocaleData('en');
+// export const appConfig: ApplicationConfig = {
+//   providers: [
+//     provideZoneChangeDetection({ eventCoalescing: true }),
+//     provideRouter(appRoutes),
+//     provideHttpClient(withInterceptors([])),
+//     provideNzI18n(en_US),
+//     provideAnimationsAsync(),
+//     provideHttpClient(
+//       withInterceptors([httpTokenInterceptor, errorInterceptor]),
+//       withFetch(),
+//       withInterceptorsFromDi()
+//     ),
+//     provideNzConfig(ngZorroConfig),
+
+//     importProvidersFrom(
+//       JwtModule.forRoot({
+//         config: {
+//           tokenGetter,
+//           throwNoTokenError: false,
+//           // allowedDomains: ['localhost:4200', 'https://angelfoundation.org.np'], // ✅ where tokens should be sent
+//           // disallowedRoutes: [
+//           //   'localhost:4200/auth/login',
+//           //   'https://angelfoundation.org.np/auth/login'
+//           // ],
+//         },
+//       })
+//     ),
+//     // pwa
+//     provideServiceWorker('ngsw-worker.js', {
+//       enabled: !isDevMode(),
+//       registrationStrategy: 'registerImmediately',
+//     }),
+//     provideAppInitializer(() => {
+//       const configService = inject(ConfigService);
+//       return configService.loadConfig();
+//     }),
+//   ],
+// };
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(appRoutes),
-    provideHttpClient(withInterceptors([])),
+
+    // Combine HTTP configuration into one place
+    provideHttpClient(
+      withFetch(),
+      withInterceptors([
+        httpTokenInterceptor,
+        errorInterceptor
+      ])
+    ),
+
     provideNzI18n(en_US),
     provideAnimationsAsync(),
-    provideHttpClient(
-      withInterceptors([httpTokenInterceptor, errorInterceptor]),
-      withFetch(),
-      withInterceptorsFromDi()
-    ),
     provideNzConfig(ngZorroConfig),
+
+    // Modern functional initializer
+    provideAppInitializer(() => {
+      const configService = inject(ConfigService);
+      return configService.loadConfig();
+    }),
 
     importProvidersFrom(
       JwtModule.forRoot({
         config: {
           tokenGetter,
-          throwNoTokenError: false,
-          // allowedDomains: ['localhost:4200', 'https://angelfoundation.org.np'], // ✅ where tokens should be sent
-          // disallowedRoutes: [
-          //   'localhost:4200/auth/login',
-          //   'https://angelfoundation.org.np/auth/login'
-          // ],
+          // We will need to address how to make these dynamic too!
         },
       })
     ),
-    // pwa
+
     provideServiceWorker('ngsw-worker.js', {
       enabled: !isDevMode(),
       registrationStrategy: 'registerImmediately',

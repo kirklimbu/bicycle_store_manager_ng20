@@ -1,86 +1,86 @@
-<div nz-row nzJustify="start">
-    <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="24" [nzLg]="24" [nzXl]="24">
-        <div class="form-container">
-            <nz-card nzTitle="Add Payment Entry">
-                <form nz-form [nzLayout]="'vertical'" [formGroup]="form" (ngSubmit)="onSave()">
-                    <!-- START: Responsive Two-Column Layout -->
+<div class="form-container">
+    <nz-card [nzBordered]="false" class="payment-card">
+        @if (supplierData()) {
+        <div class="supplier-header-banner">
+            <div class="profile-icon">
+                <span nz-icon nzType="shop" nzTheme="outline"></span>
+            </div>
+            <div class="supplier-details">
+                <div class="biz-name">{{ supplierData()?.businessName }}</div>
+                <div class="contact-row">
+                    <span><span nz-icon nzType="user"></span> {{ supplierData()?.name }}</span>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <span><span nz-icon nzType="mail"></span> {{ supplierData()?.email }}</span>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <span><span nz-icon nzType="phone"></span> {{ supplierData()?.mobile1 }}</span>
+                    <nz-divider nzType="vertical"></nz-divider>
 
-                    <div nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24 }">
+                    <span><span nz-icon nzType="environment"></span> {{ supplierData()?.location }}</span>
+                </div>
+            </div>
+            <div class="tax-badge">
+                <span class="label">PAN/VAT:</span>
+                <span class="value">{{ supplierData()?.pan }}</span>
+            </div>
+        </div>
+        }
 
+        <nz-divider></nz-divider>
 
+        <form nz-form [nzLayout]="'vertical'" [formGroup]="form" (ngSubmit)="onSave()">
+            <div nz-row [nzGutter]="24">
 
-                        <!-- <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="8">
-                            <nz-form-item>
-                                <nz-form-label>Brand</nz-form-label>
-                                <nz-form-control nzErrorTip="Please add Supplier">
-                                    <nz-select formControlName="supplierId" nzPlaceHolder="Select Supplier" nzShowSearch
-                                        nzAllowClear>
-                                        <nz-option [nzValue]="0" nzLabel="No Office"></nz-option>
-                                        @for(supplier of supplierListSignal();track supplier.supplierId ){
-                                        <nz-option [nzValue]="supplier.supplierId"
-                                            [nzLabel]="supplier.name"></nz-option>
-                                        }
-                                    </nz-select>
-                                </nz-form-control>
-                            </nz-form-item>
-                        </div> -->
-                        <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="4">
-                            <nz-form-item>
-                                <nz-form-label>Amount</nz-form-label>
-                                <nz-form-control>
-                                    <input type="number" nz-input min="1" placeholder="1000"
-                                        formControlName="transAmt" />
-                                </nz-form-control>
-                            </nz-form-item>
-                        </div>
-                        <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="6">
-                            <nz-form-item>
-                                <nz-form-label>Paytype</nz-form-label>
-                                <nz-form-control nzErrorTip="Please add Paytype">
-                                    <nz-select formControlName="payTypeId" nzPlaceHolder="Select Paytype" nzShowSearch
-                                        nzAllowClear>
-                                        <nz-option [nzValue]="0" nzLabel="No Paytype"></nz-option>
-                                        @for(payType of payTypeListSignal();track payType.id ){
-                                        <nz-option [nzValue]="payType.id" [nzLabel]="payType.name"></nz-option>
-                                        }
-                                    </nz-select>
-                                </nz-form-control>
-                            </nz-form-item>
-                        </div>
-
-                        <!-- Full-width items below the columns -->
-                        <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="6">
-
-                            <nz-form-item>
-
-                                <nz-form-label> Remarks</nz-form-label>
-                                <nz-form-control nzErrorTip="Please add Margin Remarks!">
-                                    <textarea rows="4" nz-input formControlName="remarks"
-                                        placeholder="Remarks"></textarea>
-                                </nz-form-control>
-                            </nz-form-item>
-                        </div>
-
-
-                    </div>
-
-                    <nz-divider></nz-divider>
-
+                <div nz-col [nzXs]="24" [nzMd]="6">
                     <nz-form-item>
-                        <nz-form-control>
-                            <div nz-row [nzJustify]="'end'">
-                                <div nz-col [nzXs]="24" [nzSm]="24" [nzLg]="'auto'">
-                                    <button [disabled]="!form.valid" nz-button [nzType]="'primary'"
-                                        class="submit-button">
-                                        <span nz-icon nzType="save" nzTheme="outline"></span>
-                                        {{ mode === 'add' ? 'SAVE' : 'UPDATE' }}
-                                    </button>
-                                </div>
-                            </div>
+                        <nz-form-label nzRequired nzFor="transAmt">Amount to Pay</nz-form-label>
+                        <nz-form-control nzErrorTip="Amount is required">
+                            <input type="number" nz-input formControlName="transAmt" id="transAmt"
+                                placeholder="Rs. 1000" />
                         </nz-form-control>
                     </nz-form-item>
-                </form>
-            </nz-card>
-        </div>
-    </div>
+                </div>
+
+                <div nz-col [nzXs]="24" [nzMd]="6">
+                    <nz-form-item>
+                        <nz-form-label nzRequired>Payment Type</nz-form-label>
+                        <nz-form-control>
+                            <nz-select formControlName="payTypeId" nzPlaceHolder="Select Payment Type">
+                                @for(type of payTypeListSignal(); track type.id) {
+                                <nz-option [nzValue]="type.id" [nzLabel]="type.name"></nz-option>
+                                }
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+            </div>
+            <div nz-row [nzGutter]="24">
+                <div nz-col [nzXs]="24" [nzMd]="6">
+                    <nz-form-item>
+                        <nz-form-label>Payment Remarks</nz-form-label>
+                        <nz-form-control>
+                            <textarea nz-input formControlName="remarks" rows="3"
+                                placeholder="Add internal notes..."></textarea>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            <nz-divider></nz-divider>
+
+            <div class="form-actions">
+                <div nz-row nzType="flex" nzJustify="end" nzAlign="middle">
+                    <nz-space nzSize="middle">
+                        <button *nzSpaceItem nz-button nzType="default" (click)="onCancel()">
+                            Cancel
+                        </button>
+                        <button [nzLoading]="isSubmitting()" [disabled]="!form.valid" *nzSpaceItem nz-button
+                            nzType="primary" (click)="onSave()">
+                            <span nz-icon nzType="save" nzTheme="outline"></span>
+                            Save
+                        </button>
+                    </nz-space>
+                </div>
+            </div>
+        </form>
+    </nz-card>
 </div>

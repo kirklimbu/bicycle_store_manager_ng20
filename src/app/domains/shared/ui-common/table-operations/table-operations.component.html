@@ -15,6 +15,28 @@
                             </nz-form-control>
                         </nz-form-item>
                     </div>
+                    }@if (isLocalSearch()) {
+                    <nz-form-item class="enterprise-search-field">
+                        <nz-form-label nzNoColon>Quick Find</nz-form-label> <nz-form-control>
+                            <nz-input-group [nzPrefix]="prefixIcon" [nzSuffix]="inputClearTpl"
+                                class="modern-search-group">
+                                <input nz-input formControlName="localSearch" [placeholder]="placeholder()"
+                                    class="modern-input" />
+                            </nz-input-group>
+
+                            <ng-template #prefixIcon>
+                                <span nz-icon nzType="search" class="search-icon-muted"></span>
+                            </ng-template>
+
+                            <ng-template #inputClearTpl>
+                                @if (form.get('localSearch')?.value) {
+                                <span nz-icon nzType="close-circle" nzTheme="fill" class="ant-input-clear-icon"
+                                    (click)="form.get('localSearch')?.setValue('')">
+                                </span>
+                                }
+                            </ng-template>
+                        </nz-form-control>
+                    </nz-form-item>
                     }
 
                     @if (showSelector1()) {

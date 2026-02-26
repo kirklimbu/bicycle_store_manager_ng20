@@ -1,32 +1,31 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, linkedSignal, signal, OnInit, DestroyRef } from '@angular/core';
+import { Component, DestroyRef, inject, linkedSignal, OnInit, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
-import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
-import { NzSpaceModule } from 'ng-zorro-antd/space';
-import { NzTableModule } from 'ng-zorro-antd/table';
-import { NepaliDateFormatterPipe } from '../../../../shared/pipes/nepali-date-formatter.pipe';
-import { TableActionButtonsComponent } from '../../../../shared/ui-common/table-action-buttons/table-action-buttons.component';
-import { TableOperationsComponent } from '../../../../shared/ui-common/table-operations/table-operations.component';
-import { Observable } from 'rxjs';
-import { FilterValues } from '../../../../sales/data/models/sales.model';
-import { ReportService } from '../../../data/services/report.services';
-import { DayendStore } from '../../../../shared/services/dayendstore.service';
-import { IGeneralLedgerReport } from '../../../data/models/ledger-report.model';
-import { NzTagModule } from 'ng-zorro-antd/tag';
-import { IAccTreeDto, IFiscalDto } from '../../../../dayend';
-import { DayendService } from '../../../../dayend/data/services/dayend.service';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Form, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzFlexModule } from 'ng-zorro-antd/flex';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzSelectModule } from 'ng-zorro-antd/select';
-import { FilterStoreService } from '../../../../shared/services/table-filter-store.service';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzTagModule } from 'ng-zorro-antd/tag';
+import { IAccTreeDto, IFiscalDto } from '../../../../dayend';
+import { DayendService } from '../../../../dayend/data/services/dayend.service';
+import { FilterValues } from '../../../../sales/data/models/sales.model';
 import { BsDateInputDirective } from '../../../../shared/directives/bsdate/bs-date-input.directive';
+import { NepaliDateFormatterPipe } from '../../../../shared/pipes/nepali-date-formatter.pipe';
+import { DayendStore } from '../../../../shared/services/dayendstore.service';
+import { FilterStoreService } from '../../../../shared/services/table-filter-store.service';
+import { TableActionButtonsComponent } from '../../../../shared/ui-common/table-action-buttons/table-action-buttons.component';
+import { TableOperationsComponent } from '../../../../shared/ui-common/table-operations/table-operations.component';
+import { IGeneralLedgerReport } from '../../../data/models/ledger-report.model';
+import { ReportService } from '../../../data/services/report.services';
 
 @Component({
   selector: 'app-general-ledger-report',
@@ -65,10 +64,7 @@ import { BsDateInputDirective } from '../../../../shared/directives/bsdate/bs-da
 export class GeneralLedgerReport implements OnInit {
 
   // props
-  manualSelectorOptions = [
-    { id: '1', name: 'cash' },
-    { id: '2', name: 'credit' },
-  ];
+
   filterSignal = signal<FilterValues>({});
   fiscalYearListSignal = signal<IFiscalDto[]>([]);
   accTreeListSignal = signal<IAccTreeDto[]>([]);

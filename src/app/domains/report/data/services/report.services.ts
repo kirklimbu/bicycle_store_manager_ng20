@@ -6,7 +6,7 @@ import { environment } from '../../../../../environments/environment';
 
 import { ICustomResponse } from 'src/app/domains/shared/models/CustomResponse.model';
 import { IClosingStockReport, IProfitLossReport, IPurchaseDetailReport, IPurchaseMasterReport, IPurchaseReport, IPurchaseReportMonthWise, ISalesDetailReport, ISalesReportMonthWise } from '../models/purhase-report.model';
-import { IGeneralLedgerReport } from '../models/ledger-report.model';
+import { IGeneralLedgerReport, IStockLedgerReport } from '../models/ledger-report.model';
 import { IPurchaseAgingReport, ISalesAgingReport } from '../models/ageing-report.model';
 @Injectable({
   providedIn: 'root',
@@ -100,6 +100,13 @@ export class ReportService {
 
     );
   }
+  getStockLedgerReport(query: any): Observable<IStockLedgerReport[]> {
+    return this.http.get<IStockLedgerReport[]>(
+      `${this.apiUrl}report/stock/ledger/list`,
+      { params: query }
+
+    );
+  }
   // ageing report
   getSalesAgeingReport(query: any): Observable<ISalesAgingReport[]> {
     return this.http.get<ISalesAgingReport[]>(
@@ -115,6 +122,7 @@ export class ReportService {
 
     );
   }
+
   // transaction section
 
   // fetchTransactionForm(
