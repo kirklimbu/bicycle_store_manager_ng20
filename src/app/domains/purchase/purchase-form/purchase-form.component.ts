@@ -159,7 +159,7 @@ export class PurchaseFormComponent implements OnInit {
     const taxRate = Number(selectedItem?.taxRate ?? category?.taxRate ?? 0);
 
     const totalAmt = +(qty * rate).toFixed(2);
-
+    // totalAmt= qty*rate + cCAmt (NEW TOTAL)
     const disPercent = Number(category?.disPercent ?? 0);
     let discountAmt = Number(category?.discountAmt ?? 0);
 
@@ -172,7 +172,9 @@ export class PurchaseFormComponent implements OnInit {
     const taxableAmt = +(totalAmt - discountAmt).toFixed(2);
     const taxAmt = +((taxableAmt * taxRate) / 100).toFixed(2);
     const netAmt = +(taxableAmt + taxAmt).toFixed(2);
-
+    // NEW FORMULA
+    // const netAmt = +(taxableAmt + taxAmt+freeTaxAmt).toFixed(2);
+    // START FROM HERE
     return this.fb.group({
       purchaseMasterId: [category?.purchaseMasterId ?? ''],
       purchaseDetailId: [category?.purchaseDetailId ?? 0],
