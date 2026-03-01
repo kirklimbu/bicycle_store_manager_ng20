@@ -16,7 +16,7 @@ import { catchError, throwError } from 'rxjs';
  * - It handles common HTTP statuses specially (401, 403, 500).
  */
 
-const NOTIF_DURATION = 10_000; // ms
+const NOTIF_DURATION = 3_000; // ms
 const NOTIF_PLACE = 'topRight' as const;
 const DEDUPE_WINDOW = 5_000; // ms - identical notifications within this window are ignored
 

@@ -30,7 +30,7 @@ const icons: IconDefinition[] = Object.values(AllIcons);
 
 const ngZorroConfig: NzConfig = {
   message: { nzTop: 120 },
-  notification: { nzTop: 160, nzDuration: 10_000 },
+  notification: { nzTop: 160, nzDuration: 3_000 },
 };
 export function tokenGetter(): string | null {
   const raw = localStorage.getItem('auth');

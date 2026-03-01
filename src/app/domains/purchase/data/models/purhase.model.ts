@@ -5,11 +5,24 @@ export interface IPurchaseFormDtoWrapper {
   supplierList: ISupplier[];
 }
 export interface IPurchaseFormDto {
-  transactionMaster: ITransactionMaster1Dto;
+  purchaseMaster: IPurchaseMaster1Dto;
   stockList: IInventoryDetail1Dto[];
   selectedStockList?: IInventoryMaster1Dto[];
 
 }
+
+export interface IPurchaseMaster1Dto {
+  purchaseMasterId: number;
+  supplierId: number;
+  payTypeId: number;
+  billNo: string;
+  saveDate: string;
+  supplierBillNo: string;
+  supplierSaveDate: string;
+  totalAmount: number;
+  remarks: string;
+}
+
 
 export interface IPurchaseTransaction1Dto {
   // purchaseId: number;

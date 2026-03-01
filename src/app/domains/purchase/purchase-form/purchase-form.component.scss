@@ -64,3 +64,90 @@ $input-readonly-bg: #f5f5f5;
     }
   }
 }
+
+.form-container {
+    padding: 20px;
+    background: #f4f7f9;
+    min-height: 100vh;
+}
+
+.master-card {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border-radius: 8px;
+}
+
+.read-only-input {
+    background-color: #f5f5f5 !important;
+    border-color: #d9d9d9 !important;
+    color: #595959 !important;
+}
+
+.entry-row-container {
+    background: #fff;
+    padding: 16px;
+    border: 1px solid #e8e8e8;
+    border-radius: 4px;
+    margin-bottom: 8px;
+}
+
+.net-amt-input {
+    background-color: #e6f7ff !important;
+    border-color: #91d5ff !important;
+    font-weight: bold;
+    color: #1890ff;
+}
+
+.total-display-input {
+    background-color: #fff1f0 !important;
+    border-color: #ffa39e !important;
+    color: #cf1322 !important;
+    font-weight: bold;
+    text-align: right;
+}
+
+.summary-footer td {
+    background-color: #fafafa !important;
+    font-weight: 600;
+    border-top: 2px solid #f0f0f0 !important;
+}
+
+
+.form-actions-bar {
+    margin-top: 24px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.amt-cell {
+    /* Reduce padding to allow more horizontal space for digits */
+    padding-left: 4px !important;
+    padding-right: 8px !important;
+    
+    /* Force numbers to stay on one line */
+    white-space: nowrap; 
+    
+    /* Standard enterprise font size for data-heavy tables */
+    font-size: 12px; 
+}
+
+.final-net {
+    /* Blue background highlight for the grand total */
+    background-color: #e6f7ff !important; 
+    color: #0050b3 !important;
+    font-size: 13px !important; /* Slightly larger for the main total */
+    min-width: 150px; /* Matches your widened header */
+}
+
+.footer-label {
+    font-weight: bold;
+    color: #595959;
+    text-transform: uppercase;
+    font-size: 11px;
+        letter-spacing: 1px;
+
+}
+
+/* Ensure the table body also respects the no-wrap for large numbers */
+nz-table tbody td {
+    white-space: nowrap;
+}

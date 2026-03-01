@@ -9,7 +9,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
   providedIn: 'root',
 })
 export class MessageService {
-  default_duration = 10_000;
+  default_duration = 3_000;
   private message = inject(NzMessageService);
 
   createMessage(type: string, msg: string, duration?: number): void {

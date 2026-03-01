@@ -301,16 +301,41 @@
                         <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="8">
 
                             <nz-form-item>
-
-                                <!-- <nz-form-label>Discount Amt.</nz-form-label>
-                                <nz-form-control nzErrorTip="Please add discount amount">
-                                    <input nz-input type="number" min="0" formControlName="discountAmt"
-                                        placeholder="50" />
-                                </nz-form-control> -->
                                 <nz-form-label>Discount Amt.</nz-form-label>
                                 <nz-input-number name="discountAmt" style="width: 100%" class="bg-blue-50"
                                     [ngModel]="state().discountAmt" (ngModelChange)="updateField('discountAmt', $event)"
                                     name="discountAmt">
+                                </nz-input-number>
+                            </nz-form-item>
+                        </div>
+                        <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="8">
+
+                            <nz-form-item>
+                                <nz-form-label>Free Tax Rate</nz-form-label>
+                                <nz-input-number name="freeTaxRate" style="width: 100%" class="bg-blue-50"
+                                    [ngModel]="state().freeTaxRate" (ngModelChange)="updateField('freeTaxRate', $event)"
+                                    name="freeTaxRate">
+                                </nz-input-number>
+                            </nz-form-item>
+                        </div>
+                        <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="8">
+
+                            <nz-form-item>
+                                <nz-form-label>Trade Commission Rate</nz-form-label>
+                                <nz-input-number name="tradeCommissionRate" style="width: 100%" class="bg-blue-50"
+                                    [ngModel]="state().tradeCommissionRate"
+                                    (ngModelChange)="updateField('tradeCommissionRate', $event)"
+                                    name="tradeCommissionRate">
+                                </nz-input-number>
+                            </nz-form-item>
+                        </div>
+                        <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="8">
+
+                            <nz-form-item>
+                                <nz-form-label>CC %</nz-form-label>
+                                <nz-input-number name="ccPercent" style="width: 100%" class="bg-blue-50"
+                                    [ngModel]="state().ccPercent" (ngModelChange)="updateField('ccPercent', $event)"
+                                    name="ccPercent">
                                 </nz-input-number>
                             </nz-form-item>
                         </div>
