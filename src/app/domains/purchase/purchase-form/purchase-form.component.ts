@@ -88,6 +88,8 @@ export class PurchaseFormComponent implements OnInit {
 
   createInventory(row?: any): FormGroup {
     const selectedItem = row?.medicine ?? this.inventoryListSignal().find(x => x.stockMasterId === row?.stockMasterId) ?? null;
+    // console.log('item', selectedItem);
+
     return this.fb.group({
       purchaseDetailId: [row?.purchaseDetailId ?? 0],
       medicine: [selectedItem],
@@ -104,6 +106,7 @@ export class PurchaseFormComponent implements OnInit {
       taxRate: [selectedItem?.taxRate ?? 0],
       taxAmt: [row?.taxAmt ?? 0],
       freeTaxAmt: [row?.freeTaxAmt ?? 0],
+      tradeCommissionRate: [row?.tradeCommissionRate ?? 0],
       netAmt: [row?.netAmt ?? 0]
     });
   }
@@ -125,11 +128,16 @@ export class PurchaseFormComponent implements OnInit {
     const row = this.inventoryList.at(index) as FormGroup;
     if (!row) return;
     const v = row.getRawValue();
+    // console.log('dfadf', v);
+
 
     const qty = Number(v.qty || 0);
     const freeQty = Number(v.freeQty || 0);
     const rate = Number(v.pricePerUnit || 0);
     const taxRate = Number(v.taxRate || 0);
+    const tradeCommissionRate = Number(v.medicine.tradeCommissionRate || 0);
+    // console.log('tradeCommissionRate', tradeCommissionRate);
+
 
     const totalAmt = qty * rate;
     const ccBasis = freeQty * rate;
@@ -139,10 +147,24 @@ export class PurchaseFormComponent implements OnInit {
     if (this.lastEditedField() === 'ccPercent') ccAmt = (ccBasis * ccPercent) / 100;
     else if (this.lastEditedField() === 'ccAmt') ccPercent = ccBasis > 0 ? (ccAmt / ccBasis) * 100 : 0;
 
+    // formula,
+
+    // eg to calculate disAmt
+    // disAmt = (7201.7 - ( tradeCommissionRate /100) * 7201.7) * (2/100)
+
     let disAmt = v.discountAmt;
     let disPercent = v.disPercent;
-    if (this.lastEditedField() === 'disPercent') disAmt = (totalAmt * disPercent) / 100;
-    else if (this.lastEditedField() === 'discountAmt') disPercent = totalAmt > 0 ? (disAmt / totalAmt) * 100 : 0;
+    const tradeCommAmt = (totalAmt * tradeCommissionRate) / 100;
+    const amtAfterTradeComm = totalAmt - tradeCommAmt;
+
+    if (this.lastEditedField() === 'disPercent') {
+      // console.log('dis%');
+
+      disAmt = (amtAfterTradeComm * disPercent) / 100;      // disAmt = (totalAmt * disPercent) / 100;
+
+    }
+    else if (this.lastEditedField() === 'discountAmt')
+      disPercent = amtAfterTradeComm > 0 ? (disAmt / amtAfterTradeComm) * 100 : 0;
 
     const freeTaxAmt = (freeQty * rate * taxRate) / 100; // Fixed Free Tax Calculation
     const taxableAmt = totalAmt - disAmt + ccAmt;

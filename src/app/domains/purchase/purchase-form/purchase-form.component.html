@@ -117,6 +117,8 @@
                             <nz-form-item><nz-form-label>Total</nz-form-label><input nz-input type="number"
                                     formControlName="totalAmt" readonly class="read-only-input" /></nz-form-item>
                         </div>
+
+
                         <div nz-col [nzXs]="8" [nzMd]="4" [nzLg]="2">
                             <nz-form-item><nz-form-label>Dis. %</nz-form-label><input type="number" nz-input
                                     formControlName="disPercent" (focus)="setLastEdited('disPercent')"
@@ -127,6 +129,7 @@
                                     formControlName="discountAmt" (focus)="setLastEdited('discountAmt')"
                                     (blur)="onValueChange(i)" /></nz-form-item>
                         </div>
+
                         <div nz-col [nzXs]="8" [nzMd]="4" [nzLg]="3">
                             <nz-form-item><nz-form-label>Taxable</nz-form-label><input nz-input type="number"
                                     formControlName="taxableAmt" readonly class="read-only-input" /></nz-form-item>
@@ -137,7 +140,7 @@
                         </div>
                         <div nz-col [nzXs]="8" [nzMd]="4" [nzLg]="3">
                             <nz-form-item><nz-form-label>Tax (Free)</nz-form-label><input nz-input type="number"
-                                    formControlName="freeTaxAmt" /></nz-form-item>
+                                    formControlName="freeTaxAmt" readonly class="read-only-input" /></nz-form-item>
                         </div>
                         <div nz-col [nzXs]="24" [nzMd]="8" [nzLg]="3">
                             <nz-form-item>
