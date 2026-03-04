@@ -6,6 +6,17 @@
     <nz-card [nzBordered]="false" class="master-card" nzType="inner">
         <form nz-form nzLayout="vertical" [formGroup]="form">
             <div formGroupName="purchaseMaster" nz-row nzGutter="16">
+                <div nz-col [nzXs]="24" [nzMd]="8" [nzLg]="4">
+                    <nz-form-item>
+                        <nz-form-label>Bill Type</nz-form-label>
+                        <nz-select [nzDisabled]="disableBillType()" nzShowSearch nzPlaceHolder="Select Bill Type"
+                            formControlName="billType" (ngModelChange)="onBillTypeChange($event)">
+                            @for (item of billTypeListSignal(); track item) {
+                            <nz-option [nzValue]="item" [nzLabel]="item"></nz-option>
+                            }
+                        </nz-select>
+                    </nz-form-item>
+                </div>
                 <div nz-col [nzXs]="12" [nzMd]="6" [nzLg]="3">
                     <nz-form-item>
                         <nz-form-label>Bill No.</nz-form-label>

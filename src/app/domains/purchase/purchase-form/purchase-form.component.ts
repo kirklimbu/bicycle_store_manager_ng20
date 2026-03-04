@@ -22,7 +22,7 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 import { PurchaseService } from '../data/services/purchase.services';
 import { TableActionButtonsComponent } from '../../shared/ui-common/table-action-buttons/table-action-buttons.component';
 import { BsDateInputDirective } from '../../shared/directives/bsdate/bs-date-input.directive';
-import { IPaytype, ISupplier, IPurchaseFormDtoWrapper } from './../data/models/purhase.model';
+import { IPaytype, ISupplier, CalcInputs, BillStrategy } from './../data/models/purhase.model';
 
 @Component({
   selector: 'app-purchase-form',
@@ -40,9 +40,12 @@ export class PurchaseFormComponent implements OnInit {
   mode = 'add';
   form!: FormGroup;
   isSaving = signal<boolean>(false);
+  // disableBillType = signal<boolean>(false);
+  billType = signal<string>('');
   payTypeSignal = signal<IPaytype[]>([]);
   inventoryListSignal = signal<any[]>([]);
   supplierListSignal = signal<ISupplier[]>([]);
+  billTypeListSignal = signal<any[]>([]);
   selectedItemsListSignal = signal<any[]>([]);
   lastEditedField = signal<'disPercent' | 'discountAmt' | 'ccPercent' | 'ccAmt' | null>(null);
 
@@ -62,7 +65,7 @@ export class PurchaseFormComponent implements OnInit {
   totalTaxSignal = computed(() => this.selectedItemsListSignal().reduce((s, i) => s + (i.taxAmt || 0), 0));
   totalFreeTaxSignal = computed(() => this.selectedItemsListSignal().reduce((s, i) => s + (i.freeTaxAmt || 0), 0));
   netTotalSignal = computed(() => this.selectedItemsListSignal().reduce((s, i) => s + (i.netAmt || 0), 0));
-
+  disableBillType = computed(() => this.selectedItemsListSignal().length > 0);
   queryParamMapSignal = toSignal(this.route.queryParamMap, { initialValue: this.route.snapshot.queryParamMap });
   IdsSignal = computed(() => ({
     supplierId: Number(this.queryParamMapSignal()?.get('supplierId')) || 0,
@@ -77,7 +80,7 @@ export class PurchaseFormComponent implements OnInit {
   initForm(): void {
     this.form = this.fb.group({
       purchaseMaster: this.fb.group({
-        purchaseMasterId: [0], supplierId: [''], payTypeId: [''], billNo: [''],
+        purchaseMasterId: [0], supplierId: [''], payTypeId: [''], billNo: [''], billType: [''],
         supplierBillNo: [''], saveDate: [''], supplierSaveDate: [''], remarks: [''],
       }),
       selectedStockList: this.fb.array([this.createInventory()]),
@@ -88,7 +91,7 @@ export class PurchaseFormComponent implements OnInit {
 
   createInventory(row?: any): FormGroup {
     const selectedItem = row?.medicine ?? this.inventoryListSignal().find(x => x.stockMasterId === row?.stockMasterId) ?? null;
-    // console.log('item', selectedItem);
+    console.log('item', selectedItem?.tradeCommissionRate);
 
     return this.fb.group({
       purchaseDetailId: [row?.purchaseDetailId ?? 0],
@@ -104,6 +107,7 @@ export class PurchaseFormComponent implements OnInit {
       discountAmt: [row?.discountAmt ?? 0],
       taxableAmt: [row?.taxableAmt ?? 0],
       taxRate: [selectedItem?.taxRate ?? 0],
+      freeTaxRate: [selectedItem?.freeTaxRate ?? 0],
       taxAmt: [row?.taxAmt ?? 0],
       freeTaxAmt: [row?.freeTaxAmt ?? 0],
       tradeCommissionRate: [row?.tradeCommissionRate ?? 0],
@@ -116,71 +120,190 @@ export class PurchaseFormComponent implements OnInit {
   onProductSelect(index: number): void {
     const row = this.inventoryList.at(index) as FormGroup;
     const item = row.get('medicine')?.value;
+    console.log('item selected', item);
+
     if (item) {
-      row.patchValue({ pricePerUnit: item.pricePerUnit || 0, taxRate: item.taxRate || 0, stockMasterId: item.stockMasterId });
+      row.patchValue({ pricePerUnit: item.pricePerUnit || 0, taxRate: item.taxRate || 0, freeTaxRate: item.freeTaxRate || 0, tradeCommissionRate: item.tradeCommissionRate || 0, stockMasterId: item.stockMasterId });
       this.recalcRow(index);
     }
   }
 
+  onBillTypeChange(billType: string): void {
+    // Recalculate all rows when bill type changes
+    this.billType.set(billType);
+    this.inventoryList.controls.forEach((_, index) => this.recalcRow(index));
+  }
+
   onValueChange(index: number): void { this.recalcRow(index); }
 
+  // private recalcRow(index: number): void {
+  //   const row = this.inventoryList.at(index) as FormGroup;
+  //   if (!row) return;
+  //   const v = row.getRawValue();
+
+  //   const qty = Number(v.qty || 0);
+  //   const freeQty = Number(v.freeQty || 0);
+  //   const rate = Number(v.pricePerUnit || 0);
+  //   const taxRate = Number(v.taxRate || 0);
+  //   const freeTaxRate = Number(v.freeTaxRate || 0);
+  //   const tradeCommissionRate = Number(v.medicine.tradeCommissionRate || 0);
+
+  //   const totalAmt = qty * rate;
+  //   const ccBasis = freeQty * rate;
+
+  //   let ccAmt = v.ccAmt;
+  //   let ccPercent = v.ccPercent;
+  //   if (this.lastEditedField() === 'ccPercent') ccAmt = (ccBasis * ccPercent) / 100;
+  //   else if (this.lastEditedField() === 'ccAmt') ccPercent = ccBasis > 0 ? (ccAmt / ccBasis) * 100 : 0;
+
+  //   let disAmt = v.discountAmt;
+  //   let disPercent = v.disPercent;
+  //   const tradeCommAmt = (totalAmt * tradeCommissionRate) / 100;
+  //   const amtAfterTradeComm = totalAmt - tradeCommAmt;
+
+  //   if (this.lastEditedField() === 'disPercent') {
+
+  //     disAmt = (amtAfterTradeComm * disPercent) / 100;      // disAmt = (totalAmt * disPercent) / 100;
+
+  //   }
+  //   else if (this.lastEditedField() === 'discountAmt')
+  //     disPercent = amtAfterTradeComm > 0 ? (disAmt / amtAfterTradeComm) * 100 : 0;
+
+  //   const freeTaxAmt = (freeQty * rate * taxRate) / 100; // vatCC
+  //   const taxableAmt = totalAmt - disAmt + ccAmt;
+  //   const taxAmt = (taxableAmt * taxRate) / 100;  //vatGrossAmt
+  //   const netAmt = taxableAmt + taxAmt + freeTaxAmt;
+
+  //   row.patchValue({
+  //     totalAmt: +totalAmt.toFixed(2),
+  //     ccPercent: +ccPercent.toFixed(2),
+  //     ccAmt: +ccAmt.toFixed(2),
+  //     disPercent: +disPercent.toFixed(2),
+  //     discountAmt: +disAmt?.toFixed(2),
+  //     freeTaxAmt: +freeTaxAmt.toFixed(2),
+  //     taxableAmt: +taxableAmt.toFixed(2),
+  //     taxAmt: +taxAmt.toFixed(2),
+  //     netAmt: +netAmt.toFixed(2)
+  //   }, { emitEvent: false });
+  // }
+
   private recalcRow(index: number): void {
+    // const row = this.inventoryList.at(index) as FormGroup;
+    // if (!row) return;
+
+    // const v = row.getRawValue();
+    // const type = this.billType(); // Current selection: 'GROSS_AMT_ONLY' or 'DISCOUNT_TO_CC'
+
+    // // Input Values
+    // const qty = Number(v.qty || 0);
+    // const rate = Number(v.pricePerUnit || 0);
+    // const freeQty = Number(v.freeQty || 0);
+    // const taxRate = Number(v.taxRate || 0); // From server
+    // const tradeCommRate = Number(v.tradeCommissionRate || 0);
+    // const ccAmtInput = Number(v.ccAmt || 0);
+
+    // // Intermediate Variables
+    // let totalAmt: number;
+    // let disAmt: number = Number(v.discountAmt || 0);
+    // let disPercent: number = Number(v.disPercent || 0);
+    // let taxableAmt: number;
+    // let vatGross: number;
+    // let vatCC: number = 0;
+
+    // // --- START CALCULATIONS BASED ON TYPE ---
+
+    // if (type === 'GROSS_AMT_ONLY') {
+    //   // Formula 1: a) total = qty * rate
+    //   totalAmt = qty * rate;
+
+    //   // b) disAmt calculation using your trade commission formula
+    //   const tradeCommAmt = (totalAmt * tradeCommRate) / 100;
+    //   const baseForDiscount = totalAmt - tradeCommAmt;
+
+    //   if (this.lastEditedField() === 'disPercent') {
+    //     disAmt = (baseForDiscount * disPercent) / 100;
+    //   } else if (this.lastEditedField() === 'discountAmt') {
+    //     disPercent = baseForDiscount > 0 ? (disAmt / baseForDiscount) * 100 : 0;
+    //   }
+
+    //   // c) taxableAmt = total - disAmt + ccAmt
+    //   taxableAmt = totalAmt - disAmt + ccAmtInput;
+
+    //   // d) vatGross = taxableAmt * taxRate%
+    //   vatGross = (taxableAmt * taxRate) / 100;
+
+    //   // e) vatCC = rate * freeQty * taxRate%
+    //   vatCC = (rate * freeQty * taxRate) / 100;
+
+    // } else {
+    //   // Formula 2: a) total = qty * rate + ccAmt
+    //   totalAmt = (qty * rate) + ccAmtInput;
+
+    //   // b) disAmt
+    //   const tradeCommAmt = (totalAmt * tradeCommRate) / 100;
+    //   const baseForDiscount = totalAmt - tradeCommAmt;
+
+    //   if (this.lastEditedField() === 'disPercent') {
+    //     disAmt = (baseForDiscount * disPercent) / 100;
+    //   } else if (this.lastEditedField() === 'discountAmt') {
+    //     disPercent = baseForDiscount > 0 ? (disAmt / baseForDiscount) * 100 : 0;
+    //   }
+
+    //   // c) taxableAmt = total - disAmt
+    //   taxableAmt = totalAmt - disAmt;
+
+    //   // d) vat = taxableAmt * taxRate%
+    //   vatGross = (taxableAmt * taxRate) / 100;
+    //   vatCC = 0; // f) netAmt = taxableAmt + vat (No separate CC VAT)
+    // }
+
+    // // --- FINAL TOTAL ---
+    // // f) netAmt = taxableAmt + vatGross + vatCC
+    // const netAmt = taxableAmt + vatGross + vatCC;
+
+    // row.patchValue({
+    //   totalAmt: +totalAmt.toFixed(2),
+    //   disPercent: +disPercent.toFixed(2),
+    //   discountAmt: +disAmt.toFixed(2),
+    //   taxableAmt: +taxableAmt.toFixed(2),
+    //   taxAmt: +vatGross.toFixed(2),
+    //   freeTaxAmt: +vatCC.toFixed(2),
+    //   netAmt: +netAmt.toFixed(2)
+    // }, { emitEvent: false });
+
     const row = this.inventoryList.at(index) as FormGroup;
     if (!row) return;
+
     const v = row.getRawValue();
-    // console.log('dfadf', v);
+
+    // Mapping every field from the form to the strategy inputs
+    const inputs: CalcInputs = {
+      qty: Number(v.qty || 0),
+      rate: Number(v.pricePerUnit || 0),
+      ccAmt: Number(v.ccAmt || 0),
+      ccPercent: Number(v.ccPercent || 0), // Now valid in the interface
+      freeQty: Number(v.freeQty || 0),
+      taxRate: Number(v.taxRate || 0),
+      freeTaxRate: Number(v.freeTaxRate || 0),
+      tradeCommRate: Number(v.tradeCommissionRate || 0),
+      disPercent: Number(v.disPercent || 0),
+      discountAmt: Number(v.discountAmt || 0),
+      lastEdited: this.lastEditedField()
+    };
 
 
-    const qty = Number(v.qty || 0);
-    const freeQty = Number(v.freeQty || 0);
-    const rate = Number(v.pricePerUnit || 0);
-    const taxRate = Number(v.taxRate || 0);
-    const tradeCommissionRate = Number(v.medicine.tradeCommissionRate || 0);
-    // console.log('tradeCommissionRate', tradeCommissionRate);
-
-
-    const totalAmt = qty * rate;
-    const ccBasis = freeQty * rate;
-
-    let ccAmt = v.ccAmt;
-    let ccPercent = v.ccPercent;
-    if (this.lastEditedField() === 'ccPercent') ccAmt = (ccBasis * ccPercent) / 100;
-    else if (this.lastEditedField() === 'ccAmt') ccPercent = ccBasis > 0 ? (ccAmt / ccBasis) * 100 : 0;
-
-    // formula,
-
-    // eg to calculate disAmt
-    // disAmt = (7201.7 - ( tradeCommissionRate /100) * 7201.7) * (2/100)
-
-    let disAmt = v.discountAmt;
-    let disPercent = v.disPercent;
-    const tradeCommAmt = (totalAmt * tradeCommissionRate) / 100;
-    const amtAfterTradeComm = totalAmt - tradeCommAmt;
-
-    if (this.lastEditedField() === 'disPercent') {
-      // console.log('dis%');
-
-      disAmt = (amtAfterTradeComm * disPercent) / 100;      // disAmt = (totalAmt * disPercent) / 100;
-
-    }
-    else if (this.lastEditedField() === 'discountAmt')
-      disPercent = amtAfterTradeComm > 0 ? (disAmt / amtAfterTradeComm) * 100 : 0;
-
-    const freeTaxAmt = (freeQty * rate * taxRate) / 100; // Fixed Free Tax Calculation
-    const taxableAmt = totalAmt - disAmt + ccAmt;
-    const taxAmt = (taxableAmt * taxRate) / 100;
-    const netAmt = taxableAmt + taxAmt + freeTaxAmt;
+    const result = BillStrategy[this.billType()](inputs);
 
     row.patchValue({
-      totalAmt: +totalAmt.toFixed(2),
-      ccPercent: +ccPercent.toFixed(2),
-      ccAmt: +ccAmt.toFixed(2),
-      disPercent: +disPercent.toFixed(2),
-      discountAmt: +disAmt?.toFixed(2),
-      freeTaxAmt: +freeTaxAmt.toFixed(2),
-      taxableAmt: +taxableAmt.toFixed(2),
-      taxAmt: +taxAmt.toFixed(2),
-      netAmt: +netAmt.toFixed(2)
+      totalAmt: +result.totalAmt.toFixed(2),
+      ccPercent: +result.ccPercent.toFixed(2),
+      ccAmt: +result.ccAmt.toFixed(2),
+      disPercent: +result.disPercent.toFixed(2),
+      discountAmt: +result.disAmt.toFixed(2),
+      taxableAmt: +result.taxableAmt.toFixed(2),
+      taxAmt: +result.taxAmt.toFixed(2),
+      freeTaxAmt: +result.freeTaxAmt.toFixed(2),
+      netAmt: +result.netAmt.toFixed(2)
     }, { emitEvent: false });
   }
 
@@ -203,6 +326,7 @@ export class PurchaseFormComponent implements OnInit {
 
     this.inventoryList.clear();
     this.inventoryList.push(this.createInventory());
+    // this.disableBillType.set(true); // Disable bill type change when items are added
 
     // Focus back to select
     setTimeout(() => (document.querySelector('.ant-select-selection-search-input') as HTMLElement)?.focus(), 50);
@@ -213,6 +337,8 @@ export class PurchaseFormComponent implements OnInit {
     const payload = { ...this.form.value, selectedStockList: this.selectedItemsListSignal() };
     this.purchaseService.savePurchase(payload).subscribe({
       next: (res: any) => {
+        // this.disableBillType.set(false); // Disable bill type change when items are added
+
         this.notification.success('Success', res.message);
         this.router.navigate(['/auth/purchase-master'], { queryParams: { supplierId: this.IdsSignal().supplierId } });
       },
@@ -229,6 +355,8 @@ export class PurchaseFormComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroy$))
       .subscribe(res => {
         this.payTypeSignal.set(res.payTypeList);
+        this.billTypeListSignal.set(res.billTypeList);
+        this.billType.set(res?.form?.purchaseMaster?.billType);
         this.inventoryListSignal.set(res.stockList);
         this.supplierListSignal.set(res.supplierList);
         this.form.patchValue({ purchaseMaster: res.form.purchaseMaster });
