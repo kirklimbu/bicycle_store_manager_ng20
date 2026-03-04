@@ -92,8 +92,9 @@ export const BillStrategy: Record<BillType, (i: CalcInputs) => FullCalcResult> =
     // taxableAmt = total - disAmt
     const taxableAmt = totalAmt - disAmt;
     const taxAmt = (taxableAmt * i.taxRate) / 100;
+    const freeTaxAmt = (i.rate * i.freeQty * i.freeTaxRate) / 100;
 
-    return { totalAmt, disPercent, disAmt, ccPercent, ccAmt, taxableAmt, taxAmt, freeTaxAmt: 0, netAmt: taxableAmt + taxAmt };
+    return { totalAmt, disPercent, disAmt, ccPercent, ccAmt, taxableAmt, taxAmt, freeTaxAmt, netAmt: taxableAmt + taxAmt + freeTaxAmt };
   }
 };
 /**

@@ -124,7 +124,7 @@ $input-readonly-bg: #f5f5f5;
     padding-right: 8px !important;
     
     /* Force numbers to stay on one line */
-    white-space: nowrap; 
+    white-space: wrap; 
     font-weight: bold;
     /* Standard enterprise font size for data-heavy tables */
     font-size: 12px; 
@@ -149,5 +149,22 @@ $input-readonly-bg: #f5f5f5;
 
 /* Ensure the table body also respects the no-wrap for large numbers */
 nz-table tbody td {
-    white-space: nowrap;
+    white-space: wrap;
 }
+
+ .pay-badge {
+    padding: 2px 8px;
+    margin-left: 4px;
+    border-radius: 0;
+    font-size: 11px;
+    font-weight: 600;
+     background: #fff2f0;
+      color: #cf1322;
+      border: 1px solid #ffccc7;
+   
+   
+  }
+//   .is-modified {
+//     border-color: #faad14; /* Orange border to show it's different from default */
+//     background-color: #fffbe6;
+// }

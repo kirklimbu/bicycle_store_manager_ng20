@@ -42,6 +42,7 @@ export class PurchaseFormComponent implements OnInit {
   isSaving = signal<boolean>(false);
   // disableBillType = signal<boolean>(false);
   billType = signal<string>('');
+  defaultCCPercent = signal<number>(0);
   payTypeSignal = signal<IPaytype[]>([]);
   inventoryListSignal = signal<any[]>([]);
   supplierListSignal = signal<ISupplier[]>([]);
@@ -121,9 +122,10 @@ export class PurchaseFormComponent implements OnInit {
     const row = this.inventoryList.at(index) as FormGroup;
     const item = row.get('medicine')?.value;
     console.log('item selected', item);
-
+    const serverValue = item.ccPercent ?? 0;
+    this.defaultCCPercent.set(serverValue);
     if (item) {
-      row.patchValue({ pricePerUnit: item.pricePerUnit || 0, taxRate: item.taxRate || 0, freeTaxRate: item.freeTaxRate || 0, tradeCommissionRate: item.tradeCommissionRate || 0, stockMasterId: item.stockMasterId });
+      row.patchValue({ pricePerUnit: item.pricePerUnit || 0, taxRate: item.taxRate || 0, freeTaxRate: item.freeTaxRate || 0, tradeCommissionRate: item.tradeCommissionRate || 0, ccPercent: serverValue || 0, stockMasterId: item.stockMasterId });
       this.recalcRow(index);
     }
   }

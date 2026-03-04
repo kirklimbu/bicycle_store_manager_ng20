@@ -69,7 +69,7 @@
                     <nz-form-item>
                         <nz-form-label class="font-bold">Total Amount</nz-form-label>
                         <nz-form-control>
-                            <input class="total-display-input" readonly nz-input
+                            <input class="net-amt-input" readonly nz-input
                                 [value]="totalAmountSignal() | number:'1.2-2'" />
                         </nz-form-control>
                     </nz-form-item>
@@ -114,13 +114,24 @@
                             <nz-form-item><nz-form-label>Rate</nz-form-label><input type="number" nz-input
                                     formControlName="pricePerUnit" (input)="onValueChange(i)" /></nz-form-item>
                         </div>
-                        <div nz-col [nzXs]="8" [nzMd]="4" [nzLg]="2">
-                            <nz-form-item><nz-form-label>CC %</nz-form-label><input type="number" nz-input
-                                    formControlName="ccPercent" (focus)="setLastEdited('ccPercent')"
-                                    (blur)="onValueChange(i)" /></nz-form-item>
+                        <div nz-col [nzXs]="8" [nzMd]="4" [nzLg]="3">
+                            <nz-form-item>
+                                <nz-form-label>
+                                    CC %
+                                    <span title="Default CC%" class="pay-badge">
+                                        {{ defaultCCPercent() }}%
+                                    </span>
+                                </nz-form-label>
+
+                                <nz-form-control>
+                                    <input type="number" nz-input formControlName="ccPercent"
+                                        (focus)="setLastEdited('ccPercent')" (blur)="onValueChange(i)"
+                                        [class.is-modified]="inventoryList.at(i).get('ccPercent')?.value !== defaultCCPercent()" />
+                                </nz-form-control>
+                            </nz-form-item>
                         </div>
                         <div nz-col [nzXs]="8" [nzMd]="5" [nzLg]="3">
-                            <nz-form-item><nz-form-label>CC Amt.</nz-form-label><input type="number" nz-input
+                            <nz-form-item><nz-form-label>CC Free Amt.</nz-form-label><input type="number" nz-input
                                     formControlName="ccAmt" (focus)="setLastEdited('ccAmt')"
                                     (blur)="onValueChange(i)" /></nz-form-item>
                         </div>
