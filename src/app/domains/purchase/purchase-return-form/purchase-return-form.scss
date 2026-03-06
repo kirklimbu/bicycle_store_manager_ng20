@@ -1,17 +1,170 @@
 .ant-select {
-    width: 100%;
+  width: 100%;
 }
 
 .ant-page-header {
-    padding: 1rem 0;
+  padding: 1rem 0;
 }
 
 input.totalAmount {
-    border-color: red;
-    color: red;
-    font-weight: bold;
+  border-color: red;
+  color: red;
+  font-weight: bold;
 }
 
-:host ::ng-deep input[type='number'] {
+// Variables for consistency
+$surface-bg: #f0f2f5;
+$card-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+$primary-blue: #1890ff;
+$input-readonly-bg: #f5f5f5;
+
+.purchase-page {
+  background-color: $surface-bg;
+  padding: 24px;
+  min-height: 100vh;
+
+  .entry-card {
+    border-radius: 4px;
+    box-shadow: $card-shadow;
+    margin-bottom: 24px;
+    border: none;
+  }
+
+  // Modern input styling
+  input.nz-input, .nz-select-selector {
+    border-radius: 2px;
+    
+    &:focus {
+      box-shadow: 0 0 0 2px rgba($primary-blue, 0.1);
+    }
+  }
+
+  .read-only-field {
+    background-color: $input-readonly-bg;
+    color: rgba(0, 0, 0, 0.45);
+    cursor: not-allowed;
+  }
+
+  .net-amt-highlight {
+    background-color: #e6f7ff;
+    border-color: #91d5ff;
+    font-weight: 600;
+    color: $primary-blue;
+  }
+
+  // Modern Table
+  .modern-table {
+    background: white;
+    border-radius: 4px;
+    box-shadow: $card-shadow;
+    
+    ::ng-deep .ant-table-thead > tr > th {
+      background: #fafafa;
+      font-weight: 600;
+    }
+  }
+}
+
+.form-container {
+    padding: 20px;
+    background: #f4f7f9;
+    min-height: 100vh;
+}
+
+.master-card {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border-radius: 8px;
+}
+
+.read-only-input {
+    background-color: #f5f5f5 !important;
+    border-color: #d9d9d9 !important;
+    color: #595959 !important;
+}
+
+.entry-row-container {
+    background: #fff;
+    padding: 16px;
+    border: 1px solid #e8e8e8;
+    border-radius: 4px;
+    margin-bottom: 8px;
+}
+
+.net-amt-input {
+    background-color: #e6f7ff !important;
+    border-color: #91d5ff !important;
+    font-weight: bold;
+    color: #1890ff;
+}
+
+.total-display-input {
+    background-color: #fff1f0 !important;
+    border-color: #ffa39e !important;
+    color: #cf1322 !important;
+    font-weight: bold;
     text-align: right;
 }
+
+.summary-footer td {
+    background-color: #fafafa !important;
+    font-weight: 600;
+    border-top: 2px solid #f0f0f0 !important;
+}
+
+
+.form-actions-bar {
+    margin-top: 24px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.amt-cell {
+    /* Reduce padding to allow more horizontal space for digits */
+    padding-left: 4px !important;
+    padding-right: 8px !important;
+    
+    /* Force numbers to stay on one line */
+    white-space: wrap; 
+    font-weight: bold;
+    /* Standard enterprise font size for data-heavy tables */
+    font-size: 12px; 
+}
+
+.final-net {
+    /* Blue background highlight for the grand total */
+    background-color: #e6f7ff !important; 
+    color: #0050b3 !important;
+    font-size: 13px !important; /* Slightly larger for the main total */
+    min-width: 150px; /* Matches your widened header */
+}
+
+.footer-label {
+    font-weight: bold;
+    color: #595959;
+    text-transform: uppercase;
+    font-size: 11px;
+        letter-spacing: 1px;
+
+}
+
+/* Ensure the table body also respects the no-wrap for large numbers */
+nz-table tbody td {
+    white-space: wrap;
+}
+
+ .pay-badge {
+    padding: 2px 8px;
+    margin-left: 4px;
+    border-radius: 0;
+    font-size: 11px;
+    font-weight: 600;
+     background: #fff2f0;
+      color: #cf1322;
+      border: 1px solid #ffccc7;
+   
+   
+  }
+//   .is-modified {
+//     border-color: #faad14; /* Orange border to show it's different from default */
+//     background-color: #fffbe6;
+// }

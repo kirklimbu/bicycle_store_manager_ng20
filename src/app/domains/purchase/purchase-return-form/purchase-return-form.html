@@ -11,7 +11,7 @@
                 <nz-form-item>
                     <nz-form-label>Bill No.</nz-form-label>
                     <nz-form-control>
-                        <input readonly nzDisabled [disabled]="true" nz-input placeholder="Bill no."
+                        <input readonly class="read-only-input" nz-input placeholder="Bill no."
                             formControlName="debitNoteNo" />
                     </nz-form-control>
                 </nz-form-item>
@@ -20,7 +20,8 @@
                 <nz-form-item>
                     <nz-form-label>Save Date</nz-form-label>
                     <nz-form-control>
-                        <input readonly [disabled]="true" nz-input placeholder="Date" formControlName="saveDate" />
+                        <input readonly class="read-only-input" nz-input placeholder="Date"
+                            formControlName="saveDate" />
                     </nz-form-control>
                 </nz-form-item>
             </div>
@@ -108,8 +109,8 @@
                                     <nz-option [nzValue]="item" [nzLabel]="item.name"></nz-option>
                                     }
                                 </nz-select> -->
-                                <nz-select [nzDisabled]="true" nz-input nzShowSearch placeholder="Select product"
-                                    formControlName="medicine">
+                                <nz-select [nzDisabled]="true" nzShowSearch placeholder="Select product"
+                                    formControlName="medicine" (ngModelChange)="onProductSelect(i)">
                                     @for (item of inventoryListSignal(); track item.stockMasterId) {
                                     <nz-option [nzValue]="item" [nzLabel]="item.name"></nz-option>
                                     }
@@ -136,7 +137,13 @@
                                 </nz-form-control>
                             </nz-form-item>
                         </div>
-                        <div nz-col nzXs="12" nzMd="4" nzLg="2">
+
+                        <div nz-col [nzXs]="8" [nzMd]="5" [nzLg]="3">
+                            <nz-form-item><nz-form-label>CC Free Amt.</nz-form-label><input type="number" nz-input
+                                    formControlName="ccAmt" (focus)="setLastEdited('ccAmt')"
+                                    (blur)="onValueChange(i)" /></nz-form-item>
+                        </div>
+                        <div nz-col nzXs="12" nzMd="4" nzLg="3">
                             <nz-form-item>
                                 <nz-form-label>Total</nz-form-label>
                                 <nz-form-control>
@@ -144,16 +151,7 @@
                                 </nz-form-control>
                             </nz-form-item>
                         </div>
-                        <div nz-col nzXs="12" nzMd="4" nzLg="2">
-                            <nz-form-item>
-                                <nz-form-label>Dis. %</nz-form-label>
-                                <nz-form-control>
-                                    <input type="number" nz-input formControlName="disPercent"
-                                        (focus)="setLastEdited('disPercent')" (blur)="onValueChange(i)" />
-                                </nz-form-control>
-                            </nz-form-item>
-                        </div>
-                        <div nz-col nzXs="12" nzMd="4" nzLg="2">
+                        <div nz-col nzXs="12" nzMd="4" nzLg="3">
                             <nz-form-item>
                                 <nz-form-label>Dis. Amt.</nz-form-label>
                                 <nz-form-control>
@@ -164,7 +162,7 @@
                             </nz-form-item>
                         </div>
                         <!-- TAXABLE -->
-                        <div nz-col nzXs="12" nzMd="4" nzLg="2">
+                        <div nz-col nzXs="12" nzMd="4" nzLg="3">
                             <nz-form-item>
                                 <nz-form-label>Taxable</nz-form-label>
                                 <nz-form-control>
@@ -174,7 +172,7 @@
                         </div>
 
 
-                        <div nz-col nzXs="12" nzMd="4" nzLg="2">
+                        <div nz-col nzXs="12" nzMd="4" nzLg="3">
                             <nz-form-item>
                                 <nz-form-label>Tax Amt.</nz-form-label>
                                 <nz-form-control>
@@ -183,6 +181,10 @@
 
                                 </nz-form-control>
                             </nz-form-item>
+                        </div>
+                        <div nz-col [nzXs]="8" [nzMd]="4" [nzLg]="3">
+                            <nz-form-item><nz-form-label>Tax (Free)</nz-form-label><input nz-input type="number"
+                                    formControlName="freeTaxAmt" readonly class="read-only-input" /></nz-form-item>
                         </div>
 
                         <div nz-col nzXs="24" nzMd="6" nzLg="3">
@@ -205,36 +207,40 @@
 
     <!-- BEGIN :: TABLE SECTION -->
     <!-- Table to Display Inventory List -->
-    <nz-table #basicTable [nzBordered]="true" [nzData]="selectedItemsListSignal()" [nzSize]="'middle'"
-        [nzShowPagination]="'false'">
+    <nz-table #basicTable [nzBordered]="true" [nzData]="selectedItemsListSignal()" nzSize="small"
+        [nzShowPagination]="false">
         <thead>
             <tr>
-                <th nzWidth="3%">Sn.</th>
-                <th nzWidth="20%">Item</th>
-                <th nzWidth="5%">Qty</th>
-                <th nzWidth="5%">Rate</th>
-                <th nzWidth="5%">Total</th>
-                <th nzWidth="5%">Dis. Amt</th>
-                <th nzWidth="5%">Taxable </th>
-
-                <th nzWidth="5%">Tax Amt</th>
-                <th nzWidth="10%">Net Amt</th>
-                <th nzWidth="10%">Table Actions</th>
+                <th nzWidth="40px">Sn.</th>
+                <th nzWidth="180px">Item</th>
+                <th nzWidth="60px" nzAlign="right">Qty</th>
+                <th nzWidth="60px" nzAlign="right">Rate</th>
+                <th nzAlign="right">CC Amt</th>
+                <th nzAlign="right">Total</th>
+                <th nzAlign="right">Dis Amt</th>
+                <th nzAlign="right">Taxable</th>
+                <th nzAlign="right">Tax</th>
+                <th nzAlign="right">Tax(Free Item)</th>
+                <th nzWidth="150px" nzAlign="right">Net Amt</th>
+                <th nzWidth="90px" nzRight>Table Actions</th>
             </tr>
         </thead>
         <tbody>
             @for (row of selectedItemsListSignal(); track row.purchaseDetailId ; ) {
             <tr>
                 <td>{{ $index+1 }}.</td>
-                <td>{{ row.name }}</td>
-                <td>{{ row.qty }}</td>
-                <td>{{ row.pricePerUnit }}</td>
-                <td>{{ row.totalAmt |number :'1.1-2'}}</td>
-                <td>{{ row.discountAmt|number :'1.2-2' }}</td>
-                <td>{{ row.taxableAmt|number :'1.2-2' }}</td>
+                <td><strong>{{ row.name }}</strong></td>
+                <td nzAlign="right">{{ row.qty }}</td>
+                <td nzAlign="right">{{ row.pricePerUnit | number:'1.2-2' }}</td>
+                <td nzAlign="right">{{ row.ccAmt | number:'1.2-2' }}</td>
 
-                <td>{{ row.taxAmt|number :'1.2-2' }}</td>
-                <td>{{ row.netAmt|number :'1.2-2' }}</td>
+                <td nzAlign="right">{{ row.totalAmt | number:'1.2-2' }}</td>
+                <td nzAlign="right">{{ row.discountAmt | number:'1.2-2' }}</td>
+                <td nzAlign="right">{{ row.taxableAmt | number:'1.2-2' }}</td>
+                <td nzAlign="right">{{ row.taxAmt | number:'1.2-2' }}</td>
+                <td nzAlign="right">{{ row.freeTaxAmt | number:'1.2-2' }}</td>
+
+                <td nzAlign="right"><strong>{{ row.netAmt | number:'1.2-2' }}</strong></td>
                 <td>
                     <lib-table-action-buttons [showDeleteButton]="true" (edit)="onEdit(row)"
                         (delete)="onDelete(row.purchaseDetailId)" />
@@ -245,18 +251,16 @@
         </tbody>
         <tfoot nzSummary>
             <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>Net Total</td>
-                <td>
-                    <span nz-typography nzType=" danger">{{ totalAmountSignal()|number :'1.2-2' }}</span>
-                </td>
+                <td colspan="4" class="footer-label">SUMMARY TOTALS</td>
+                <td nzAlign="right" class="amt-cell">{{ totalCCSignal() | number:'1.2-2' }}</td>
+                <td nzAlign="right" class="amt-cell">{{ totalGrossSignal() | number:'1.2-2' }}</td>
 
+                <td nzAlign="right" class="amt-cell">{{ totalDiscountSignal() | number:'1.2-2' }}</td>
+                <td nzAlign="right" class="amt-cell">{{ totalTaxableSignal() | number:'1.2-2' }}</td>
+                <td nzAlign="right" class="amt-cell">{{ totalTaxSignal() | number:'1.2-2' }}</td>
+                <td nzAlign="right" class="amt-cell">{{ totalFreeTaxSignal() | number:'1.2-2' }}</td>
+                <td nzAlign="right" class="final-net"><strong>{{ netTotalSignal() | number:'1.2-2' }}</strong></td>
+                <td></td>
             </tr>
 
         </tfoot>
