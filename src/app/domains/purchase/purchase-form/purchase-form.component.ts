@@ -23,6 +23,7 @@ import { PurchaseService } from '../data/services/purchase.services';
 import { TableActionButtonsComponent } from '../../shared/ui-common/table-action-buttons/table-action-buttons.component';
 import { BsDateInputDirective } from '../../shared/directives/bsdate/bs-date-input.directive';
 import { IPaytype, ISupplier, CalcInputs, BillStrategy } from './../data/models/purhase.model';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-purchase-form',
@@ -68,6 +69,7 @@ export class PurchaseFormComponent implements OnInit {
   netTotalSignal = computed(() => this.selectedItemsListSignal().reduce((s, i) => s + (i.netAmt || 0), 0));
   disableBillType = computed(() => this.selectedItemsListSignal().length > 0);
   queryParamMapSignal = toSignal(this.route.queryParamMap, { initialValue: this.route.snapshot.queryParamMap });
+
   IdsSignal = computed(() => ({
     supplierId: Number(this.queryParamMapSignal()?.get('supplierId')) || 0,
     purchaseMasterId: Number(this.queryParamMapSignal()?.get('purchaseMasterId')) || 0,
@@ -337,15 +339,18 @@ export class PurchaseFormComponent implements OnInit {
   onSave() {
     this.isSaving.set(true);
     const payload = { ...this.form.value, selectedStockList: this.selectedItemsListSignal() };
-    this.purchaseService.savePurchase(payload).subscribe({
-      next: (res: any) => {
-        // this.disableBillType.set(false); // Disable bill type change when items are added
+    this.purchaseService.savePurchase(payload)
+      .pipe(takeUntilDestroyed(this.destroy$),
+        finalize(() => this.isSaving.set(false)))
+      .subscribe({
+        next: (res: any) => {
+          // this.disableBillType.set(false); // Disable bill type change when items are added
 
-        this.notification.success('Success', res.message);
-        this.router.navigate(['/auth/purchase-master'], { queryParams: { supplierId: this.IdsSignal().supplierId } });
-      },
-      error: () => this.isSaving.set(false)
-    });
+          this.notification.success('Success', res.message);
+          this.router.navigate(['/auth/purchase-master'], { queryParams: { supplierId: this.IdsSignal().supplierId } });
+        },
+        error: () => this.isSaving.set(false)
+      });
   }
 
   onEdit(row: any) { this.inventoryList.clear(); this.inventoryList.push(this.createInventory(row)); }

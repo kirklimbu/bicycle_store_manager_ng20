@@ -110,7 +110,7 @@
                                     }
                                 </nz-select> -->
                                 <nz-select [nzDisabled]="true" nzShowSearch placeholder="Select product"
-                                    formControlName="medicine" (ngModelChange)="onProductSelect(i)">
+                                    formControlName="medicine">
                                     @for (item of inventoryListSignal(); track item.stockMasterId) {
                                     <nz-option [nzValue]="item" [nzLabel]="item.name"></nz-option>
                                     }
@@ -274,7 +274,7 @@
             <button *nzSpaceItem nz-button nzType="default" (click)="onCancel()">
                 Cancel
             </button>
-            <button *nzSpaceItem nz-button nzType="primary" (click)="onSave()">
+            <button *nzSpaceItem nz-button nzType="primary" [nzLoading]="isSaving()" (click)="onSave()">
                 <span nz-icon nzType="save" nzTheme="outline"></span>
                 Save
             </button>
